@@ -13,6 +13,8 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 @NodeEntity
 public class Artifact {
 
+	public static final String EMPTYID = ":::jar:";
+	
 	@GraphId Long id;
 	private String uniqueId;
 	@Fetch
@@ -70,6 +72,7 @@ public class Artifact {
 	}
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+		this.uniqueId = getUniqueId();
 	}
 
 	public String getArtifactId() {
@@ -77,6 +80,7 @@ public class Artifact {
 	}
 	public void setArtifactId(String artifactId) {
 		this.artifactId = artifactId;
+		this.uniqueId = getUniqueId();
 	}
 
 	public String getVersion() {
@@ -84,6 +88,7 @@ public class Artifact {
 	}
 	public void setVersion(String version) {
 		this.version = version;
+		this.uniqueId = getUniqueId();
 	}
 
 	public String getType() {
@@ -91,6 +96,7 @@ public class Artifact {
 	}
 	public void setType(String type) {
 		this.type = type;
+		this.uniqueId = getUniqueId();
 	}
 
 	public String getClassifier() {
@@ -98,6 +104,7 @@ public class Artifact {
 	}
 	public void setClassifier(String classifier) {
 		this.classifier = classifier;
+		this.uniqueId = getUniqueId();
 	}
 
 	public String getUniqueId(){
