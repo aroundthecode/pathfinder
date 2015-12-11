@@ -17,6 +17,7 @@
 
 	<modules>
 		<module>pathfinder-server</module>
+		<module>pathfinder-maven-plugin</module>
 	</modules>
 
 	<build>
