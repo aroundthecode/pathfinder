@@ -1,5 +1,6 @@
 package org.aroundthecode.pathfinder.maven.plugin.treeSerializers;
 
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -27,6 +28,7 @@ import org.apache.maven.plugin.dependency.tree.AbstractSerializingVisitor;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
+
 
 public class LogNodeVisitor extends AbstractSerializingVisitor implements
 		DependencyNodeVisitor {
