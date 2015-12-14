@@ -13,6 +13,9 @@
 	<artifactId>pathfinder-server</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 
+	<name>Pathfinder Server  - ${project.groupId}:${project.artifactId}:${project.packaging}</name>
+	<description>Neo4j server instance to manage pathfinder artifacts data</description>
+
 
 	<properties>
 		<java.version>1.7</java.version>
@@ -21,6 +24,24 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.5</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>

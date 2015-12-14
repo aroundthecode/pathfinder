@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>pathfinder-server</module>
+		<module>pathfinder-rest-client</module>
 		<module>pathfinder-maven-plugin</module>
   </modules>
 

@@ -7,12 +7,12 @@ import org.junit.Test;
 public class ArtifactTest {
 
 	
-	String ID = "group:artifact:version:war:classifier";
-	String IDG = "group";
-	String IDA = "artifact";
-	String IDV = "version";
-	String IDT = "war";
-	String IDC = "classifier";
+	public static final String ID = "group:artifact:version:war:classifier";
+	public static final String IDG = "group";
+	public static final String IDA = "artifact";
+	public static final String IDV = "version";
+	public static final String IDT = "war";
+	public static final String IDC = "classifier";
 	
 	@Test
 	public void testEmptyArtifact() {
