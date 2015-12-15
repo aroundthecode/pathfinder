@@ -12,8 +12,15 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 @NodeEntity
 public class Artifact {
+	//groupId:artifactId:packaging:classifier:version
 
-	public static final String EMPTYID = ":::jar:";
+	public static final String EMPTYID = "::jar::";
+	public static final String U = "uniqueId";
+	public static final String G = "groupId";
+	public static final String A = "artifactId";
+	public static final String P = "packaging";
+	public static final String C = "classifier";
+	public static final String V = "version";
 	
 	@GraphId Long id;
 	private String uniqueId;
@@ -22,17 +29,25 @@ public class Artifact {
 	@Fetch
 	private String artifactId = "";
 	@Fetch
-	private String version = "";
-	@Fetch
-	private String type="jar";
+	private String packaging="jar";
 	@Fetch
 	private String classifier="";
+	@Fetch
+	private String version = "";
 
 	public Artifact() {
 	}
 
 	public Artifact(String uniqueId) {
 		setUniqueId(uniqueId);
+	}
+	
+	public Artifact(String groupId,String artifactId, String version,String type, String classifier) {
+		setGroupId(groupId);
+		setArtifactId(artifactId);
+		setPackaging(type);
+		setClassifier(classifier);
+		setVersion(version);
 	}
 	
 	public void setUniqueId(String uniqueId) 
@@ -43,11 +58,12 @@ public class Artifact {
 			if(tokens.length >= 4){
 				setGroupId(tokens[0]);
 				setArtifactId(tokens[1]);
-				setVersion(tokens[2]);
-				setType(tokens[3]);
+				setPackaging(tokens[2]);
+				setVersion(tokens[3]);
 			}
 			if(tokens.length == 5){
-				setClassifier(tokens[4]);
+				setClassifier(tokens[3]);
+				setVersion(tokens[4]);
 
 			} 
 			this.uniqueId = getUniqueId();
@@ -91,11 +107,11 @@ public class Artifact {
 		this.uniqueId = getUniqueId();
 	}
 
-	public String getType() {
-		return type;
+	public String getPackaging() {
+		return packaging;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setPackaging(String packaging) {
+		this.packaging = packaging;
 		this.uniqueId = getUniqueId();
 	}
 
@@ -108,11 +124,13 @@ public class Artifact {
 	}
 
 	public String getUniqueId(){
+		//https://maven.apache.org/pom.html
+		//groupId:artifactId:packaging:classifier:version
 		return getGroupId() + ":" +
 				getArtifactId() + ":" + 
-				getVersion() + ":" + 
-				getType() + ":" + 
-				getClassifier();
+				getPackaging() + ":" + 
+				getClassifier() + ":" +
+				getVersion() ;
 	}
 
 

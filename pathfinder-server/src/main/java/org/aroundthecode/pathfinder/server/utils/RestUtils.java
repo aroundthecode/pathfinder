@@ -10,11 +10,14 @@ import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class RestUtils {
 
 	private final static String USER_AGENT = "pathfinder-rest-client";
 	private static final Logger logger = LogManager.getLogger(RestUtils.class);
+	private static JSONParser jparser = new JSONParser();
 
 
 	public static String sendGet(String url)  throws IOException {
@@ -101,5 +104,7 @@ public class RestUtils {
 
 	}
 
-
+	public static JSONObject string2Json(String s) throws ParseException{
+		return (JSONObject) jparser.parse(s);
+	}
 }
