@@ -1,8 +1,8 @@
 package org.aroundthecode.pathfinder.server.controller;
 
+import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.aroundthecode.pathfinder.server.entity.Artifact;
 import org.aroundthecode.pathfinder.server.repository.ArtifactRepository;
-import org.aroundthecode.pathfinder.server.utils.RestUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.neo4j.graphdb.Transaction;
@@ -38,7 +38,7 @@ public class PathFinderController {
 		Artifact aTo = new Artifact(uidTo);
 		checkAndSaveArtifact(aFrom);
 		checkAndSaveArtifact(aTo);
-		aFrom.dependsOn(aTo);
+		aFrom.dependsOn(aTo,type);
 		Transaction tx = graphDatabase.beginTx();
 		try {
 			artifactRepository.save(aFrom);

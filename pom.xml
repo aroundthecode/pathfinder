@@ -18,6 +18,7 @@
 		<module>pathfinder-server</module>
 		<module>pathfinder-rest-client</module>
 		<module>pathfinder-maven-plugin</module>
+		<module>pathfinder-maven-plugin-it</module>
   </modules>
 
 	<build>

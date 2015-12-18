@@ -1,4 +1,4 @@
-package org.aroundthecode.pathfinder.server.utils;
+package org.aroundthecode.pathfinder.client.rest.utils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,12 +15,12 @@ import org.json.simple.parser.ParseException;
 
 public class RestUtils {
 
-	private final static String USER_AGENT = "pathfinder-rest-client";
-	private static final Logger logger = LogManager.getLogger(RestUtils.class);
-	private static JSONParser jparser = new JSONParser();
+	protected static final String USER_AGENT = "pathfinder-rest-client";
+//	private static final Logger logger = LogManager.getLogger(RestUtils.class);
+	private static final JSONParser jparser = new JSONParser();
 
 
-	public static String sendGet(String url)  throws IOException {
+	public static final String sendGet(String url)  throws IOException {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -48,7 +48,7 @@ public class RestUtils {
 			}
 		}
 		catch (Exception e) {
-			logger.error("sendGet - reading response ",e);
+			System.err.println("sendGet - reading response " +e.getMessage());
 		}
 		finally{
 			if(in!=null){
@@ -60,7 +60,7 @@ public class RestUtils {
 
 	}
 
-	public static String sendPost(String url, JSONObject body) throws IOException {
+	public static final String sendPost(String url, JSONObject body) throws IOException {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -92,7 +92,7 @@ public class RestUtils {
 				response.append(inputLine);
 			}
 		} catch (Exception e) {
-			logger.error("sendPost - reading response ",e);
+			System.err.println("sendPost - reading response " +e.getMessage());
 		}
 		finally{
 			if(in!=null){
@@ -104,7 +104,7 @@ public class RestUtils {
 
 	}
 
-	public static JSONObject string2Json(String s) throws ParseException{
+	public static final JSONObject string2Json(String s) throws ParseException{
 		return (JSONObject) jparser.parse(s);
 	}
 }

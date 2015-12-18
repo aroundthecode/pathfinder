@@ -26,14 +26,14 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
+			<groupId>org.aroundthecode.pathfinder</groupId>
+			<artifactId>pathfinder-rest-client</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.5</version>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
 		</dependency>
 
 		<dependency>
