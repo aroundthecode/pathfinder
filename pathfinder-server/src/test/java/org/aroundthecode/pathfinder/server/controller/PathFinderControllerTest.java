@@ -25,22 +25,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @FixMethodOrder( MethodSorters.NAME_ASCENDING)
 public class PathFinderControllerTest {
 
-	private static final String HOST = "http://localhost:8080";
+	private static final String NEO4J_SERVER_PROTOCOL = "http";
+	private static final String NEO4J_SERVER_HOST = "localhost";
+	private static final int    NEO4J_SERVER_PORT = 8080;
+	private static final String NEO4J_SERVER_PATH = "/";
 	
 	@Test
-	public void test_00_Client() {
-		PathfinderClient client = new PathfinderClient(HOST);
+	public void test_00_Client() throws IOException {
+		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
 		assertNotNull(client);
 	}
 
 	
 	
 	@Test
-	public void test_01_Write() {
+	public void test_01_Write() throws IOException {
 
 		JSONObject body = getJsonObject();
 		assertNotNull(body);
-		PathfinderClient client = new PathfinderClient(HOST);
+		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
 		try {
 			String response = client.saveArtifact(ArtifactTest.IDG,ArtifactTest.IDA,ArtifactTest.IDP,ArtifactTest.IDC,ArtifactTest.IDV);
 			//, artifactId, packaging, classifier, version)RestUtils.sendPost(HOST+"/node/save", body);
@@ -54,8 +57,8 @@ public class PathFinderControllerTest {
 	}
 
 	@Test
-	public void test_02_Read() {
-		PathfinderClient client = new PathfinderClient(HOST);
+	public void test_02_Read() throws IOException {
+		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
 		try {
 			JSONObject o = client.getArtifact(ArtifactTest.ID);
 			assertNotNull(o);

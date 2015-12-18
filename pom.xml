@@ -8,6 +8,10 @@
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	
+	<name>Pathfinder  - ${project.groupId}:${project.artifactId}:${project.packaging}</name>
+	<description>Pathfinder project parent</description>
+	
 
 	<properties>
 		<java.version>1.7</java.version>

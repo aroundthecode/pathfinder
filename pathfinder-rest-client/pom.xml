@@ -11,6 +11,10 @@
 	</parent>
 
 	<artifactId>pathfinder-rest-client</artifactId>
+	
+	<name>Pathfinder REST Client  - ${project.groupId}:${project.artifactId}:${project.packaging}</name>
+	<description>Rest client for artifact controller APIs</description>
+	
 
 	<properties>
 		<java.version>1.7</java.version>
