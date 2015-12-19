@@ -1,8 +1,12 @@
 package org.aroundthecode.pathfinder.server.entity;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
+import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
+import org.json.simple.JSONObject;
 import org.neo4j.graphdb.Direction;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -12,21 +16,6 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 @NodeEntity
 public class Artifact {
-
-	public enum Dependency {
-		COMPILE, PROVIDED, RUNTIME, TEST,
-		SYSTEM, IMPORT 
-	}
-
-
-	//groupId:artifactId:packaging:classifier:version
-	public static final String EMPTYID = "::jar::";
-	public static final String U = "uniqueId";
-	public static final String G = "groupId";
-	public static final String A = "artifactId";
-	public static final String P = "packaging";
-	public static final String C = "classifier";
-	public static final String V = "version";
 
 	@GraphId Long id;
 	private String uniqueId;
@@ -58,34 +47,31 @@ public class Artifact {
 
 	public void setUniqueId(String uniqueId) 
 	{
-		if(uniqueId!=null)
-		{
-			String[] tokens = uniqueId.split(":");
-			if(tokens.length >= 4){
-				setGroupId(tokens[0]);
-				setArtifactId(tokens[1]);
-				setPackaging(tokens[2]);
-				setVersion(tokens[3]);
-			}
-			if(tokens.length == 5){
-				setClassifier(tokens[3]);
-				setVersion(tokens[4]);
-
-			} 
-			this.uniqueId = getUniqueId();
+		Map<String, String> map = ArtifactUtils.splitUniqueId(uniqueId);
+		if(map.size()>0){
+			setGroupId(		map.get(ArtifactUtils.G));
+			setArtifactId(	map.get(ArtifactUtils.A));
+			setPackaging(	map.get(ArtifactUtils.P));
+			setClassifier(	map.get(ArtifactUtils.C));
+			setVersion(		map.get(ArtifactUtils.V));
 		}
 	}
 
 	@RelatedTo(type="COMPILE", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
+	
 	@RelatedTo(type="PROVIDED", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
+	
 	@RelatedTo(type="RUNTIME", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
+	
 	@RelatedTo(type="TEST", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesTest= new HashSet<Artifact>();
+	
 	@RelatedTo(type="SYSTEM", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
+	
 	@RelatedTo(type="IMPORT", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesImport= new HashSet<Artifact>();
 
@@ -155,13 +141,7 @@ public class Artifact {
 	}
 
 	public String getUniqueId(){
-		//https://maven.apache.org/pom.html
-		//groupId:artifactId:packaging:classifier:version
-		return getGroupId() + ":" +
-		getArtifactId() + ":" + 
-		getPackaging() + ":" + 
-		getClassifier() + ":" +
-		getVersion() ;
+		return ArtifactUtils.getUniqueId(getGroupId(), getArtifactId(), getPackaging(), getClassifier(), getVersion());
 	}
 
 	@Override
@@ -204,6 +184,16 @@ public class Artifact {
 		return this.toString().equals(((Artifact)other).toString());
 	}
 
-
+	public static Artifact parsePropertiesFromJson(JSONObject o ){
+		Artifact a = new Artifact(
+				o.get(ArtifactUtils.G).toString(),
+				o.get(ArtifactUtils.A).toString(),
+				o.get(ArtifactUtils.V).toString(),
+				o.get(ArtifactUtils.P).toString(),
+				o.get(ArtifactUtils.C).toString()
+				);
+		//TODO manage dependencies too?
+		return a;
+	}
 
 }

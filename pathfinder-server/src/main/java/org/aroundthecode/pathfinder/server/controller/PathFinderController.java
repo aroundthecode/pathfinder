@@ -1,5 +1,6 @@
 package org.aroundthecode.pathfinder.server.controller;
 
+import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.aroundthecode.pathfinder.server.entity.Artifact;
 import org.aroundthecode.pathfinder.server.repository.ArtifactRepository;
@@ -22,23 +23,20 @@ public class PathFinderController {
 	@Autowired GraphDatabase graphDatabase;
 
 	@RequestMapping(value="/node/get", method=RequestMethod.GET)
-	public Artifact getArtifact(@RequestParam(value="id", defaultValue=Artifact.EMPTYID) String uniqueId) 
+	public Artifact getArtifact(@RequestParam(value="id", defaultValue=ArtifactUtils.EMPTYID) String uniqueId) 
 	{
 		return artifactRepository.findByUniqueId(uniqueId);
 	}
 
 	@RequestMapping(value="/node/depends", method=RequestMethod.POST)
-	public void depends(@RequestParam("uid_from") String uidFrom,@RequestParam("uid_to") String uidTo) throws ParseException 
+	public void depends(@RequestBody String body) throws ParseException 
 	{
-		//for dependency uid last token is dependency type
-		String type = uidTo.substring(uidTo.lastIndexOf(":")+1);
-		uidTo = uidTo.substring(0,uidTo.lastIndexOf(":"));
-		
-		Artifact aFrom = new Artifact(uidFrom);
-		Artifact aTo = new Artifact(uidTo);
-		checkAndSaveArtifact(aFrom);
-		checkAndSaveArtifact(aTo);
-		aFrom.dependsOn(aTo,type);
+		JSONObject o = RestUtils.string2Json(body);
+		Artifact aFrom = new Artifact(o.get("from").toString());
+		Artifact aTo = new Artifact(o.get("to").toString());
+		aFrom = checkAndSaveArtifact(aFrom);
+		aTo = checkAndSaveArtifact(aTo);
+		aFrom.dependsOn(aTo,o.get("scope").toString());
 		Transaction tx = graphDatabase.beginTx();
 		try {
 			artifactRepository.save(aFrom);
@@ -53,14 +51,7 @@ public class PathFinderController {
 	public Artifact saveArtifact(@RequestBody String body) throws ParseException 
 	{
 		JSONObject o = RestUtils.string2Json(body);
-		Artifact a = new Artifact(
-				o.get(Artifact.G).toString(),
-				o.get(Artifact.A).toString(),
-				o.get(Artifact.V).toString(),
-				o.get(Artifact.P).toString(),
-				o.get(Artifact.C).toString()
-				);
-
+		Artifact a = Artifact.parsePropertiesFromJson(o);
 		return checkAndSaveArtifact(a);
 	}
 
@@ -72,8 +63,7 @@ public class PathFinderController {
 			a = artifactRepository.findByUniqueId(uniqueId);
 
 			if(a==null){
-				a = new Artifact(uniqueId);
-				artifactRepository.save(a);
+				a = artifactRepository.save( new Artifact(uniqueId));
 			}
 
 			tx.success();

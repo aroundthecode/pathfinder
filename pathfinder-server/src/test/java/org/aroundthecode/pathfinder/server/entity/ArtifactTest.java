@@ -2,16 +2,17 @@ package org.aroundthecode.pathfinder.server.entity;
 
 import static org.junit.Assert.*;
 
+import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.junit.Test;
 
 public class ArtifactTest {
 
 	
-	public static final String IDG = "group";
-	public static final String IDA = "artifact";
-	public static final String IDP = "packaging";
-	public static final String IDC = "classifier";
-	public static final String IDV = "version";
+	public static final String IDG = "my.group";
+	public static final String IDA = "test";
+	public static final String IDP = "jar";
+	public static final String IDC = "none";
+	public static final String IDV = "1.0.0";
 	public static final String ID = IDG+":"+IDA+":"+IDP+":"+IDC+":"+IDV;
 	
 	@Test
@@ -24,7 +25,7 @@ public class ArtifactTest {
 		assertEquals("jar", a.getPackaging());
 		assertEquals("", a.getClassifier());
 		
-		assertEquals(Artifact.EMPTYID, a.getUniqueId());
+		assertEquals(ArtifactUtils.EMPTYID, a.getUniqueId());
 		
 	}
 	

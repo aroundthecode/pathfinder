@@ -3,7 +3,9 @@ package org.aroundthecode.pathfinder.client.rest;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Map;
 
+import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -42,6 +44,29 @@ public class PathfinderClient {
 
 		JSONObject body = createJson(groupId, artifactId, packaging,classifier, version);
 		return RestUtils.sendPost(getBaseurl() + "node/save", body);
+	}
+	
+	public String saveArtifact(String uniqueId) throws IOException {
+
+		Map<String, String> map = ArtifactUtils.splitUniqueId(uniqueId);
+		return saveArtifact(
+				map.get(ArtifactUtils.G),
+				map.get(ArtifactUtils.A),
+				map.get(ArtifactUtils.P),
+				map.get(ArtifactUtils.C),
+				map.get(ArtifactUtils.V)
+				);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String createDependency(String uniqueIdFrom,String uniqueIdTo,String scope) throws IOException {
+
+		JSONObject body = new JSONObject();
+		body.put("from", uniqueIdFrom);
+		body.put("to", uniqueIdTo);
+		body.put("scope", scope);
+		
+		return RestUtils.sendPost(getBaseurl() + "node/depends", body);
 	}
 
 	public JSONObject getArtifact(String uniqueId) throws IOException, ParseException {

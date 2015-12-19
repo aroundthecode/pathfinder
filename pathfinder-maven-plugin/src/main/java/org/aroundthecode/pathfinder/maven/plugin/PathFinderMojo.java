@@ -16,25 +16,62 @@ package org.aroundthecode.pathfinder.maven.plugin;
  * limitations under the License.
  */
 
+import java.io.IOException;
 import java.io.Writer;
 
 import org.apache.maven.plugin.dependency.tree.TreeMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
-import org.aroundthecode.pathfinder.maven.plugin.treeSerializers.LogNodeVisitor;
+import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
+import org.aroundthecode.pathfinder.maven.plugin.treeSerializers.PathfinderNodeVisitor;
 
-/**
- * Goal which touches a timestamp file.
- *
- */
 @Mojo( name = "store-tree", defaultPhase = LifecyclePhase.NONE )
 public class PathFinderMojo extends TreeMojo
 {
+	/**
+	 * Neo4j rest protocol.
+	 */
+	@Parameter( property = "neo4j.protocol", defaultValue = "http" )
+	private String neo4jProtocol;
 
+	/**
+	 * Neo4j rest domain.
+	 */
+	@Parameter( property = "neo4j.domain", defaultValue = "localhost" )
+	private String neo4jUrl;
+
+	/**
+	 * Neo4j db port
+	 */
+	@Parameter( property = "neo4j.port", defaultValue = "8080" )
+	private int neo4jPort;
+
+	/**
+	 * Neo4j base path
+	 */
+	@Parameter( property = "neo4j.path", defaultValue = "/" )
+	private String neo4jPath;
+
+
+	/**
+	 * Override standard TreeMojo to provide only Pathfinder Visitors
+	 */
 	@Override
 	public DependencyNodeVisitor getSerializingDependencyNodeVisitor( Writer writer )
 	{
-		return new LogNodeVisitor(writer, getLog());
+
+		DependencyNodeVisitor visitor=null;
+		try {
+			PathfinderClient client = new PathfinderClient(neo4jProtocol, neo4jUrl, neo4jPort, neo4jPath);
+			//visitor = new LogNodeVisitor(writer, getLog());
+			visitor = new PathfinderNodeVisitor(writer, getLog(),client);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return visitor;
 	}
 }

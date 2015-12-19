@@ -21,6 +21,12 @@
 	</properties>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>org.aroundthecode.pathfinder</groupId>
+			<artifactId>pathfinder-rest-client</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>
