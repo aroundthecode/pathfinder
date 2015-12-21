@@ -39,8 +39,8 @@ public class PathFinderMojo extends TreeMojo
 	/**
 	 * Neo4j rest domain.
 	 */
-	@Parameter( property = "neo4j.domain", defaultValue = "localhost" )
-	private String neo4jUrl;
+	@Parameter( property = "neo4j.host", defaultValue = "localhost" )
+	private String neo4jHost;
 
 	/**
 	 * Neo4j db port
@@ -64,7 +64,7 @@ public class PathFinderMojo extends TreeMojo
 
 		DependencyNodeVisitor visitor=null;
 		try {
-			PathfinderClient client = new PathfinderClient(neo4jProtocol, neo4jUrl, neo4jPort, neo4jPath);
+			PathfinderClient client = new PathfinderClient(neo4jProtocol, neo4jHost, neo4jPort, neo4jPath);
 			//visitor = new LogNodeVisitor(writer, getLog());
 			visitor = new PathfinderNodeVisitor(writer, getLog(),client);
 		} catch (IOException e) {

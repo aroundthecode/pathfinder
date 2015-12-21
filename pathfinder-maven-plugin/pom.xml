@@ -65,8 +65,9 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<goalPrefix>pathfinder-maven-plugin</goalPrefix>
+					<goalPrefix>pathfinder</goalPrefix>
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+					<requiresProject>false</requiresProject>
 				</configuration>
 				<executions>
 					<execution>

@@ -46,10 +46,10 @@
 				<artifactId>pathfinder-maven-plugin</artifactId>
 				<version>0.1.0-SNAPSHOT</version>
 				<configuration>
-					<neo4j.protocol>http</neo4j.protocol>
-					<neo4j.domain>localhost</neo4j.domain>
-					<neo4j.port>8080</neo4j.port>
-					<neo4j.path>/</neo4j.path>
+					<neo4jProtocol>http</neo4jProtocol>
+					<neo4jHost>127.0.0.1</neo4jHost>
+					<neo4jPort>8080</neo4jPort>
+					<neo4jPath>/</neo4jPath>
 				</configuration>
 				<executions>
 					<execution>
