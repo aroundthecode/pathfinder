@@ -68,6 +68,16 @@ public class PathfinderClient {
 		
 		return RestUtils.sendPost(getBaseurl() + "node/depends", body);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public String addParent(String mainUniqueId,String parentUniqueId) throws IOException {
+
+		JSONObject body = new JSONObject();
+		body.put("main", mainUniqueId);
+		body.put("parent", parentUniqueId);
+		
+		return RestUtils.sendPost(getBaseurl() + "node/parent", body);
+	}
 
 	public JSONObject getArtifact(String uniqueId) throws IOException, ParseException {
 

@@ -28,6 +28,18 @@ public class PathFinderController {
 		return artifactRepository.findByUniqueId(uniqueId);
 	}
 
+	@RequestMapping(value="/node/parent", method=RequestMethod.POST)
+	public void parent(@RequestBody String body) throws ParseException 
+	{
+		JSONObject o = RestUtils.string2Json(body);
+		Artifact main = new Artifact(o.get("main").toString());
+		Artifact parent = new Artifact(o.get("parent").toString());
+		main = checkAndSaveArtifact(main);
+		parent = checkAndSaveArtifact(parent);
+		main.hasParent(parent);
+		saveArtifact(main);
+	}
+	
 	@RequestMapping(value="/node/depends", method=RequestMethod.POST)
 	public void depends(@RequestBody String body) throws ParseException 
 	{
@@ -37,14 +49,18 @@ public class PathFinderController {
 		aFrom = checkAndSaveArtifact(aFrom);
 		aTo = checkAndSaveArtifact(aTo);
 		aFrom.dependsOn(aTo,o.get("scope").toString());
+		saveArtifact(aFrom);
+
+	}
+
+	private void saveArtifact(Artifact a) {
 		Transaction tx = graphDatabase.beginTx();
 		try {
-			artifactRepository.save(aFrom);
+			artifactRepository.save(a);
 			tx.success();
 		} finally {
 			tx.close();
 		}
-
 	}
 
 	@RequestMapping(value="/node/save", method=RequestMethod.POST)

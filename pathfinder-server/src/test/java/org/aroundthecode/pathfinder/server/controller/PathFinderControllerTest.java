@@ -70,15 +70,30 @@ public class PathFinderControllerTest {
 		//create and link
 		for ( Dependency dir : Dependency.values()) {
 			JSONObject o =  getJsonObject(dir.toString());
-			client.saveArtifact(o.get(ArtifactUtils.U).toString());
+			//client.saveArtifact(o.get(ArtifactUtils.U).toString());
 			client.createDependency(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString(), dir.toString() );
 		}
+
+	}
+	
+	@Test
+	public void test_40_Parent() throws IOException {
+
+		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
+
+		//main artifact creation
+		JSONObject obj = getJsonObject();
+		assertNotNull(obj);
+		JSONObject o =  getJsonObject("parent");
+		assertNotNull(o);
+		
+		client.addParent(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString() );
 
 	}
 
 
 	@Test
-	public void test_40_Read() throws IOException {
+	public void test_50_Read() throws IOException {
 		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
 		try {
 			JSONObject o = client.getArtifact(ArtifactTest.ID);

@@ -59,21 +59,28 @@ public class Artifact {
 
 	@RelatedTo(type="COMPILE", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="PROVIDED", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="RUNTIME", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="TEST", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesTest= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="SYSTEM", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="IMPORT", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesImport= new HashSet<Artifact>();
+
+	@RelatedTo(type="PARENT", direction=Direction.OUTGOING)
+	public @Fetch Artifact parentArtifact = null;
+
+	public void hasParent(Artifact a){
+		this.parentArtifact = a;
+	}
 
 	public void dependsOn(Artifact a,String type) {
 
@@ -151,26 +158,30 @@ public class Artifact {
 
 	@Override
 	public String toString() {
-		String results = uniqueId + "'s dependencies include\n";
+		StringBuffer results = new StringBuffer( uniqueId ).append( "'s dependencies include\n");
+		if(parentArtifact!=null){
+			results.append( parentArtifact.getUniqueId()  ).append( " [parent]\n");
+		}
+
 		for (Artifact a : dependenciesCompile) {
-			results += "\t- " + a.getUniqueId() + " [compile]\n";
+			results.append("\t- " ).append( a.getUniqueId() ).append( " [compile]\n");
 		}
 		for (Artifact a : dependenciesProvided) {
-			results += "\t- " + a.getUniqueId() + " [provided]\n";
+			results.append("\t- " ).append( a.getUniqueId() ).append( " [provided]\n");
 		}
 		for (Artifact a : dependenciesRuntime) {
-			results += "\t- " + a.getUniqueId() + " [runtime]\n";
+			results.append("\t- " ).append( a.getUniqueId() ).append( " [runtime]\n");
 		}
 		for (Artifact a : dependenciesTest) {
-			results += "\t- " + a.getUniqueId() + " [test]\n";
+			results.append("\t- " ).append( a.getUniqueId() ).append( " [test]\n");
 		}
 		for (Artifact a : dependenciesSystem) {
-			results += "\t- " + a.getUniqueId() + " [system]\n";
+			results.append("\t- " ).append( a.getUniqueId() ).append( " [system]\n");
 		}
 		for (Artifact a : dependenciesImport) {
-			results += "\t- " + a.getUniqueId() + " [import]\n";
+			results.append("\t- " ).append( a.getUniqueId() ).append( " [import]\n");
 		}
-		return results;
+		return results.toString();
 	}
 
 	@Override
