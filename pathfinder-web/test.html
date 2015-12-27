@@ -16,11 +16,12 @@
   <div id="container">
   <style>
     #graph-canvas-left{
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 50%;
+      top: 10;
+      bottom: 10;
+      left: 10;
+      right: 10;
       position: absolute;
+      border: 1px solid gray;
     }
     
     .label {
@@ -32,7 +33,7 @@
     }
   </style>
   <div id="graph-canvas-left">
-    <div class="label">Canvas</div>
+    <div class="label">Pathfinder</div>
   </div>
   
 </div>
@@ -110,12 +111,15 @@
 
 <script src="./lib/sigmajs-v1.0.3/plugins/sigma.layout.forceAtlas2.min.js"></script>
 
+<script src="./lib/linkurious.js-develop/dist/plugins/sigma.renderers.edgeLabels.min.js"></script>
+
+
 
   <script>
 
     // Let's first initialize sigma:
     var s = new sigma();
-    console.log(s);
+
     s.addCamera('cam1'),
     s.addRenderer({
       container: document.getElementById('graph-canvas-left'),
@@ -140,11 +144,11 @@ sigma.neo4j.send(
     "POST",
     '{"query" : "'+n4jcypher+'"}',
     function(res) {
-                console.log(res);
+                //console.log(res);
                
                 $.each(res.data, function(i, node) {
                   n = node[0].root.data;
-                  console.log(n);
+                  //console.log(n);
 
                   //if source not exist, create
                   if(! s.graph.nodes(n.uniqueId)){
@@ -161,8 +165,8 @@ sigma.neo4j.send(
                   }
                   
                   $.each(node[0].relatives, function(i, rel) {
-                    console.log(rel);
-                    console.log(n.uniqueId + "->" + rel[1].data.uniqueId);
+                    //console.log(rel);
+                    //console.log(n.uniqueId + "->" + rel[1].data.uniqueId);
 
                     //if target not exist, create
                   if(! s.graph.nodes(rel[1].data.uniqueId)){
@@ -178,25 +182,26 @@ sigma.neo4j.send(
                     type: 'square' });
                   }
 
-
+                    if( ! s.graph.edges(n.uniqueId+"-"+rel[1].data.uniqueId)){ 
                     s.graph.addEdge({
-                      id: rel[0],
+                      id: n.uniqueId+"-"+rel[1].data.uniqueId,
                       // Reference extremities:
                       source: n.uniqueId,
                       target: rel[1].data.uniqueId,
                       color: '000',
-                      type: 'curvedArrow'
+                      //type: 'curvedArrow',
+                      label: rel[0].toLowerCase()
                     });
-                    
+                    }
 
                   });
                   
                 });
-           console.log("drawing nodes");
+           //console.log("drawing nodes");
            s.refresh();
-          console.log("arranging nodes");
+          //console.log("arranging nodes");
            s.startForceAtlas2();
-           setTimeout(function() {s.stopForceAtlas2();console.log("stop");;}, 10000);
+           setTimeout(function() {s.stopForceAtlas2();}, 10000);
           }
 
   )
