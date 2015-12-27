@@ -86,6 +86,7 @@ public class PathFinderControllerTest {
 		assertNotNull(obj);
 		JSONObject o =  getJsonObject("parent");
 		assertNotNull(o);
+		client.saveArtifact( o.get(ArtifactUtils.U).toString());
 		
 		client.addParent(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString() );
 

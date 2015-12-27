@@ -1,0 +1,206 @@
+<html>
+<head>
+  <title>Basic sigma.js example</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+    }
+    #container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+  <style>
+    #graph-canvas-left{
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 50%;
+      position: absolute;
+    }
+    
+    .label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+      font-family: sans-serif;
+    }
+  </style>
+  <div id="graph-canvas-left">
+    <div class="label">Canvas</div>
+  </div>
+  
+</div>
+<!-- JQuery -->
+<script src="./lib/jquery-1.11.3.min.js"></script>
+<!-- Linkourious Sigma -->
+<script src="./lib/linkurious.js-develop/src/sigma.core.js"></script>
+<script src="./lib/linkurious.js-develop/src/conrad.js"></script>
+<script src="./lib/linkurious.js-develop/src/utils/sigma.utils.js"></script>
+<script src="./lib/linkurious.js-develop/src/utils/sigma.polyfills.js"></script>
+<script src="./lib/linkurious.js-develop/src/sigma.settings.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.dispatcher.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.configurable.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.graph.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.camera.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.quad.js"></script>
+<script src="./lib/linkurious.js-develop/src/captors/sigma.captors.mouse.js"></script>
+<script src="./lib/linkurious.js-develop/src/captors/sigma.captors.touch.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.canvas.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.webgl.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.svg.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.edges.curvedArrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="./lib/linkurious.js-develop/src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.animation.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.bindEvents.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/settings.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.labels.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.cross.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.diamond.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.equilateral.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.square.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.star.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+
+<script src="./lib/linkurious.js-develop/plugins/sigma.parsers.json/sigma.parsers.json.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.parsers.cypher/sigma.parsers.cypher.js"></script>
+
+<script src="./lib/sigmajs-v1.0.3/plugins/sigma.layout.forceAtlas2.min.js"></script>
+
+
+  <script>
+
+    // Let's first initialize sigma:
+    var s = new sigma();
+    console.log(s);
+    s.addCamera('cam1'),
+    s.addRenderer({
+      container: document.getElementById('graph-canvas-left'),
+      type: 'canvas',
+      camera: 'cam1'
+      }
+    );
+
+
+    var n4juser = "neo4j";
+    var n4jpassword =  "asdf10";
+    var n4jurl = "http://localhost:8686";
+    var n4jendopint= "/db/data/cypher";
+    //var n4jcypher= "MATCH (n:Artifact) RETURN n;"
+
+    var n4jcypher= "match n-[r]->n2 with n, [type(r), n2] as relative return { root: n, relatives: collect(relative) }"
+
+//(neo4j, endpoint, method, data, callback, timeout)
+sigma.neo4j.send(
+    { url: n4jurl, user: n4juser, password: n4jpassword },
+    n4jendopint,
+    "POST",
+    '{"query" : "'+n4jcypher+'"}',
+    function(res) {
+                console.log(res);
+               
+                $.each(res.data, function(i, node) {
+                  n = node[0].root.data;
+                  console.log(n);
+
+                  //if source not exist, create
+                  if(! s.graph.nodes(n.uniqueId)){
+                    s.graph.addNode({
+                    id:n.uniqueId, 
+                    label: n.uniqueId,
+                    x: Math.random(),
+                    y: Math.random(),
+                    size: 1,
+                    color: '#fff',
+                    border_color: '#00f',
+                    border_size: 1,
+                    type: 'square' });
+                  }
+                  
+                  $.each(node[0].relatives, function(i, rel) {
+                    console.log(rel);
+                    console.log(n.uniqueId + "->" + rel[1].data.uniqueId);
+
+                    //if target not exist, create
+                  if(! s.graph.nodes(rel[1].data.uniqueId)){
+                    s.graph.addNode({
+                    id:rel[1].data.uniqueId, 
+                    label: rel[1].data.uniqueId,
+                    x: Math.random(),
+                    y: Math.random(),
+                    size: 1,
+                    color: '#fff',
+                    border_color: '#00f',
+                    border_size: 1,
+                    type: 'square' });
+                  }
+
+
+                    s.graph.addEdge({
+                      id: rel[0],
+                      // Reference extremities:
+                      source: n.uniqueId,
+                      target: rel[1].data.uniqueId,
+                      color: '000',
+                      type: 'curvedArrow'
+                    });
+                    
+
+                  });
+                  
+                });
+           console.log("drawing nodes");
+           s.refresh();
+          console.log("arranging nodes");
+           s.startForceAtlas2();
+           setTimeout(function() {s.stopForceAtlas2();console.log("stop");;}, 10000);
+          }
+
+  )
+
+  </script>
+</body>
+</html>
