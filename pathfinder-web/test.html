@@ -116,9 +116,12 @@
 
 
   <script>
+    var g = { nodes: [], edges: [] };
 
     // Let's first initialize sigma:
     var s = new sigma();
+    //s.settings.defaultNodeType='square';
+
 
     s.addCamera('cam1'),
     s.addRenderer({
@@ -158,10 +161,10 @@ sigma.neo4j.send(
                     x: Math.random(),
                     y: Math.random(),
                     size: 1,
-                    color: '#fff',
+                    color: getColor(n.version),
                     border_color: '#00f',
-                    border_size: 1,
-                    type: 'square' });
+                    border_size: 1
+                  });
                   }
                   
                   $.each(node[0].relatives, function(i, rel) {
@@ -176,10 +179,10 @@ sigma.neo4j.send(
                     x: Math.random(),
                     y: Math.random(),
                     size: 1,
-                    color: '#fff',
+                    color: getColor(rel[1].data.version),
                     border_color: '#00f',
-                    border_size: 1,
-                    type: 'square' });
+                    border_size: 1
+                    });
                   }
 
                     if( ! s.graph.edges(n.uniqueId+"-"+rel[1].data.uniqueId)){ 
@@ -190,7 +193,7 @@ sigma.neo4j.send(
                       target: rel[1].data.uniqueId,
                       color: '000',
                       //type: 'curvedArrow',
-                      label: rel[0].toLowerCase()
+                      label: rel[0].toLowerCase().toLowerCase()
                     });
                     }
 
@@ -200,11 +203,31 @@ sigma.neo4j.send(
            //console.log("drawing nodes");
            s.refresh();
           //console.log("arranging nodes");
-           s.startForceAtlas2();
-           setTimeout(function() {s.stopForceAtlas2();}, 10000);
+           s.startForceAtlas2({
+            gravity:10
+            //,adjustSizes:true
+            //,edgeWeightInfluence: 0.001
+            //,linLogMode:true
+            //,outboundAttractionDistribution: true
+            });
+           setTimeout(function() {s.stopForceAtlas2();}, 20000);
           }
 
-  )
+  );
+
+  function getColor(v){
+    out = '#00BDFC';
+
+    if(v.search(/SNAPSHOT/i)!=-1){
+      out = '#FF4E03';
+      
+    }
+    else if( v.replace(/[0-9]*(\.[0-9]*)*/g,'').length > 0 ){
+      out = '#FFD103';
+      
+    }
+    return out;
+  }
 
   </script>
 </body>
