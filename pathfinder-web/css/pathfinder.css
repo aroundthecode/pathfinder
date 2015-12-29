@@ -16,7 +16,7 @@ table td tr{
 
 .menu{ 
   width: 200px;
-  height: 500px
+  height: 550px
 }
 
 #graph{
@@ -25,13 +25,12 @@ table td tr{
   left: 210;
   right: 10;
   position: absolute;
-  
 }
 
-.label {
+#graph-label {
+  font-size: xx-small;
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 1;
-  font-family: sans-serif;
 }

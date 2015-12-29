@@ -13,14 +13,14 @@
       </td>
     </tr>
     <tr>
-      <td width="200px">
+      <td width="180px">
         <div class="menu">
           <div id="accordion">
 
           <h3>Filtering</h3>
             <div>
               <p>
-              Filtering option to manage graph (regular expression)
+              Filter main graph nodes (RegExp)
               </p>
               <table>
                 <tr>
@@ -55,10 +55,49 @@
                 </tr>
               </table>
 
-              <button onclick="doCypherAll()">Refresh</button>
+              <p>
+              Filter dependency nodes (RegExp)
+              </p>
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterG2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterA2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterP2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterC2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterV2" value=".*"></td>
+                </tr>
+              </table>
 
-              <p>Resulting Cypher query</p>
-               <textarea id="cypher_all" disabled=true style="height:120px;"></textarea>
+              <button onclick="doCypherAll()">Refresh</button>
+              <button onclick="$( '#toggle-cypher_all' ).toggle('drop')">Show Cypher</button>
+
+              <div id="toggle-cypher_all">
+                <p>Cypher query</p>
+                <textarea id="cypher_all" disabled=true style="height:120px;"></textarea>
+              </div>
 
             </div>
             <h3>Release Path</h3>
@@ -86,7 +125,7 @@
       </td>
       <td>
         <div id="graph" class="ui-widget-content">
-          <div class="label">Pathfinder</div>
+          <div id="graph-label">[0] Nodes</br>[0] Edges</div>
         </div>
       </td>
     </tr>

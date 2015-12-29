@@ -1,7 +1,12 @@
+var n4juser = "neo4j";
+var n4jpassword =  "asdf10";
+var n4jurl = "http://localhost:8686";
+var n4jendopint= "/db/data/cypher";
 var s = new sigma();
+
     // UI init
     $(function() {
-
+      $( '#toggle-cypher_all' ).hide();
       var frListener = sigma.layouts.fruchtermanReingold.configure(s, {
   iterations: 500,
   easing: 'quadraticInOut',
@@ -36,14 +41,10 @@ frListener.bind('start stop interpolate', function(e) {
     );
 
 
-    var n4juser = "neo4j";
-    var n4jpassword =  "asdf10";
-    var n4jurl = "http://localhost:8686";
-    var n4jendopint= "/db/data/cypher";
 
-    var n4jcypher= "match n-[r]->n2 with n, [type(r), n2] as relative return { root: n, relatives: collect(relative) }"
-    doCypher(n4jcypher);
 
+    //populate with full data first
+    doCypherAll();
 
   function getColor(v){
     out = '#00BDFC';
@@ -113,7 +114,7 @@ frListener.bind('start stop interpolate', function(e) {
                       source: n.uniqueId,
                       target: rel[1].data.uniqueId,
                       color: '000',
-                      //type: 'curvedArrow',
+                      type: 'arrow',
                       label: rel[0].toLowerCase().toLowerCase()
                     });
                     }
@@ -123,27 +124,44 @@ frListener.bind('start stop interpolate', function(e) {
                 });
           console.log("refreshing...")
            s.refresh();
+           updateLabel();
           $( "#forceatlasbutton" ).click();
           
           }
     );
   }
 
+  function getFilterValue(id){
+    var o = $(id).val();
+    if(o==undefined || o==""){
+      o=".*";
+      $(id).val(o);
+    }
+    return o;
+  }
+
   function doCypherAll(){
-    var g = $("#filterG").val();
-    var a = $("#filterA").val();
-    var p = $("#filterP").val();
-    var c = $("#filterC").val();
-    var v = $("#filterV").val();
 
     var query= "match n-[r]->n2 with n, [type(r), n2] as relative";
-    query += " where n.groupId =~ \""+g+"\""
-    query += " and n.artifactId =~ \""+a+"\""
-    query += " and n.packaging =~ \""+p+"\""
-    query += " and n.classifier =~ \""+c+"\""
-    query += " and n.version =~ \""+v+"\""
+
+    query += " where n2.groupId =~ \"" + getFilterValue("#filterG") + "\""
+    query += " and n2.artifactId =~ \"" + getFilterValue("#filterA") + "\""
+    query += " and n2.packaging =~ \"" + getFilterValue("#filterP") + "\""
+    query += " and n2.classifier =~ \"" + getFilterValue("#filterC") + "\""
+    query += " and n2.version =~ \"" + getFilterValue("#filterV") + "\""
+
+    query += " and n.groupId =~ \"" + getFilterValue("#filterG2") + "\""
+    query += " and n.artifactId =~ \"" + getFilterValue("#filterA2") + "\""
+    query += " and n.packaging =~ \"" + getFilterValue("#filterP2") + "\""
+    query += " and n.classifier =~ \"" + getFilterValue("#filterC2") + "\""
+    query += " and n.version =~ \"" + getFilterValue("#filterV2") + "\""
+
     query += " return { root: n, relatives: collect(relative) }";
 
     $("#cypher_all").val(query);
     doCypher(query);
+  }
+
+  function updateLabel(){
+    $("#graph-label").html("["+s.graph.nodes().length + "] Nodes</br>["+s.graph.edges().length + "] Edges");
   }
