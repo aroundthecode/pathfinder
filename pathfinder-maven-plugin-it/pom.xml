@@ -3,16 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.aroundthecode.pathfinder.it</groupId>
+	<parent>
+		<groupId>org.aroundthecode.pathfinder</groupId>
+		<artifactId>pathfinder</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+
 	<artifactId>pathfinder-maven-plugin-it</artifactId>
-	<version>1.0-SNAPSHOT</version>
 
 	<name>Maven Pathfinder Plugin IT  - ${project.groupId}:${project.artifactId}:${project.packaging}</name>
 	<description>Integration test for maven plugin</description>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<dependencies>
 		<dependency>

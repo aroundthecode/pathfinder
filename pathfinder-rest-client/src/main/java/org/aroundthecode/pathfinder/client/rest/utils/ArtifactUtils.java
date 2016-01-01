@@ -26,7 +26,7 @@ public class ArtifactUtils {
 		return groupId + ":" +
 		artifactId + ":" + 
 		packaging + ":" + 
-		classifier + ":" +
+		(classifier!=null?classifier:"") + ":" +
 		version ;
 	}
 	

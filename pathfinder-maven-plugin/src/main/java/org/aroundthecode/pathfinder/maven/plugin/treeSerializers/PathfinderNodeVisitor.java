@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.dependency.tree.AbstractSerializingVisitor;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.dependency.graph.DependencyNode;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
@@ -41,11 +42,13 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 	private Log log;
 	private String prj = null;
 	PathfinderClient client = null;
+	MavenProject project = null;
 
-	public PathfinderNodeVisitor(Writer writer, Log log,PathfinderClient client) {
+	public PathfinderNodeVisitor(Writer writer, Log log,PathfinderClient client, MavenProject mavenProject) {
 		super(writer);
 		this.log = log;
 		this.client = client;
+		this.project = mavenProject;
 	}
 
 	/**
@@ -63,7 +66,20 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 			//STORE PRJ TO DB		
 			out = saveNode(node);
 			
+			Artifact parent = project.getParentArtifact();
+			if(parent!=null){
+				String parentId = getUniqueId(parent);
+				writer.write("Parent project is:[" + parentId + "]\n");
+			try {
+				client.addParent(getUniqueId(node.getArtifact()), parentId);
+			} catch (IOException e) {
+				log.error("error creating parent dependency:"+e.getMessage());
+			}
+			}
+			
 		}
+		
+		
 
 		// Generate "currentNode -> Child" lines
 

@@ -100,11 +100,57 @@
               </div>
 
             </div>
-            <h3>Release Path</h3>
+            <h3>Impact Path</h3>
             <div>
               <p>
-              Identify enter, exit and find path to release
+              Provide changed library as a starting node (NO RegExp).
+              Filtering rules will be applied as well
               </p>
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchG" value="org.sample"></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchA" value="mypackage"></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchP" value="jar"></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchC" value=""></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchV" value="1.0.0"></td>
+                </tr>
+                <tr>
+                  <td>Search depth</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="nodeDepth" value="2"></td>
+                </tr>
+              </table>
+              <button onclick="doCypherSearch()">Search</button>
+              <button onclick="$( '#toggle-cypher_search' ).toggle('drop')">Show Cypher</button>
+
+              <div id="toggle-cypher_search">
+                <p>Cypher query</p>
+                <textarea id="cypher_search" disabled=true style="height:120px;"></textarea>
+              </div>
             </div>
             <h3>Node rearrange</h3>
             <div>
@@ -117,7 +163,7 @@
               </div>
               <br/>
 
-              <button id="forceatlasbutton">Auto-Arrange</button>
+              <button id="autoarrangebutton">Auto-Arrange</button>
 
             </div>
           </div>
