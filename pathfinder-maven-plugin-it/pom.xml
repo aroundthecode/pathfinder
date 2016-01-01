@@ -48,7 +48,7 @@
 				<configuration>
 					<neo4jProtocol>http</neo4jProtocol>
 					<neo4jHost>127.0.0.1</neo4jHost>
-					<neo4jPort>8080</neo4jPort>
+					<neo4jPort>${server.port}</neo4jPort>
 					<neo4jPath>/</neo4jPath>
 				</configuration>
 				<executions>

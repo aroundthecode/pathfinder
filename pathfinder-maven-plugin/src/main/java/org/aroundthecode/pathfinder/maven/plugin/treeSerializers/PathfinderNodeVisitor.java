@@ -60,6 +60,9 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 		
 		log.info("visiting "+node.toNodeString());
 		
+		/*
+		 * Detect project node and eventually evaluate parent pom
+		 */
 		if (node.getParent() == null || node.getParent() == node) {
 			prj =  node.toNodeString();
 			writer.write("Project is:[" + prj + "]\n");
@@ -79,10 +82,7 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 			
 		}
 		
-		
-
 		// Generate "currentNode -> Child" lines
-
 		List<DependencyNode> children = node.getChildren();
 		for (Iterator<DependencyNode> child = children.iterator(); child.hasNext();) {
 			DependencyNode c = child.next();
@@ -90,14 +90,18 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 			String szFrom = getUniqueId(node.getArtifact());
 			String szTo = getUniqueId(c.getArtifact());
 			String scope = c.getArtifact().getScope();
-			writer.println(szFrom+" --("+scope+")--> "+szTo);
-
-			//STORE SZFROM TO DB
+			
+			
+			//store single nodes
 			out = saveNode(node);
-			//STORE SZTO TO DB
 			out = saveNode(c);
-			//STORE PRJ-FROM-TO TO DB
+			//store node relation
 			try {
+				if(scope.indexOf(",")>0){
+					writer.println("WARNING:multiple scopes detected into ["+scope+"], considering just first one");
+					scope = scope.substring(0, scope.indexOf(","));
+				}
+				writer.println(szFrom+" --("+scope+")--> "+szTo);
 				client.createDependency(szFrom, szTo, Dependency.valueOf(scope.toUpperCase()).toString());
 			} catch (IOException e) {
 				log.error("error creating dependency:"+e.getMessage());

@@ -20,6 +20,9 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<server.port>8080</server.port>
+		<neo4j.port>8080</neo4j.port>
 	</properties>
 
 	<modules>
