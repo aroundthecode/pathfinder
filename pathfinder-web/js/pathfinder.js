@@ -1,199 +1,196 @@
-var n4juser = "neo4j";
-var n4jpassword =  "asdf10";
-var n4jurl = "http://localhost:8686";
-var n4jendopint= "/db/data/cypher";
-
-var types = ["COMPILE", "PROVIDED", "RUNTIME", "TEST", "SYSTEM", "IMPORT"]
+var types = ["COMPILE", "PROVIDED", "RUNTIME", "TEST", "SYSTEM", "IMPORT"];
 
 var s = new sigma();
 
-    // UI init
-    $(function() {
+// UI init
+$(function() {
 
-      //hide cypher boxes
-      $( '#toggle-cypher_all' ).hide();
-      $( '#toggle-cypher_search' ).hide();
+    //hide cypher boxes
+    $('#toggle-cypher_all').hide();
+    $('#toggle-cypher_search').hide();
 
-      //Init auto-arragne node
-      var frListener = sigma.layouts.fruchtermanReingold.configure(s, {
+    //Init auto-arragne node
+    var frListener = sigma.layouts.fruchtermanReingold.configure(s, {
         iterations: 500,
         easing: 'quadraticInOut',
         duration: 800
-      });
-      frListener.bind('start stop interpolate', function(e) {
-        console.log(e.type);
-      });
+    });
+    //frListener.bind('start stop interpolate', function(e) {
+    //  console.log(e.type);
+    //});
 
-      //Auto-aggange button setup
-      $( "#autoarrangebutton" ).click(function(){
-          sigma.layouts.fruchtermanReingold.start(s);
-        });
+    //Auto-aggange button setup
+    $("#autoarrangebutton").click(function() {
+        sigma.layouts.fruchtermanReingold.start(s);
+    });
 
-      //Accordion Init
-      $( "#accordion" ).accordion({
+    //Accordion Init
+    $("#accordion").accordion({
         heightStyle: "fill"
-      });
-      
-  });
-    
-    s.addCamera('cam1'),
+    });
+
+});
+
+s.addCamera('cam1'),
     s.addRenderer({
-      container: document.getElementById('graph'),
-      type: 'canvas',
-      camera: 'cam1'
-      }
-    );
+        container: document.getElementById('graph'),
+        type: 'canvas',
+        camera: 'cam1'
+    });
 
-    //populate with full data first
-    doCypherAll();
+//populate with full data first
+doCypherAll();
 
-  //Change node color depending on version
-  function getColor(v){
+//Change node color depending on version
+function getColor(v) {
     out = '#00BDFC';
 
-    if(v.search(/SNAPSHOT/i)!=-1){
-      out = '#FF4E03';
-      
-    }
-    else if( v.replace(/[0-9]*(\.[0-9]*)*/g,'').length > 0 ){
-      out = '#FFD103';
-      
+    if (v.search(/SNAPSHOT/i) != -1) {
+        out = '#FF4E03';
+
+    } else if (v.replace(/[0-9]*(\.[0-9]*)*/g, '').length > 0) {
+        out = '#FFD103';
+
     }
     return out;
-  }
+}
 
-  function doCypher(query){
+function doCypher(query) {
 
-    sigma.neo4j.send(
-    { url: n4jurl, user: n4juser, password: n4jpassword },
-    n4jendopint,
-    "POST",
-    '{"query" : '+JSON.stringify(query)+'}',
-    function(res) {
-                s.graph.clear();
-                //console.log(res);
-               
-                $.each(res.data, function(i, node) {
-                  n = node[0].root.data;
-                  //console.log(n);
+    sigma.neo4j.send({
+            url: n4jurl,
+            user: n4juser,
+            password: n4jpassword
+        },
+        n4jendopint,
+        "POST",
+        '{"query" : ' + JSON.stringify(query) + '}',
+        function(res) {
+            s.graph.clear();
+            //console.log(res);
+            
+            $.each(res.data, function(i, node) {
 
-                  //if source not exist, create
-                  if(! s.graph.nodes(n.uniqueId)){
-                    s.graph.addNode({
-                    id:n.uniqueId, 
-                    label: n.uniqueId,
-                    x: Math.random(),
-                    y: Math.random(),
-                    size: 1,
-                    color: getColor(n.version),
-                    border_color: '#00f',
-                    border_size: 1
-                  });
-                  }
-                  
-                  $.each(node[0].relatives, function(i, rel) {
-                    //console.log(rel);
-                    //console.log(n.uniqueId + "->" + rel[1].data.uniqueId);
+                for (k = 0; k < node.length; k++) {
+                    n = node[k].root.data;
+                    //console.log(n);
 
-                    //if target not exist, create
-                  if(! s.graph.nodes(rel[1].data.uniqueId)){
-                    s.graph.addNode({
-                    id:rel[1].data.uniqueId, 
-                    label: rel[1].data.uniqueId,
-                    x: Math.random(),
-                    y: Math.random(),
-                    size: 1,
-                    color: getColor(rel[1].data.version),
-                    border_color: '#00f',
-                    border_size: 1
-                    });
-                  }
-
-                    var relUniqueId= n.uniqueId+"-"+rel[0].toLowerCase()+"-"+rel[1].data.uniqueId;
-                    if( ! s.graph.edges(relUniqueId)){ 
-                    s.graph.addEdge({
-                      id: relUniqueId,
-                      // Reference extremities:
-                      source: n.uniqueId,
-                      target: rel[1].data.uniqueId,
-                      color: '000',
-                      type: 'arrow',
-                      label: rel[0].toLowerCase()
-                    });
+                    //if source not exist, create
+                    if (!s.graph.nodes(n.uniqueId)) {
+                        s.graph.addNode({
+                            id: n.uniqueId,
+                            label: n.uniqueId,
+                            x: Math.random(),
+                            y: Math.random(),
+                            size: 1,
+                            color: getColor(n.version),
+                            border_color: '#00f',
+                            border_size: 1
+                        });
                     }
 
-                  });
-                  
-                });
-          console.log("refreshing...")
-           s.refresh();
-           updateLabel();
-          $( "#autoarrangebutton" ).click();
-          
-          }
-    );
-  }
+                    $.each(node[k].relatives, function(i, rel) {
+                        //console.log(rel);
+                        //console.log(n.uniqueId + "->" + rel[1].data.uniqueId);
 
-  function getFilterValue(id){
+                        //if target not exist, create
+                        if (!s.graph.nodes(rel[1].data.uniqueId)) {
+                            s.graph.addNode({
+                                id: rel[1].data.uniqueId,
+                                label: rel[1].data.uniqueId,
+                                x: Math.random(),
+                                y: Math.random(),
+                                size: 1,
+                                color: getColor(rel[1].data.version),
+                                border_color: '#00f',
+                                border_size: 1
+                            });
+                        }
+
+                        var relUniqueId = n.uniqueId + "-" + rel[0].toLowerCase() + "-" + rel[1].data.uniqueId;
+                        if (!s.graph.edges(relUniqueId)) {
+                            s.graph.addEdge({
+                                id: relUniqueId,
+                                // Reference extremities:
+                                source: n.uniqueId,
+                                target: rel[1].data.uniqueId,
+                                color: '000',
+                                type: 'arrow',
+                                label: rel[0].toLowerCase()
+                            });
+                        }
+
+                    });
+                } //for-k
+            });
+            //console.log("refreshing...")
+            s.refresh();
+            updateLabel("[" + s.graph.nodes().length + "] Nodes</br>[" + s.graph.edges().length + "] Edges");
+            $("#autoarrangebutton").click();
+
+        }
+    );
+}
+
+function getFilterValue(id) {
     var o = $(id).val();
-    if(o==undefined || o==""){
-      o=".*";
-      $(id).val(o);
+    if (o == undefined || o == "") {
+        o = ".*";
+        $(id).val(o);
     }
     return o;
-  }
+}
 
-  function getSearchValue(field,id){
+function getSearchValue(field, id) {
     var o = $(id).val();
-    if(o==undefined || o==""){
-      return "";
+    if (o == undefined || o == "") {
+        return "";
     }
-    return field+":'"+o+"' ,";
-  }
+    return field + ":'" + o + "' ,";
+}
 
-  
-  function doCypherSearch(){
+function doCypherSearch() {
 
-    var query= "";
+    var query = "";
 
-    var whereclause= "";
+    var whereclause = "";
 
-    whereclause += " WHERE n2.groupId =~ \"" + getFilterValue("#filterG") + "\"";
-    whereclause += " AND n2.artifactId =~ \"" + getFilterValue("#filterA") + "\"";
-    whereclause += " AND n2.packaging =~ \"" + getFilterValue("#filterP") + "\"";
-    whereclause += " AND n2.classifier =~ \"" + getFilterValue("#filterC") + "\"";
-    whereclause += " AND n2.version =~ \"" + getFilterValue("#filterV") + "\"";
+    whereclause += " WHERE n1.groupId =~ \"" + getFilterValue("#filterG") + "\"";
+    whereclause += " AND n1.artifactId =~ \"" + getFilterValue("#filterA") + "\"";
+    whereclause += " AND n1.packaging =~ \"" + getFilterValue("#filterP") + "\"";
+    whereclause += " AND n1.classifier =~ \"" + getFilterValue("#filterC") + "\"";
+    whereclause += " AND n1.version =~ \"" + getFilterValue("#filterV") + "\"";
 
-    whereclause += " AND n.groupId =~ \"" + getFilterValue("#filterG2") + "\"";
-    whereclause += " AND n.artifactId =~ \"" + getFilterValue("#filterA2") + "\"";
-    whereclause += " AND n.packaging =~ \"" + getFilterValue("#filterP2") + "\"";
-    whereclause += " AND n.classifier =~ \"" + getFilterValue("#filterC2") + "\"";
-    whereclause += " AND n.version =~ \"" + getFilterValue("#filterV2") + "\"";
+    whereclause += " AND n2.groupId =~ \"" + getFilterValue("#filterG2") + "\"";
+    whereclause += " AND n2.artifactId =~ \"" + getFilterValue("#filterA2") + "\"";
+    whereclause += " AND n2.packaging =~ \"" + getFilterValue("#filterP2") + "\"";
+    whereclause += " AND n2.classifier =~ \"" + getFilterValue("#filterC2") + "\"";
+    whereclause += " AND n2.version =~ \"" + getFilterValue("#filterV2") + "\"";
 
+    whereclause += " AND n3.groupId =~ \"" + getFilterValue("#filterG2") + "\"";
+    whereclause += " AND n3.artifactId =~ \"" + getFilterValue("#filterA2") + "\"";
+    whereclause += " AND n3.packaging =~ \"" + getFilterValue("#filterP2") + "\"";
+    whereclause += " AND n3.classifier =~ \"" + getFilterValue("#filterC2") + "\"";
+    whereclause += " AND n3.version =~ \"" + getFilterValue("#filterV2") + "\"";
 
-    for (var i=0;i<types.length ; i++) {
-      if(i>0){
-        query += " UNION ";
-      }
+    query += "MATCH (n1:Artifact { ";
+    query += getSearchValue('groupId', '#searchG');
+    query += getSearchValue('artifactId', '#searchA');
+    query += getSearchValue('packaging', '#searchP');
+    query += getSearchValue('version', '#searchV');
+    query += "classifier: '" + $('#searchC').val() + "'";
+    query += " })-[r1]->(n2)-[r2]->(n3) with n1, [type(r1), n2] as relative1 ,n2, [type(r2), n3] as relative2"
+    query += whereclause;
+    query += " RETURN { root: n1, relatives: collect(relative1) },{ root: n2, relatives: collect(relative2) }";
 
-      query += "MATCH (n:Artifact { ";
-      query += getSearchValue('groupId',    '#searchG');
-      query += getSearchValue('artifactId', '#searchA');
-      query += getSearchValue('packaging',  '#searchP');
-      query += getSearchValue('version',    '#searchV');
-      query += "classifier: '" + $('#searchC').val() + "'";
-      query += " })-[r:"+types[i]+"*1.." + $('#nodeDepth').val() + "]->(n2) with n, ['"+types[i]+"', n2] as relative" 
-      query += whereclause;
-      query += " return { root: n, relatives: collect(relative) }";
-    };
 
     $("#cypher_search").val(query);
     doCypher(query);
-  }
+}
 
-  function doCypherAll(){
+function doCypherAll() {
 
-    var query= "MATCH n-[r]->n2 with n, [type(r), n2] as relative";
+    var query = "MATCH n-[r]->n2 with n, [type(r), n2] as relative";
 
     query += " WHERE n2.groupId =~ \"" + getFilterValue("#filterG") + "\""
     query += " AND n2.artifactId =~ \"" + getFilterValue("#filterA") + "\""
@@ -211,8 +208,9 @@ var s = new sigma();
 
     $("#cypher_all").val(query);
     doCypher(query);
-  }
+}
 
-  function updateLabel(){
-    $("#graph-label").html("["+s.graph.nodes().length + "] Nodes</br>["+s.graph.edges().length + "] Edges");
-  }
+function updateLabel(txt){
+    $("#graph-label").html(txt);
+}
+
