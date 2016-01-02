@@ -24,6 +24,19 @@ $(function() {
         sigma.layouts.fruchtermanReingold.start(s);
     });
 
+    // search dept spinner
+    $( "#searchDepth" ).spinner({
+      spin: function( event, ui ) {
+        if ( ui.value > 10 ) {
+          $( this ).spinner( "value", 10 );
+          return false;
+        } else if ( ui.value < 1 ) {
+          $( this ).spinner( "value", 1 );
+          return false;
+        }
+      }
+    });
+
     //Accordion Init
     $("#accordion").accordion({
         heightStyle: "fill"
@@ -149,43 +162,58 @@ function getSearchValue(field, id) {
     return field + ":'" + o + "' ,";
 }
 
-function doCypherSearch() {
-
-    var query = "";
+function getSearchWhereClause(idx){
 
     var whereclause = "";
 
-    whereclause += " WHERE n1.groupId =~ \"" + getFilterValue("#filterG") + "\"";
-    whereclause += " AND n1.artifactId =~ \"" + getFilterValue("#filterA") + "\"";
-    whereclause += " AND n1.packaging =~ \"" + getFilterValue("#filterP") + "\"";
-    whereclause += " AND n1.classifier =~ \"" + getFilterValue("#filterC") + "\"";
-    whereclause += " AND n1.version =~ \"" + getFilterValue("#filterV") + "\"";
+    whereclause += " WHERE n"+idx+".groupId =~ \"" + getFilterValue("#filterG") + "\"";
+    whereclause += " AND n"+idx+".artifactId =~ \"" + getFilterValue("#filterA") + "\"";
+    whereclause += " AND n"+idx+".packaging =~ \"" + getFilterValue("#filterP") + "\"";
+    whereclause += " AND n"+idx+".classifier =~ \"" + getFilterValue("#filterC") + "\"";
+    whereclause += " AND n"+idx+".version =~ \"" + getFilterValue("#filterV") + "\"";
+    idx++;
+    whereclause += " AND n"+idx+".groupId =~ \"" + getFilterValue("#filterG2") + "\"";
+    whereclause += " AND n"+idx+".artifactId =~ \"" + getFilterValue("#filterA2") + "\"";
+    whereclause += " AND n"+idx+".packaging =~ \"" + getFilterValue("#filterP2") + "\"";
+    whereclause += " AND n"+idx+".classifier =~ \"" + getFilterValue("#filterC2") + "\"";
+    whereclause += " AND n"+idx+".version =~ \"" + getFilterValue("#filterV2") + "\"";
+    return whereclause;
+}
 
-    whereclause += " AND n2.groupId =~ \"" + getFilterValue("#filterG2") + "\"";
-    whereclause += " AND n2.artifactId =~ \"" + getFilterValue("#filterA2") + "\"";
-    whereclause += " AND n2.packaging =~ \"" + getFilterValue("#filterP2") + "\"";
-    whereclause += " AND n2.classifier =~ \"" + getFilterValue("#filterC2") + "\"";
-    whereclause += " AND n2.version =~ \"" + getFilterValue("#filterV2") + "\"";
+function doCypherSearch() {
 
-    whereclause += " AND n3.groupId =~ \"" + getFilterValue("#filterG2") + "\"";
-    whereclause += " AND n3.artifactId =~ \"" + getFilterValue("#filterA2") + "\"";
-    whereclause += " AND n3.packaging =~ \"" + getFilterValue("#filterP2") + "\"";
-    whereclause += " AND n3.classifier =~ \"" + getFilterValue("#filterC2") + "\"";
-    whereclause += " AND n3.version =~ \"" + getFilterValue("#filterV2") + "\"";
+    var depth = parseInt($('#searchDepth').val());
+    var chain = "-[r1]->(n2)"
+    //fist section stays the same
+    var fixedQuery = ""
+    fixedQuery += "MATCH (n1:Artifact { ";
+    fixedQuery += getSearchValue('groupId', '#searchG');
+    fixedQuery += getSearchValue('artifactId', '#searchA');
+    fixedQuery += getSearchValue('packaging', '#searchP');
+    fixedQuery += getSearchValue('version', '#searchV');
+    fixedQuery += "classifier: '" + $('#searchC').val() + "'";
 
-    query += "MATCH (n1:Artifact { ";
-    query += getSearchValue('groupId', '#searchG');
-    query += getSearchValue('artifactId', '#searchA');
-    query += getSearchValue('packaging', '#searchP');
-    query += getSearchValue('version', '#searchV');
-    query += "classifier: '" + $('#searchC').val() + "'";
-    query += " })-[r1]->(n2)-[r2]->(n3) with n1, [type(r1), n2] as relative1 ,n2, [type(r2), n3] as relative2"
-    query += whereclause;
-    query += " RETURN { root: n1, relatives: collect(relative1) },{ root: n2, relatives: collect(relative2) }";
+    
+    var query = "";
+    query += fixedQuery;
+    query += " })"+chain+" with n1 as node, [type(r1), n2] as relative";
+    query += getSearchWhereClause(1);
+    query += " RETURN { root: node, relatives: collect(relative) }"
 
+    for(var i = 2 ; i <= depth; i++){
+        chain += "-[r"+i+"]->(n"+(i+1)+")"
+
+        query += " UNION "
+        query += fixedQuery
+        query += " })"+chain+" with n"+i+" as node, [type(r"+i+"), n"+(i+1)+"] as relative";
+        query += getSearchWhereClause(2);
+        query += " RETURN { root: node, relatives: collect(relative) }"
+    }
+    
 
     $("#cypher_search").val(query);
     doCypher(query);
+
 }
 
 function doCypherAll() {
