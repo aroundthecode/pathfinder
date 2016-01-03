@@ -6,7 +6,7 @@ As soon as you open pathfinder interface you will be presented with a global ove
 
 This is a sample of the full dependencies graph of Pathfinder project itself
 
-![Pathfinder UI](images/pathfinder-ui-full.png)
+![Pathfinder UI](./images/pathfinder-ui-full.png)
 
 ## Project filtering
 
@@ -15,11 +15,11 @@ The first step you will probably want to perform is to filter such graph over th
 Do do so you can use the first filtering group which will filter over main dependencies properties.
 With this kind of filtering you will obtain a filter over inner nodes, leaving external dependencies on leaves:
   
-![Pathfinder Inner filtering](images/pathfinder-ui-filter1.png)
+![Pathfinder Inner filtering](./images/pathfinder-ui-filter1.png)
 
 The second filtering group will acto also on leaf nodes, allowing you to obtain a graph just of your internal packages
 
-![Pathfinder Leaves Filtering](images/pathfinder-ui-filter2.png)
+![Pathfinder Leaves Filtering](./images/pathfinder-ui-filter2.png)
 
 ## Identify Snapshots and branches.
 
@@ -35,7 +35,7 @@ These (un)filtered graph can actually provide you with many useful information w
 
 Impact Path section will help you identify all dependencies involved whan you are modifying a release artifact.
  
-![Pathfinder Impact Path](images/pathfinder-ui-impact.png)
+![Pathfinder Impact Path](./images/pathfinder-ui-impact.png)
 
 more details here
  
