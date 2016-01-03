@@ -40,6 +40,8 @@ Dependencies coming from different project are merged together to from a unique 
 
 Patterns are then extracted to retrieve only information relevant to the project you are working on and its impact on other projects into the graph.
 
+![Pathfinder UI](docs/images/pathfinder-ui-full.png)
+
 
 # Getting started
 
@@ -53,6 +55,8 @@ To start using pathfinder:
 
 - Deploy [pathfinder-web] over a path accessible by your favorite web browser (Apache or even local path will fit)
 
+- Read [Pathfinder User Guide] to start analyzing your projects
+
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
@@ -63,5 +67,6 @@ To start using pathfinder:
    [pathfinder-server]: <./pathfinder-server>
    [pathfinder-maven-plugin]: <./pathfinder-maven-plugin>
    [pathfinder-web]: <./pathfinder-web>
+   [Pathfinder User Guide]: <./docs>
 
 
