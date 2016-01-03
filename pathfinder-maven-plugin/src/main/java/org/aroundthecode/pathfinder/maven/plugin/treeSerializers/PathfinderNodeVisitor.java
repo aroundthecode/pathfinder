@@ -58,7 +58,7 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 
 		boolean out = true;
 		
-		log.info("visiting "+node.toNodeString());
+		log.debug("visiting "+node.toNodeString());
 		
 		/*
 		 * Detect project node and eventually evaluate parent pom

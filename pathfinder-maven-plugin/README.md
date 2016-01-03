@@ -55,6 +55,41 @@ To start using pathfinder:
 
 
 
+Pathfinder dependency analyzer is available as an extension of [Maven Dependency Plugin] which will analyze dependency hierarchy in the very same way dependency:tree goals does, but it will store output into a Neo4J Graph database for later retrieval.
+
+This helps you integrating Pathfinder standard goal into your Continuous INtegration chain to have all project dependencies immediately available and up-to date
+
+### Configure plugin in your maven hierarchy
+```xml
+<plugin>
+	<groupId>org.aroundthecode.pathfinder</groupId>
+	<artifactId>pathfinder-maven-plugin</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<configuration>
+		<neo4jProtocol>http</neo4jProtocol>
+		<neo4jHost>127.0.0.1</neo4jHost>
+		<neo4jPort>8080</neo4jPort>
+		<neo4jPath>/</neo4jPath>
+	</configuration>
+	<executions>
+		<execution>
+			<id>store-tree</id>
+			<phase>deploy</phase>
+			<goals>
+				<goal>store-tree</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+```
+
+###  Invoke plugin directly from command line
+If you want to test Pathfinder system before full integration you can run it directly from your project 'pom.xml' path
+```sh
+mvn org.aroundthecode.pathfinder:pathfinder-maven-plugin:0.1.0-SNAPSHOT:store-tree -Dneo4j.protocol=http -Dneo4j.host=localhost -Dneo4j.port=8080 -Dneo4j.path=/
+```
+
+
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 
