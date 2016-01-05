@@ -42,7 +42,7 @@ public class PathfinderClient {
 
 	public String saveArtifact(String groupId,String artifactId,String packaging,String classifier,String version) throws IOException {
 
-		JSONObject body = createJson(groupId, artifactId, packaging,classifier, version);
+		JSONObject body = PathfinderClient.createJson(groupId, artifactId, packaging,classifier, version);
 		return RestUtils.sendPost(getBaseurl() + "node/save", body);
 	}
 	
@@ -86,7 +86,7 @@ public class PathfinderClient {
 	}
 
 	@SuppressWarnings("unchecked")
-	private JSONObject createJson(String groupId, String artifactId,
+	private static JSONObject createJson(String groupId, String artifactId,
 			String packaging, String classifier, String version) {
 		JSONObject body = new JSONObject();
 		body.put("groupId", groupId);

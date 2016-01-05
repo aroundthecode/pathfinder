@@ -29,9 +29,9 @@ public class ArtifactUtils {
 		(classifier!=null?classifier:"") + ":" +
 		version ;
 	}
-	
+
 	public static final Map<String,String> splitUniqueId(String uniqueId){
-		
+
 		Map<String,String> out = new HashMap<String, String>();
 		if(uniqueId!=null)
 		{
@@ -50,7 +50,7 @@ public class ArtifactUtils {
 			} 
 		}
 		return out;
-		
+
 	}
 
 }

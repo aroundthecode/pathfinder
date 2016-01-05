@@ -37,7 +37,7 @@ import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
 
 
 public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
-		DependencyNodeVisitor {
+DependencyNodeVisitor {
 
 	private Log log;
 	private String prj = null;
@@ -57,9 +57,9 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 	public boolean visit(DependencyNode node) {
 
 		boolean out = true;
-		
+
 		log.debug("visiting "+node.toNodeString());
-		
+
 		/*
 		 * Detect project node and eventually evaluate parent pom
 		 */
@@ -68,20 +68,20 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 			writer.write("Project is:[" + prj + "]\n");
 			//STORE PRJ TO DB		
 			out = saveNode(node);
-			
+
 			Artifact parent = project.getParentArtifact();
 			if(parent!=null){
 				String parentId = getUniqueId(parent);
 				writer.write("Parent project is:[" + parentId + "]\n");
-			try {
-				client.addParent(getUniqueId(node.getArtifact()), parentId);
-			} catch (IOException e) {
-				log.error("error creating parent dependency:"+e.getMessage());
+				try {
+					client.addParent(getUniqueId(node.getArtifact()), parentId);
+				} catch (IOException e) {
+					log.error("error creating parent dependency:"+e.getMessage());
+				}
 			}
-			}
-			
+
 		}
-		
+
 		// Generate "currentNode -> Child" lines
 		List<DependencyNode> children = node.getChildren();
 		for (Iterator<DependencyNode> child = children.iterator(); child.hasNext();) {
@@ -90,8 +90,8 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 			String szFrom = getUniqueId(node.getArtifact());
 			String szTo = getUniqueId(c.getArtifact());
 			String scope = c.getArtifact().getScope();
-			
-			
+
+
 			//store single nodes
 			out = saveNode(node);
 			out = saveNode(c);
@@ -106,12 +106,12 @@ public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
 			} catch (IOException e) {
 				log.error("error creating dependency:"+e.getMessage());
 			}
-			
+
 		}
 
 		return out;
 	}
-	
+
 	private String getUniqueId(Artifact a){
 		return ArtifactUtils.getUniqueId(a.getGroupId(), a.getArtifactId(), a.getType(), a.getClassifier(), a.getVersion());
 	}

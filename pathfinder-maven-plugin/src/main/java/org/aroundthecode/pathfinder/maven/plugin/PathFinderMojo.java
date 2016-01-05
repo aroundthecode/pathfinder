@@ -67,10 +67,9 @@ public class PathFinderMojo extends TreeMojo
 			PathfinderClient client = new PathfinderClient(neo4jProtocol, neo4jHost, neo4jPort, neo4jPath);
 			//visitor = new LogNodeVisitor(writer, getLog());
 			visitor = new PathfinderNodeVisitor(writer, getLog(),client,getProject());
-			
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);;
 		}
 
 		return visitor;

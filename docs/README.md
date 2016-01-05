@@ -17,7 +17,7 @@ With this kind of filtering you will obtain a filter over inner nodes, leaving e
   
 ![Pathfinder Inner filtering](images/pathfinder-ui-filter1.png)
 
-The second filtering group will acto also on leaf nodes, allowing you to obtain a graph just of your internal packages
+The second filtering group will act also on leaf nodes, allowing you to obtain a graph just of your internal packages
 
 ![Pathfinder Leaves Filtering](images/pathfinder-ui-filter2.png)
 
@@ -29,13 +29,18 @@ These (un)filtered graph can actually provide you with many useful information w
 
 - BRANCH dependencies : marked in YELLOW, are identified by any version string containing characters other then the regular expression  [0-9]\*(\.[0-9]\*)\* (some whitelist is needed in future release to handle common "RELEASE" or "Final" tokens)
 
-- RELEASE dependencies : marked in blue, are redular stable release artifact
+- RELEASE dependencies : marked in blue, are regular stable release artifact
 
 ## Impact Path
 
-Impact Path section will help you identify all dependencies involved whan you are modifying a release artifact.
- 
+Impact Path section will help you identify all dependencies involved when you are modifying a release artifact.
+
+When you are working on very complex projects, just modifying one library may have several impact on other project which include it as a dependency.
+
+Setting the search parameters on the library you are working on, you can easily get a graph of all libraries which include it. 
+
+The **Search Depth** parameter will tell how many dependency-of-dependency hop have to be included into the graph.
+
 ![Pathfinder Impact Path](images/pathfinder-ui-impact.png)
 
-more details here
- 
+**Note:** When you are working on a SNAPSHOT project, which has not been analyzed by Pathfinder yet, you should configure the latest RELEASE artifact available by the analysis.
