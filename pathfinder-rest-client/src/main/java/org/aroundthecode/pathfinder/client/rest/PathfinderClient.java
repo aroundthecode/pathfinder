@@ -20,15 +20,28 @@ public class PathfinderClient {
 
 		System.err.print("testing connection ["+getBaseurl()+"]...");
 		Socket socket = new Socket();
-		try {
-			socket.connect(new InetSocketAddress(domain, port), 5);
-			System.err.println("OK");
-		} catch (IOException ex) {
-			System.err.println("FAIL");
-			throw new IOException(ex);
-		} 
-		finally{
-			socket.close();
+		for (int i = 0; i < 3; i++) {
+			try {
+				socket.connect(new InetSocketAddress(domain, port), 10);
+				System.err.println("OK");
+				break;
+			} catch (IOException ex) {
+				if(i<2){
+					System.err.println("FAIL ["+i+"/3] Sleep 10 sec and retry");
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException e) {
+						throw new IOException(e);
+					}
+				}
+				else{
+					System.err.println("FAIL ["+i+"/3] give up");
+					throw new IOException(ex);
+				}
+			} 
+			finally{
+				socket.close();
+			}
 		}
 	}
 
@@ -45,7 +58,7 @@ public class PathfinderClient {
 		JSONObject body = PathfinderClient.createJson(groupId, artifactId, packaging,classifier, version);
 		return RestUtils.sendPost(getBaseurl() + "node/save", body);
 	}
-	
+
 	public String saveArtifact(String uniqueId) throws IOException {
 
 		Map<String, String> map = ArtifactUtils.splitUniqueId(uniqueId);
@@ -57,7 +70,7 @@ public class PathfinderClient {
 				map.get(ArtifactUtils.V)
 				);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public String createDependency(String uniqueIdFrom,String uniqueIdTo,String scope) throws IOException {
 
@@ -65,17 +78,17 @@ public class PathfinderClient {
 		body.put("from", uniqueIdFrom);
 		body.put("to", uniqueIdTo);
 		body.put("scope", scope);
-		
+
 		return RestUtils.sendPost(getBaseurl() + "node/depends", body);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public String addParent(String mainUniqueId,String parentUniqueId) throws IOException {
 
 		JSONObject body = new JSONObject();
 		body.put("main", mainUniqueId);
 		body.put("parent", parentUniqueId);
-		
+
 		return RestUtils.sendPost(getBaseurl() + "node/parent", body);
 	}
 
