@@ -6,12 +6,12 @@ Is is based on [SigmaJS](http://sigmajs.org/) and [Linkurous](https://github.com
 
 #Getting Started
 
-Since it's a 100% static project, communicating with backend via Ajac calls you can deploy it on your favorite web server (e.g. Apache HTTP), deploy it into pathfinder-server static web folder, or even start it from your filesystem path.
+Since it's a 100% static project, communicating with backend via Ajax calls you can deploy it on your favorite web server (e.g. Apache Httpd), deploy it into pathfinder-server static web folder or even start it from your filesystem path.
 
 
 ## Web Server setup
 
-Simply copy all submodule content into your main **docroot/** and open http://<your virtualhost>/pathfinder.html
+Simply copy all submodule content into your main **docroot/** and open http://YOUR_HOSTNAME/pathfinder.html
 
 ## Pathfinder-Server setup
 
@@ -21,13 +21,13 @@ Copy all submodule content into pathfinder-server submodule public content (e.g.
 
 Simply open pathfinder.html with your favorite browser.
 
-#UI At a glance
+#UI at a glance
 
-This is a very quick description of different UI sections, refer to [User Guide](../docs) for more detail on how to use them.
+This is a very quick description of different UI sections, please refer to [User Guide](../docs) for more detail on how to use them.
 
 ![Pathfinder UI](../docs/images/pathfinder-ui-sections.png)
 
-1) **Filtering**: this section will allow you to filter grahp content to match you desired view
+1) **Filtering**: this section will allow you to filter graph content to match you desired view
  
 2) **Impact Path**: use this section to search for all nodes impacted by changes on a single artifact
 
