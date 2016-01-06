@@ -1,3 +1,6 @@
+![Build status](https://travis-ci.org/aroundthecode/pathfinder.svg?branch=develop)
+
+
 # Pathfinder
 
 **Author** : [Michele Sacchetti]
@@ -5,6 +8,7 @@
 **Version** : 0.1.0-SNAPSHOT (Yes, still work in progress!)
 
 **License** : <http://www.apache.org/licenses/LICENSE-2.0>
+
 
 ## Intro
 

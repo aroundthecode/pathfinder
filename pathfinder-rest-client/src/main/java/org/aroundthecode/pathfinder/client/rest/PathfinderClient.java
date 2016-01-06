@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 
 public class PathfinderClient {
 
+	private static final int SLEEP = 10000;
 	private String baseurl = "http://localhost:8080";
 
 	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException {
@@ -20,7 +21,7 @@ public class PathfinderClient {
 
 		System.err.print("testing connection ["+getBaseurl()+"]...");
 		Socket socket = new Socket();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 1; i <= 3; i++) {
 			try {
 				socket.connect(new InetSocketAddress(domain, port), 10);
 				System.err.println("OK");
@@ -29,7 +30,7 @@ public class PathfinderClient {
 				if(i<2){
 					System.err.println("FAIL ["+i+"/3] Sleep 10 sec and retry");
 					try {
-						Thread.sleep(10000);
+						Thread.sleep(SLEEP);
 					} catch (InterruptedException e) {
 						throw new IOException(e);
 					}
