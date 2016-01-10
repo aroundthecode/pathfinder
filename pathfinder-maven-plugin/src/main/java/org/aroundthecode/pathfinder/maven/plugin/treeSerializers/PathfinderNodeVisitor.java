@@ -113,7 +113,7 @@ DependencyNodeVisitor {
 	}
 
 	private String getUniqueId(Artifact a){
-		return ArtifactUtils.getUniqueId(a.getGroupId(), a.getArtifactId(), a.getType(), a.getClassifier(), a.getVersion());
+		return ArtifactUtils.getUniqueId(a.getGroupId(), a.getArtifactId(), a.getType(), a.getClassifier(), a.getBaseVersion());
 	}
 
 	private boolean saveNode(DependencyNode node) {
