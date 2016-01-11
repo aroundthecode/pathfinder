@@ -8,14 +8,16 @@ Is is based on [SigmaJS](http://sigmajs.org/) and [Linkurous](https://github.com
 
 Since it's a 100% static project, communicating with backend via Ajax calls you can deploy it on your favorite web server (e.g. Apache Httpd), deploy it into pathfinder-server static web folder or even start it from your filesystem path.
 
+## Pathfinder-Server setup [Default]
+
+Copy all submodule content into pathfinder-server submodule public content (e.g. **pahfinder/pathfinder-server/src/main/resources/public/** ), start pathfinder-server as usual and point your browser at <http://localhost:8080/pathfinder.html>
+
+This is the default behaviour of pathfinder-server packaging.
 
 ## Web Server setup
 
 Simply copy all submodule content into your main **docroot/** and open http://YOUR_HOSTNAME/pathfinder.html
 
-## Pathfinder-Server setup
-
-Copy all submodule content into pathfinder-server submodule public content (e.g. **pahfinder/pathfinder-server/src/main/resources/public/** ), start pathfinder-server as usual and point your browser at <http://localhost:8080/pathfinder.html>
 
 ## Local folder setup
 

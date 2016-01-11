@@ -22,7 +22,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<server.port>8080</server.port>
-		<neo4j.port>8080</neo4j.port>
+		<neo4j.port>${server.port}</neo4j.port>
+		<neo4j.db.port>8686</neo4j.db.port>
+		<neo4j.host>localhost</neo4j.host>
+		<neo4j.user>neo4j</neo4j.user>
+		<neo4j.pass>password</neo4j.pass>
 	</properties>
 
 	<modules>
@@ -30,6 +34,7 @@
 		<module>pathfinder-rest-client</module>
 		<module>pathfinder-maven-plugin</module>
 		<module>pathfinder-maven-plugin-it</module>
+		<module>pathfinder-web</module>
 	</modules>
 
 	<build>
