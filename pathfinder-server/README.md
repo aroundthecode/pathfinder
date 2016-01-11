@@ -17,15 +17,22 @@ mvn clean package spring-boot:run
 
 Server with default settings will bind to localhost:8686 for Neo4j web administrator interface and localhost:8080 for rest api, so be sure to have such port free on your installation machine.
 
-At the time of writing rest api binding can be customized using adding server.port parameter as maven parameter.
+Both rest api and neo4j server binding can be customized via maven properties in main parent-pom or via command line.
+
+E.g. if you whish to run Neo4J browser on port 8383 and API on 8282 you can run:
 
 ```
-mvn  spring-boot:run -Dserver.port=<new-port>
+mvn clean package spring-boot:run -Dserver.port=8282 -Dneo4j.db.port=8383
 ```
 
-Neo4j port binding is not customizable, yet.
 
-Once the server is Up and running you can access Neo4J standard interface at <http://localhost:8686/browser/> to change default server credentials (neo4j/neo4j).
+Once the server is Up and running you can access Neo4J standard interface at <http://localhost:8686/browser/> to change default server credentials (**neo4j**/**neo4j**).
+
+Default setup expect neo4j user/password to be changed with **neo4j**/**password**, you can customize such credential via maven properties in main parent-pom or via command line
+
+```
+mvn clean package spring-boot:run -Dneo4j.user=<new_username> -Dneo4j.pass=<new_password>
+```
 
 To start collecting data you can use [Pathfinder Maven Plugin](../pathfinder-maven-plugin).
 

@@ -9,6 +9,7 @@ import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
 import org.aroundthecode.pathfinder.server.Application;
+import org.aroundthecode.pathfinder.server.configuration.ConfigurationManager;
 import org.aroundthecode.pathfinder.server.entity.ArtifactTest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -26,14 +27,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @FixMethodOrder( MethodSorters.NAME_ASCENDING)
 public class PathFinderControllerTest {
 
-	private static final String NEO4J_SERVER_PROTOCOL = "http";
-	private static final String NEO4J_SERVER_HOST = "localhost";
-	private static final int    NEO4J_SERVER_PORT = 8080;
-	private static final String NEO4J_SERVER_PATH = "/";
+	private static final String PF_SERVER_PROTOCOL = ConfigurationManager.getPathfinderProtocol();
+	private static final String PF_SERVER_HOST = ConfigurationManager.getPathfinderHost();
+	private static final int    PF_SERVER_PORT = ConfigurationManager.getPathfinderPort();
+	private static final String PF_SERVER_PATH = ConfigurationManager.getPathfinderPath();
 
 	@Test
 	public void test_10_Client() throws IOException {
-		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
+		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		assertNotNull(client);
 	}
 
@@ -44,7 +45,7 @@ public class PathFinderControllerTest {
 
 		JSONObject body = getJsonObject();
 		assertNotNull(body);
-		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
+		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		try {
 			String response = client.saveArtifact(ArtifactTest.ID);
 			assertNotNull(response);
@@ -59,7 +60,7 @@ public class PathFinderControllerTest {
 	@Test
 	public void test_30_Dependencies() throws IOException {
 
-		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
+		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 
 		//main artifact creation
 		JSONObject obj = getJsonObject();
@@ -79,7 +80,7 @@ public class PathFinderControllerTest {
 	@Test
 	public void test_40_Parent() throws IOException {
 
-		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
+		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 
 		//main artifact creation
 		JSONObject obj = getJsonObject();
@@ -95,7 +96,7 @@ public class PathFinderControllerTest {
 
 	@Test
 	public void test_50_Read() throws IOException {
-		PathfinderClient client = new PathfinderClient(NEO4J_SERVER_PROTOCOL,NEO4J_SERVER_HOST,NEO4J_SERVER_PORT,NEO4J_SERVER_PATH);
+		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		try {
 			JSONObject o = client.getArtifact(ArtifactTest.ID);
 			assertNotNull(o);

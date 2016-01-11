@@ -27,7 +27,7 @@ public class PathfinderClient {
 				System.err.println("OK");
 				break;
 			} catch (IOException ex) {
-				if(i<2){
+				if(i<3){
 					System.err.println("FAIL ["+i+"/3] Sleep 10 sec and retry");
 					try {
 						Thread.sleep(SLEEP);

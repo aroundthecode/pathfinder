@@ -2,6 +2,7 @@ package org.aroundthecode.pathfinder.server;
 
 import java.io.File;
 
+import org.aroundthecode.pathfinder.server.configuration.ConfigurationManager;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.io.fs.FileUtils;
@@ -32,13 +33,9 @@ public class Application extends Neo4jConfiguration implements CommandLineRunner
 
 		@Bean(destroyMethod = "shutdown")
 		GraphDatabaseService graphDatabaseService() {
-			return new GraphDatabaseFactory().newEmbeddedDatabase("target/accessingdataneo4j.db");
+			return new GraphDatabaseFactory().newEmbeddedDatabase(ConfigurationManager.getNeo4jDbPath());
 		}
 	}
-
-//	@Autowired ArtifactRepository artifactRepository;
-
-//	@Autowired GraphDatabase graphDatabase;
 
 	@Autowired
 	GraphDatabaseService db;
@@ -52,8 +49,8 @@ public class Application extends Neo4jConfiguration implements CommandLineRunner
 			GraphDatabaseAPI api = (GraphDatabaseAPI) db;
 
 			ServerConfigurator config = new ServerConfigurator(api);
-			config.configuration().addProperty(Configurator.WEBSERVER_ADDRESS_PROPERTY_KEY, "127.0.0.1");
-			config.configuration().addProperty(Configurator.WEBSERVER_PORT_PROPERTY_KEY, "8686");
+			config.configuration().addProperty(Configurator.WEBSERVER_ADDRESS_PROPERTY_KEY, ConfigurationManager.getNeo4jDbHost());
+			config.configuration().addProperty(Configurator.WEBSERVER_PORT_PROPERTY_KEY, ConfigurationManager.getNeo4jDbPort());
 
 			neoServerBootstrapper = new WrappingNeoServerBootstrapper(api, config);
 			neoServerBootstrapper.start();
@@ -65,7 +62,7 @@ public class Application extends Neo4jConfiguration implements CommandLineRunner
 	}
 
 	public static void main(String[] args) throws Exception {
-		FileUtils.deleteRecursively(new File("target/accessingdataneo4j.db"));
+		FileUtils.deleteRecursively(new File(ConfigurationManager.getNeo4jDbPath()));
 
 		SpringApplication.run(Application.class, args);
 	}
