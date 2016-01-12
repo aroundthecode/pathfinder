@@ -24,6 +24,13 @@ $(function() {
         sigma.layouts.fruchtermanReingold.start(s);
     });
 
+    //Dependency Management button setup
+    $("#depmngbut").click(function() {
+        dependencyManagement();
+    });
+
+    
+
     // search dept spinner
     $( "#searchDepth" ).spinner({
       spin: function( event, ui ) {
@@ -240,5 +247,33 @@ function doCypherAll() {
 
 function updateLabel(txt){
     $("#graph-label").html(txt);
+}
+
+function dependencyManagement(){
+    var e = s.graph.edges();
+    //console.log(e);
+
+    // { src:"ids" ,list:[version:v , usedby:"idd"] }
+    var deps = new Array();
+    for (var i = e.length - 1; i >= 0; i--) {
+       
+        var srcs     = e[i].source.split(":");
+        var dst     = e[i].target;
+        var type    = e[i].label;
+
+        var srcId = srcs[0] + ":" + srcs[1] + ":" + srcs[2] + ":" + srcs[3];
+        if( deps[srcId] == undefined ){
+            deps[srcId] = { "list" : [ {"ver":srcs[4] , "by":dst, "type":type} ] };
+        }
+        else{
+            //console.log("before",deps[srcId].list.length);
+            var list = deps[srcId].list;
+            list[ list.length ] = {"ver":srcs[4] , "by":dst, "type":type} ;
+            deps[srcId].list = list;
+            //console.log("after",deps[srcId].list.length);
+        }
+    }
+    
+    console.log("done");
 }
 
