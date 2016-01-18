@@ -29,8 +29,18 @@ $(function() {
         dependencyManagement();
     });
 
-    
-
+    $.fn.tabbedDialog = function () {
+        this.tabs();
+        this.dialog({'modal':true,'minWidth':800, 'minHeight':600,'draggable':true});
+        this.find('.ui-tab-dialog-close').append($('a.ui-dialog-titlebar-close'));
+        this.find('.ui-tab-dialog-close').css({'position':'absolute','right':'0', 'top':'23px'});
+        this.find('.ui-tab-dialog-close > a').css({'float':'none','padding':'0'});
+        var tabul = this.find('ul:first');
+        this.parent().addClass('ui-tabs').prepend(tabul).draggable('option','handle',tabul); 
+        this.siblings('.ui-dialog-titlebar').remove();
+        tabul.addClass('ui-dialog-titlebar');
+    }
+   
     // search dept spinner
     $( "#searchDepth" ).spinner({
       spin: function( event, ui ) {
@@ -255,6 +265,7 @@ function dependencyManagement(){
 
     // { src:"ids" ,list:[version:v , usedby:"idd"] }
     var deps = new Array();
+    var gridData = new Array();
     for (var i = e.length - 1; i >= 0; i--) {
        
         var srcs     = e[i].source.split(":");
@@ -266,14 +277,142 @@ function dependencyManagement(){
             deps[srcId] = { "list" : [ {"ver":srcs[4] , "by":dst, "type":type} ] };
         }
         else{
-            //console.log("before",deps[srcId].list.length);
             var list = deps[srcId].list;
             list[ list.length ] = {"ver":srcs[4] , "by":dst, "type":type} ;
             deps[srcId].list = list;
-            //console.log("after",deps[srcId].list.length);
         }
+        //gridData[i] = {'id':srcs[0] + ":" +srcs[1] + ":" + srcs[2] + ":" + srcs[3], 'Version':srcs[4], 'UsedBy':dst, 'Scope':type };
     }
     
-    console.log("done");
+    $('#depmng_modal').tabbedDialog();
+    //console.log(deps);
+
+    var id = 0;
+    var dpmngxml = "&lt;dependencyManagement&gt;\n"
+    for (var d in deps) {
+        //console.log(deps[d])
+        var list = deps[d].list;
+        gridData.push( { Id:id, Name:d, Num:list.length, Version:"", Scope:"",UsedBy:"",enbl:"0", isLeaf:false, loaded:true , expanded:false, parent:"",level:"0"} );
+        
+        for (var j = 0; j<list.length; j++) {
+            dd = deps[d].list[j];
+            gridData.push( {Id:id+"_"+j, Name:d, Num:"", Version:dd.ver, Scope:dd.type, UsedBy:dd.by ,enbl:(j==0?"1":"0"),isLeaf:true, loaded:true, expanded:true, parent:id,level:"1"} );
+            if(j==0){
+                ddd = d.split(":");
+                dpmngxml += "\t&lt;dependency&gt;\n"
+                dpmngxml += "\t\t&lt;groupId&gt;"+ddd[0]+"&lt;/groupId&gt;\n"
+                dpmngxml += "\t\t&lt;artifactId&gt;"+ddd[1]+"&lt;/artifactId&gt;\n"
+                dpmngxml += "\t\t&lt;version&gt;"+dd.ver+"&lt;/version&gt;\n"
+                if(ddd[2]!="jar"){
+                    dpmngxml += "\t\t&lt;type&gt;"+ddd[2]+"&lt;/type&gt;\n"
+                }
+                if(ddd[3]!= undefined && ddd[3]!=""){
+                    dpmngxml += "\t\t&lt;classifier&gt;"+ddd[3]+"&lt;/classifier&gt;\n"
+                }
+                dpmngxml += "\t&lt;/dependency&gt;\n"
+            }
+        }
+        id++;
+    };
+     dpmngxml += "&lt;/dependencyManagement&gt;"
+     $("#depmng_conf_xml").html(dpmngxml);
+     
+    //console.log( gridData );
+/*
+    $("#depmng_grid").jqGrid({
+                datatype: "jsonstring",
+                datastr: gridData,
+                colNames:["Id","Num","Name","Version","Scope","UsedBy","Use"],
+                colModel:[
+                    { index: 'Id', name: 'Id', label: 'Id', width: 300, width:1, hidden:true,key: true,sorttype:"int" },
+                    { index: 'Name', name: 'Name', label: 'Name', width: 300,sorttype:"string" },
+                    { index: 'Num', name: 'Num', label: 'Num', width: 10 , align: 'center',sorttype:"int"},
+                    { index: 'Version', name: 'Version', label: 'Version', width: 50 , align: 'right',sorttype:"string"},
+                    { index: 'Scope', name: 'Scope', label: 'Scope', width: 50 , align: 'center',sorttype:"string" },
+                    { index: 'UsedBy', name: 'UsedBy', label: 'UsedBy', width: 300 ,sorttype:"string"},
+                    {name:'enbl', index:'enbl', width: 30, align:'center',
+                     formatter:'checkbox', editoptions:{value:'1:0'},
+                     formatoptions:{disabled:false}}
+                ],
+                height: 480,
+                gridview: true,
+                rowNum: 1000,
+
+                hoverrows:false,
+                viewrecords:false,
+                scrollrows:true,
+                rowList: [100,200,500],
+                pager: "#depmng_grid_pager",
+                sortname: 'Num',
+                treeGrid: true,
+                treeGridModel: 'nested',
+                treedatatype: "local",
+                ExpandColumn: 'Name',
+                treeReader:{
+                    level_field:"level",
+                    leaf_field:"isLeaf",
+                    expanded_field:"expanded",
+                    loaded:"loaded",
+                    icon_field:"icon"
+                },
+                sortorder:"asc",
+                jsonReader: {
+                    repeatitems: false,
+                    root: function (obj) { return obj; },
+                    page: function (obj) { return 1; },
+                    total: function (obj) { return 1; },
+                    records: function (obj) { return obj.length; }
+                }
+            });
+    */
+    $("#depmng_grid").jqGrid({
+            datatype: "jsonstring",
+                datastr: gridData,
+                colModel:[
+                    { index: 'Id', name: 'Id', label: 'Id', width:1, hidden:true,key: true,sorttype:"int" },
+                    { index: 'Name', name: 'Name', label: 'Name', width: 300,sorttype:"string" },
+                    { index: 'Num', name: 'Num', label: 'Num', width: 10 , align: 'center',sorttype:"int"},
+                    { index: 'Version', name: 'Version', label: 'Version', width: 50 , align: 'right',sorttype:"string"},
+                    { index: 'Scope', name: 'Scope', label: 'Scope', width: 50 , align: 'center',sorttype:"string" },
+                    { index: 'UsedBy', name: 'UsedBy', label: 'UsedBy', width: 300 ,sorttype:"string"},
+                    {name:'enbl', index:'enbl', width: 30, align:'center',
+                     formatter:'checkbox', editoptions:{value:'1:0'},
+                     formatoptions:{disabled:false}},
+                    {
+                        "name":"level",
+                        "hidden":true
+                    }
+                ],
+                "width":"770",
+                "hoverrows":false,
+                "viewrecords":false,
+                "gridview":true,
+                "height":480,//"auto",
+                "sortname":"Num",
+                "loadonce":true,
+                "rowNum":100,
+                "scrollrows":true,
+                // enable tree grid
+                "treeGrid":true,
+                // which column is expandable
+                "ExpandColumn":"Name",
+                // datatype
+                "treedatatype":"json",
+                // the model used
+                "treeGridModel":"nested",
+                // configuration of the data comming from server
+                "treeReader":{
+                    "left_field":"lft",
+                    "right_field":"rgt",
+                    "level_field":"level",
+                    "leaf_field":"isLeaf",
+                    "expanded_field":"expanded",
+                    "loaded":"loaded",
+                    "icon_field":"icon"
+                },
+                "sortorder":"asc",
+                "pager":"#depmng_grid_pager"
+            }); 
+
 }
 

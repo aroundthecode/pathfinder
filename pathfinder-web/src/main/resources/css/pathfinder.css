@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-size: xx-small;
 }
 
 #accordion{
@@ -33,4 +34,18 @@ table td tr{
   top: 10px;
   left: 10px;
   z-index: 1;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th div{
+  font-size: xx-small;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    font-size: xx-small;
+}
+
+#depmng_conf_xml_div{
+  height: 480px;
+  width: 700px;
+  font-size: small;
 }
