@@ -287,16 +287,36 @@ function dependencyManagement(){
     $('#depmng_modal').tabbedDialog();
     //console.log(deps);
 
-    var id = 0;
+    
     var dpmngxml = "&lt;dependencyManagement&gt;\n"
+
+
+    
+    gridData.push( { Id:"0", Name:"Dependencies", Num:e.length, Version:"", Scope:"",UsedBy:"",enbl:"0",hidden:true, isLeaf:false, loaded:true , expanded:false, parent:"",level:0,lft:1,rgt:(2*e.length)} );
+    var id = 1;    
     for (var d in deps) {
-        //console.log(deps[d])
         var list = deps[d].list;
-        gridData.push( { Id:id, Name:d, Num:list.length, Version:"", Scope:"",UsedBy:"",enbl:"0", isLeaf:false, loaded:true , expanded:false, parent:"",level:"0"} );
-        
+        var lft_parent = (++id);
+        var rgt_parent = lft_parent + 2*list.length +1; 
+        gridData.push( { Id:id, Name:d, Num:list.length, Version:"", Scope:"",UsedBy:"",enbl:"0", isLeaf:false, loaded:true , expanded:(list.length>1), parent:"0",level:"1",lft:lft_parent,rgt:rgt_parent} );
+
+        var red="";
         for (var j = 0; j<list.length; j++) {
             dd = deps[d].list[j];
-            gridData.push( {Id:id+"_"+j, Name:d, Num:"", Version:dd.ver, Scope:dd.type, UsedBy:dd.by ,enbl:(j==0?"1":"0"),isLeaf:true, loaded:true, expanded:true, parent:id,level:"1"} );
+            id=lft_parent + (j+1)
+            var lft_leaf = id;
+            var rgt_leaf = lft_leaf + 1;
+            if(list.length > j+1){
+                if(deps[d].list[j].ver != deps[d].list[j+1].ver){
+                    red = "style='color:red;'"
+                }
+            }
+
+            gridData.push( {Id:lft_leaf, Name:"<span " + red +">"+d+"</span>", Num:"", Version:dd.ver, Scope:dd.type, UsedBy:dd.by ,enbl:(j==0?"1":"0"),isLeaf:true, loaded:true, expanded:false, parent:id,level:"2",lft:lft_leaf,rgt:rgt_leaf} );
+            
+            
+            
+
             if(j==0){
                 ddd = d.split(":");
                 dpmngxml += "\t&lt;dependency&gt;\n"
@@ -311,107 +331,60 @@ function dependencyManagement(){
                 }
                 dpmngxml += "\t&lt;/dependency&gt;\n"
             }
+            id++;
+            console.log(d,red);
         }
         id++;
     };
      dpmngxml += "&lt;/dependencyManagement&gt;"
      $("#depmng_conf_xml").html(dpmngxml);
-     
-    //console.log( gridData );
-/*
-    $("#depmng_grid").jqGrid({
-                datatype: "jsonstring",
-                datastr: gridData,
-                colNames:["Id","Num","Name","Version","Scope","UsedBy","Use"],
-                colModel:[
-                    { index: 'Id', name: 'Id', label: 'Id', width: 300, width:1, hidden:true,key: true,sorttype:"int" },
-                    { index: 'Name', name: 'Name', label: 'Name', width: 300,sorttype:"string" },
-                    { index: 'Num', name: 'Num', label: 'Num', width: 10 , align: 'center',sorttype:"int"},
-                    { index: 'Version', name: 'Version', label: 'Version', width: 50 , align: 'right',sorttype:"string"},
-                    { index: 'Scope', name: 'Scope', label: 'Scope', width: 50 , align: 'center',sorttype:"string" },
-                    { index: 'UsedBy', name: 'UsedBy', label: 'UsedBy', width: 300 ,sorttype:"string"},
-                    {name:'enbl', index:'enbl', width: 30, align:'center',
-                     formatter:'checkbox', editoptions:{value:'1:0'},
-                     formatoptions:{disabled:false}}
-                ],
-                height: 480,
-                gridview: true,
-                rowNum: 1000,
 
-                hoverrows:false,
-                viewrecords:false,
-                scrollrows:true,
-                rowList: [100,200,500],
-                pager: "#depmng_grid_pager",
-                sortname: 'Num',
-                treeGrid: true,
-                treeGridModel: 'nested',
-                treedatatype: "local",
-                ExpandColumn: 'Name',
-                treeReader:{
-                    level_field:"level",
-                    leaf_field:"isLeaf",
-                    expanded_field:"expanded",
-                    loaded:"loaded",
-                    icon_field:"icon"
-                },
-                sortorder:"asc",
-                jsonReader: {
-                    repeatitems: false,
-                    root: function (obj) { return obj; },
-                    page: function (obj) { return 1; },
-                    total: function (obj) { return 1; },
-                    records: function (obj) { return obj.length; }
-                }
-            });
-    */
+    console.log(gridData);
+
     $("#depmng_grid").jqGrid({
             datatype: "jsonstring",
                 datastr: gridData,
                 colModel:[
-                    { index: 'Id', name: 'Id', label: 'Id', width:1, hidden:true,key: true,sorttype:"int" },
+                    { index: 'Id', name: 'Id', label: 'Id', width:1, hidden:true,key: true },
                     { index: 'Name', name: 'Name', label: 'Name', width: 300,sorttype:"string" },
-                    { index: 'Num', name: 'Num', label: 'Num', width: 10 , align: 'center',sorttype:"int"},
-                    { index: 'Version', name: 'Version', label: 'Version', width: 50 , align: 'right',sorttype:"string"},
-                    { index: 'Scope', name: 'Scope', label: 'Scope', width: 50 , align: 'center',sorttype:"string" },
-                    { index: 'UsedBy', name: 'UsedBy', label: 'UsedBy', width: 300 ,sorttype:"string"},
+                    { index: 'Num', name: 'Num', label: 'Num', width: 30 , align: 'center'},
+                    { index: 'Version', name: 'Version', label: 'Version', width: 50 , align: 'right'},
+                    { index: 'Scope', name: 'Scope', label: 'Scope', width: 50 , align: 'center' },
+                    { index: 'UsedBy', name: 'UsedBy', label: 'UsedBy', width: 300 },
                     {name:'enbl', index:'enbl', width: 30, align:'center',
                      formatter:'checkbox', editoptions:{value:'1:0'},
                      formatoptions:{disabled:false}},
-                    {
-                        "name":"level",
-                        "hidden":true
-                    }
+                    { name:"level", hidden:true }
                 ],
-                "width":"770",
-                "hoverrows":false,
-                "viewrecords":false,
-                "gridview":true,
-                "height":480,//"auto",
-                "sortname":"Num",
-                "loadonce":true,
-                "rowNum":100,
-                "scrollrows":true,
+                width:"770",
+                hoverrows:false,
+                viewrecords:false,
+                gridview:true,
+                height:480,//"auto",
+                sortname:"Name",
+                sortorder:"asc",
+                loadonce:true,
+                rowNum:1000,
+                scrollrows:true,
                 // enable tree grid
-                "treeGrid":true,
+                treeGrid:true,
                 // which column is expandable
-                "ExpandColumn":"Name",
+                ExpandColumn:"Name",
                 // datatype
-                "treedatatype":"json",
+                treedatatype:"json",
                 // the model used
-                "treeGridModel":"nested",
+                treeGridModel:"nested",
                 // configuration of the data comming from server
-                "treeReader":{
-                    "left_field":"lft",
-                    "right_field":"rgt",
-                    "level_field":"level",
-                    "leaf_field":"isLeaf",
-                    "expanded_field":"expanded",
-                    "loaded":"loaded",
-                    "icon_field":"icon"
-                },
-                "sortorder":"asc",
-                "pager":"#depmng_grid_pager"
+                treeReader : {
+                    level_field: "level",
+                    left_field:"lft",
+                    right_field: "rgt",
+                    leaf_field: "isLeaf",
+                    expanded_field: "expanded",
+                    loaded:"loaded"
+                }
+                ,
+                pager:"#depmng_grid_pager"
             }); 
 
 }
