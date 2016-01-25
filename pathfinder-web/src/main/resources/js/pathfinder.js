@@ -69,15 +69,20 @@ $(function() {
             pager:"#depmng_grid_pager"
         });
      
-
+    $("#depmng_modal").dialog({'modal':true,'minWidth':850, 'minHeight':600,'draggable':false, 'autoOpen': false,"buttons":[] });
+    $("#tabs").tabs();
     //Dependency Management button setup
     $("#depmngbut").click(function() {
+        $("#depmng_modal").dialog( "open" );
         dependencyManagement();
+        
     });
 
-    $.fn.tabbedDialog = function () {
+    
+
+ /*   $.fn.tabbedDialog = function () {
         this.tabs();
-        this.dialog({'modal':true,'minWidth':800, 'minHeight':600,'draggable':true});
+        this;
         this.find('.ui-tab-dialog-close').append($('a.ui-dialog-titlebar-close'));
         this.find('.ui-tab-dialog-close').css({'position':'absolute','right':'0', 'top':'23px'});
         this.find('.ui-tab-dialog-close > a').css({'float':'none','padding':'0'});
@@ -87,7 +92,7 @@ $(function() {
         tabul.addClass('ui-dialog-titlebar');
         
     }
-   
+*/   
     // search dept spinner
     $( "#searchDepth" ).spinner({
       spin: function( event, ui ) {
@@ -332,15 +337,8 @@ function dependencyManagement(){
         //gridData[i] = {'id':srcs[0] + ":" +srcs[1] + ":" + srcs[2] + ":" + srcs[3], 'Version':srcs[4], 'UsedBy':dst, 'Scope':type };
     }
     
-    $('#depmng_modal').tabbedDialog();
+    //$('#depmng_modal').tabbedDialog();
     //console.log(deps);
-
-    
-    var dpmngxml = "&lt;dependencyManagement&gt;\n";
-    dpmngxml += "\t&lt;dependencies&gt;\n"
-
-
-    
     gridData.push( { Id:"0", Name:"Dependencies", Num:e.length, Version:"", Scope:"",UsedBy:"",enbl:"0",hidden:true, isLeaf:false, loaded:true , expanded:true, parent:"",level:0,lft:1,rgt:(2*e.length)} );
     var id = 1;    
     for (var d in deps) {
@@ -362,30 +360,11 @@ function dependencyManagement(){
             }
 
             gridData.push( {Id:lft_leaf, Name:"<span " + red +">"+d+"</span>", Num:"", Version:dd.ver, Scope:dd.type, UsedBy:dd.by ,enbl:(j==0?"1":"0"),isLeaf:true, loaded:true, expanded:false, parent:id,level:"2",lft:lft_leaf,rgt:rgt_leaf} );
-
-            if(j==0){
-                ddd = d.split(":");
-                dpmngxml += "\t\t&lt;dependency&gt;\n"
-                dpmngxml += "\t\t\t&lt;groupId&gt;"+ddd[0]+"&lt;/groupId&gt;\n"
-                dpmngxml += "\t\t\t&lt;artifactId&gt;"+ddd[1]+"&lt;/artifactId&gt;\n"
-                dpmngxml += "\t\t\t&lt;version&gt;"+dd.ver+"&lt;/version&gt;\n"
-                if(ddd[2]!="jar"){
-                    dpmngxml += "\t\t\t&lt;type&gt;"+ddd[2]+"&lt;/type&gt;\n"
-                }
-                if(ddd[3]!= undefined && ddd[3]!=""){
-                    dpmngxml += "\t\t\t&lt;classifier&gt;"+ddd[3]+"&lt;/classifier&gt;\n"
-                }
-                dpmngxml += "\t\t&lt;/dependency&gt;\n"
-            }
             id++;
             //console.log(d,red);
         }
         id++;
     };
-     dpmngxml += "\t&lt;/dependencies&gt;\n"
-     dpmngxml += "&lt;/dependencyManagement&gt;"
-     $("#depmng_conf_xml").html(dpmngxml);
-
 
     if( depmngGrid.get(0).p.treeGrid ) {
         depmngGrid.get(0).addJSONData({
@@ -402,9 +381,33 @@ function dependencyManagement(){
             rowNum: gridData.length
         });
     }
-    grid.trigger('reloadGrid');
-     
-
 
 }
 
+function refreshDepMngMaven(){
+    var rows = depmngGrid.jqGrid('getRowData');
+
+    var dpmngxml = "&lt;dependencyManagement&gt;\n";
+    dpmngxml += "\t&lt;dependencies&gt;\n"
+    for(r in rows){
+        console.log(rows[r]);
+        if(rows[r].enbl=="1"){
+        ddd = rows[r].Name.split(":");
+                dpmngxml += "\t\t&lt;dependency&gt;\n"
+                dpmngxml += "\t\t\t&lt;groupId&gt;"+ddd[0]+"&lt;/groupId&gt;\n"
+                dpmngxml += "\t\t\t&lt;artifactId&gt;"+ddd[1]+"&lt;/artifactId&gt;\n"
+                dpmngxml += "\t\t\t&lt;version&gt;"+rows[r].Version+"&lt;/version&gt;\n"
+                if(ddd[2]!="jar"){
+                    dpmngxml += "\t\t\t&lt;type&gt;"+ddd[2]+"&lt;/type&gt;\n"
+                }
+                if(ddd[3]!= undefined && ddd[3]!=""){
+                    dpmngxml += "\t\t\t&lt;classifier&gt;"+ddd[3]+"&lt;/classifier&gt;\n"
+                }
+                dpmngxml += "\t\t&lt;/dependency&gt;\n"
+        }
+    }
+    dpmngxml += "\t&lt;/dependencies&gt;\n"
+     dpmngxml += "&lt;/dependencyManagement&gt;"
+     $("#depmng_conf_xml").html(dpmngxml);
+
+}

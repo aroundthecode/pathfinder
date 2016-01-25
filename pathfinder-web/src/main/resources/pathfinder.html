@@ -188,28 +188,24 @@
 
 </div>
 
-<div style="display:none">
 <!-- modal dialog -->
 <div id="depmng_modal">
-        <ul>
-            <li><a href="#depmng_grid_tab">Dependency List</a></li>
-            <li><a href="#depmng_conf_tab">Dependency Management</a></li>
-            <li class="ui-tab-dialog-close"></li>
-        </ul>
-        <div>
-            <div id="depmng_grid_tab">
-                <div id="depmng_grid_pager"></div>
-                <table id="depmng_grid"></table>
-                
-            </div>
-            <div id="depmng_conf_tab">
-              <div id="depmng_conf_xml_div">
-                  <pre id="depmng_conf_xml"></pre>
-              </div>
-            </div>
-        </div>
-</div></div>
-
+<div id="tabs">
+  <ul>
+    <li><a href="#depmng_grid_tab">Dependency List</a></li>
+    <li onclick="refreshDepMngMaven()" ><a href="#depmng_conf_tab">Dependency Management</a></li>
+  </ul>
+  <div id="depmng_grid_tab">
+    <div id="depmng_grid_pager"></div>
+    <table id="depmng_grid"></table>
+   </div>
+  <div id="depmng_conf_tab">
+    <div id="depmng_conf_xml_div">
+      <pre id="depmng_conf_xml"></pre>
+    </div>
+  </div>
+</div>  
+</div>
 
 <!-- JQuery -->
 <script src="./lib/jquery-1.11.3.min.js"></script>

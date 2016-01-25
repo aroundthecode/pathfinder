@@ -44,8 +44,9 @@ table td tr{
     font-size: xx-small;
 }
 
-#depmng_conf_xml_div{
+#depmng_conf_xml{
   height: 480px;
-  width: 700px;
+  width: 770px;
   font-size: small;
+  overflow: auto;
 }
