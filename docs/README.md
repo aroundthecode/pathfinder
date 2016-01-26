@@ -44,3 +44,22 @@ The **Search Depth** parameter will tell how many dependency-of-dependency hop h
 ![Pathfinder Impact Path](images/pathfinder-ui-impact.png)
 
 **Note:** When you are working on a SNAPSHOT project, which has not been analyzed by Pathfinder yet, you should configure the latest RELEASE artifact available by the analysis.
+
+## Dependency Management
+
+**Dependency Management** is used to gather all projects dependencies and show you a detailed report.
+
+All dependencies shown their artifactId/groupId/Version/Classifier and which project is importing them with given scope.
+
+Analysis is run on currently displayed graph so you can always user **Filter** section to refine your report.
+
+![Pathfinder Dependency Management](images/pathfinder-depmng-treegrid.png)
+
+
+If any duplication of same dependency with different version would occur, the report will immediately highlight them in red to spot them more easily.
+
+![Pathfinder Conflict](images/pathfinder-depmng-versions.png)
+
+Finally, once you are happy with the report outcome, you can then select desired dependencies (by default they are all selected on their first occurrence in the list) to have the full list being displayed in standard Maven XML format by simply clicking on the top **Dependency management** tab, ready to be copy-and-paste into your favorite parent pom
+
+![Pathfinder Maven](images/pathfinder-depmng-maven.png)
