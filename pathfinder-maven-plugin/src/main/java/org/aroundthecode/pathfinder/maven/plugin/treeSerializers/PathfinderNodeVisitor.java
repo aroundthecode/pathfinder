@@ -102,7 +102,7 @@ DependencyNodeVisitor {
 					scope = scope.substring(0, scope.indexOf(","));
 				}
 				writer.println(szFrom+" --("+scope+")--> "+szTo);
-				client.createDependency(szFrom, szTo, Dependency.valueOf(scope.toUpperCase()).toString());
+				client.createDependency(szFrom, szTo, ArtifactUtils.Dependency.valueOf(scope.toUpperCase()).toString());
 			} catch (IOException e) {
 				log.error("error creating dependency:"+e.getMessage());
 			}

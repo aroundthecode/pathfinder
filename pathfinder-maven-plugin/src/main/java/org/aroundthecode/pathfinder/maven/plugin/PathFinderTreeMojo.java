@@ -28,7 +28,7 @@ import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.maven.plugin.treeSerializers.PathfinderNodeVisitor;
 
 @Mojo( name = "store-tree", defaultPhase = LifecyclePhase.NONE )
-public class PathFinderMojo extends TreeMojo
+public class PathFinderTreeMojo extends TreeMojo
 {
 	/**
 	 * Neo4j rest protocol.
