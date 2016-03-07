@@ -39,6 +39,48 @@
 
 	<dependencies>
 
+		<!-- embed plugin -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.maven</groupId> -->
+		<!-- <artifactId>maven-embedder</artifactId> -->
+		<!-- <version>3.3.3</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.aether</groupId> -->
+		<!-- <artifactId>aether-connector-basic</artifactId> -->
+		<!-- <version>1.0.2.v20150114</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.aether</groupId> -->
+		<!-- <artifactId>aether-transport-wagon</artifactId> -->
+		<!-- <version>1.0.2.v20150114</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.maven.wagon</groupId> -->
+		<!-- <artifactId>wagon-http</artifactId> -->
+		<!-- <version>2.9</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.maven.wagon</groupId> -->
+		<!-- <artifactId>wagon-provider-api</artifactId> -->
+		<!-- <version>2.9</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.maven.wagon</groupId> -->
+		<!-- <artifactId>wagon-http-lightweight</artifactId> -->
+		<!-- <version>2.9</version> -->
+		<!-- </dependency> -->
+
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-invoker</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+
+		<!-- Embed end -->
+
 		<dependency>
 			<groupId>org.aroundthecode.pathfinder</groupId>
 			<artifactId>pathfinder-rest-client</artifactId>
@@ -99,17 +141,17 @@
 	<build>
 
 		<testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-            </testResource>
-        </testResources>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 
 
 		<plugins>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.aroundthecode.pathfinder.server</groupId>
+	<artifactId>dummy</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+
+	<!-- This is just a dummy pom file to enable maven embedder -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.aroundthecode.pathfinder</groupId>
+				<artifactId>pathfinder-maven-plugin</artifactId>
+				<version>0.1.0-SNAPSHOT</version>
+				<configuration>
+					<neo4jProtocol>http</neo4jProtocol>
+					<neo4jHost>127.0.0.1</neo4jHost>
+					<neo4jPort>${server.port}</neo4jPort>
+					<neo4jPath>/</neo4jPath>
+				</configuration>
+				<executions>
+					<execution>
+						<id>test-store-tree</id>
+						<phase>test</phase>
+						<goals>
+							<goal>store-tree</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
