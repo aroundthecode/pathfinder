@@ -5,11 +5,13 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
 import org.aroundthecode.pathfinder.server.Application;
 import org.aroundthecode.pathfinder.server.configuration.ConfigurationManager;
+import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
 import org.aroundthecode.pathfinder.server.entity.ArtifactTest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -107,6 +109,20 @@ public class PathFinderControllerTest {
 		}
 
 	}
+	
+	@Test
+	public void test_60_Crawler() {
+
+		try {
+			CrawlerWrapper.crawl("", "", "", "", "");
+		} catch (MavenInvocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	
 
 	private JSONObject getJsonObject() {
 		return getJsonObject("");

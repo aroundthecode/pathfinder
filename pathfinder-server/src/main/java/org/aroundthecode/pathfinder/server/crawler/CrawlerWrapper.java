@@ -13,7 +13,7 @@ public class CrawlerWrapper {
 
 	private static String mvnHome = "/opt/apache-maven";
 	
-	static void crawl(String groupId,String artifactId,String packaginf,String classifier, String version) throws MavenInvocationException{
+	public static void crawl(String groupId,String artifactId,String packaginf,String classifier, String version) throws MavenInvocationException{
 		
 		InvocationRequest request = new DefaultInvocationRequest();
 		request.setPomFile( new File( "./src/main/resources/embedder/pom.xml" ) );
