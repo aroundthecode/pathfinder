@@ -35,7 +35,6 @@
 		<module>pathfinder-maven-plugin</module>
 		<module>pathfinder-maven-plugin-it</module>
 		<module>pathfinder-web</module>
-<!--		<module>pathfinder-crawler</module> -->
 	</modules>
 
 	<build>
