@@ -1,11 +1,11 @@
 package org.aroundthecode.pathfinder.server.controller;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
-import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
@@ -68,7 +68,7 @@ public class PathFinderControllerTest {
 		JSONObject obj = getJsonObject();
 		assertNotNull(obj);
 		client.saveArtifact(ArtifactTest.ID);
-		
+
 		//dependency artifacts, one per scope
 		//create and link
 		for ( Dependency dir : Dependency.values()) {
@@ -78,7 +78,7 @@ public class PathFinderControllerTest {
 		}
 
 	}
-	
+
 	@Test
 	public void test_40_Parent() throws IOException {
 
@@ -90,7 +90,7 @@ public class PathFinderControllerTest {
 		JSONObject o =  getJsonObject("parent");
 		assertNotNull(o);
 		client.saveArtifact( o.get(ArtifactUtils.U).toString());
-		
+
 		client.addParent(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString() );
 
 	}
@@ -109,20 +109,16 @@ public class PathFinderControllerTest {
 		}
 
 	}
-	
+
 	@Test
 	public void test_60_Crawler() {
 
-		try {
-			CrawlerWrapper.crawl("", "", "", "", "");
-		} catch (MavenInvocationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		JSONObject obj = CrawlerWrapper.crawl("org.aroundthecode.pathfinder", "pathfinder-server", "pom", "", "0.1.0-SNAPSHOT");
+		assertNotNull(obj);
+		assertEquals(0,obj.get("return"));
+		System.out.println(obj);
 
 	}
-	
-	
 
 	private JSONObject getJsonObject() {
 		return getJsonObject("");

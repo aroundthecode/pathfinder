@@ -2,6 +2,7 @@ package org.aroundthecode.pathfinder.server.controller;
 
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
+import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
 import org.aroundthecode.pathfinder.server.entity.Artifact;
 import org.aroundthecode.pathfinder.server.repository.ArtifactRepository;
 import org.json.simple.JSONObject;
@@ -69,6 +70,14 @@ public class PathFinderController {
 		JSONObject o = RestUtils.string2Json(body);
 		Artifact a = Artifact.parsePropertiesFromJson(o);
 		return checkAndSaveArtifact(a);
+	}
+	
+	@RequestMapping(value="/crawler/crawl", method=RequestMethod.POST)
+	public JSONObject crawlArtifact(@RequestBody String body) throws ParseException 
+	{
+		JSONObject o = RestUtils.string2Json(body);
+		Artifact a = Artifact.parsePropertiesFromJson(o);
+		return CrawlerWrapper.crawl(a.getGroupId(), a.getArtifactId(), a.getPackaging(), a.getClassifier(), a.getVersion());
 	}
 
 	private Artifact checkAndSaveArtifact(Artifact a) {
