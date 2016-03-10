@@ -120,6 +120,26 @@ s.addCamera('cam1'),
         camera: 'cam1'
     });
 
+function refreshGraph(){
+    s.refresh();
+}
+
+function crawl(e) {
+    console.log(e.data.node.id);
+
+    $.ajax({
+      type: "POST",
+      url: pfurl + "/" + crawlerpath,
+      data: e.data.node.id,
+      success: refreshGraph,
+      dataType: "string"
+    });
+
+
+}
+
+s.bind('doubleClickNode',crawl);
+
 //populate with full data first
 doCypherAll();
 

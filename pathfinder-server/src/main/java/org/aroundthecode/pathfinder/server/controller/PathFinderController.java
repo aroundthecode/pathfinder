@@ -1,5 +1,11 @@
 package org.aroundthecode.pathfinder.server.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
@@ -22,6 +28,9 @@ public class PathFinderController {
 	@Autowired ArtifactRepository artifactRepository;
 
 	@Autowired GraphDatabase graphDatabase;
+	
+	private static final Logger log = LogManager.getLogger(PathFinderController.class.getName());
+
 
 	@RequestMapping(value="/node/get", method=RequestMethod.GET)
 	public Artifact getArtifact(@RequestParam(value="id", defaultValue=ArtifactUtils.EMPTYID) String uniqueId) 
@@ -73,11 +82,20 @@ public class PathFinderController {
 	}
 	
 	@RequestMapping(value="/crawler/crawl", method=RequestMethod.POST)
-	public JSONObject crawlArtifact(@RequestBody String body) throws ParseException 
+	public JSONObject crawlArtifact(@RequestBody String body) throws ParseException, UnsupportedEncodingException 
 	{
-		JSONObject o = RestUtils.string2Json(body);
-		Artifact a = Artifact.parsePropertiesFromJson(o);
-		return CrawlerWrapper.crawl(a.getGroupId(), a.getArtifactId(), a.getPackaging(), a.getClassifier(), a.getVersion());
+		String uid = URLDecoder.decode(body, "UTF-8");
+		uid = uid.substring(0, uid.lastIndexOf("="));
+		log.debug("Request body:[{}]",uid);
+		
+		Map<String, String> map = ArtifactUtils.splitUniqueId(uid);
+		return CrawlerWrapper.crawl(
+				map.get(ArtifactUtils.G),
+				map.get(ArtifactUtils.A), 
+				map.get(ArtifactUtils.P), 
+				map.get(ArtifactUtils.C), 
+				map.get(ArtifactUtils.V)
+			);
 	}
 
 	private Artifact checkAndSaveArtifact(Artifact a) {
