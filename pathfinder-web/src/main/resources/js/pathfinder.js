@@ -124,15 +124,23 @@ function refreshGraph(){
     s.refresh();
 }
 
+function refreshGraph(){
+    doCypherAll();
+}
+
+var sc = function successCrawl(data){
+    console.log(data); 
+    refreshGraph()
+}
+
 function crawl(e) {
     console.log(e.data.node.id);
-
-    $.ajax({
+    $.ajax(pfurl + "/" + crawlerpath,{
       type: "POST",
-      url: pfurl + "/" + crawlerpath,
       data: e.data.node.id,
-      success: refreshGraph,
-      dataType: "string"
+      error: function (jqXHR, textStatus, errorThrown) {alert(errorThrown);},
+      success: sc,
+      dataType: "json"
     });
 
 
