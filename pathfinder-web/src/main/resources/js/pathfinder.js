@@ -121,10 +121,6 @@ s.addCamera('cam1'),
     });
 
 function refreshGraph(){
-    s.refresh();
-}
-
-function refreshGraph(){
     doCypherAll();
 }
 
@@ -133,11 +129,24 @@ var sc = function successCrawl(data){
     refreshGraph()
 }
 
+function crawlNode(e){
+    crawl(e.data.node.id);
+}
+
+function crawlForm(){
+    var e = $("#crawlG").val();
+    e += ":" + $("#crawlA").val();
+    e += ":" + $("#crawlP").val();
+    e += ":" + $("#crawlC").val();
+    e += ":" + $("#crawlV").val();
+    crawl(e);
+}
+
 function crawl(e) {
-    console.log(e.data.node.id);
+    console.log(e);
     $.ajax(pfurl + "/" + crawlerpath,{
       type: "POST",
-      data: e.data.node.id,
+      data: e,
       error: function (jqXHR, textStatus, errorThrown) {alert(errorThrown);},
       success: sc,
       dataType: "json"
@@ -146,7 +155,18 @@ function crawl(e) {
 
 }
 
-s.bind('doubleClickNode',crawl);
+function fillCrawlForm(e){
+    var val = e.data.node.id.split(":")
+    var i = 0;
+    $("#crawlG").val(val[i++]);
+    $("#crawlA").val(val[i++]);
+    $("#crawlP").val(val[i++]);
+    $("#crawlC").val(val[i++]);
+    $("#crawlV").val(val[i++]);
+}
+
+s.bind('doubleClickNode',crawlNode);
+s.bind('clickNode',fillCrawlForm);
 
 //populate with full data first
 doCypherAll();

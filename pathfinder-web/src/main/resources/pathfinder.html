@@ -161,19 +161,48 @@
               <button id="depmngbut">Analyze Dependencies</button>
 
             </div>
-            <h3>Node rearrange</h3>
+            <h3>Graph Crawler</h3>
             <div>
               <p>
-              Use this button to start/stop nodes auto-arrange.
+              Click on node or fill the form,<br/>click on button to invoke crawler plugin on the artifact.
               </p>
               <div class="ui-state-highlight ui-corner-all">
                 <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                <strong>Warning</strong>This may cause high load on your CPU.</p>
+                <strong>Warning</strong>&nbsp;This task may be long-lasting and asynch management is not implemented yet</p>
               </div>
-              <br/>
-
-              <button id="autoarrangebutton">Auto-Arrange</button>
-
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlG" value=""></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlA" value=""></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlP" value=""></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlC" value=""></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlV" value=""></td>
+                </tr>
+              </table>
+              <button onclick="crawlForm()">Crawl</button>
             </div>
           </div>
         </div>
