@@ -50,3 +50,12 @@ table td tr{
   font-size: small;
   overflow: auto;
 }
+
+#loadingScreen {
+    background: url(images/loading.gif) no-repeat 5px 8px;
+    padding-left: 25px;
+  }
+  /* hide the close x on the loading screen */
+.loadingScreenWindow .ui-dialog-titlebar-close {
+    display: none;
+  }

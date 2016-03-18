@@ -78,21 +78,31 @@ $(function() {
         
     });
 
+    $("#crawler_modal").dialog({modal: true,'minWidth':600, 'minHeight':100,'maxHeight':400,'autoOpen': false,buttons: { Ok: function() {refreshGraph();$( this ).dialog( "close" ); } }  }); ;
+    $("#crawler_modal_err").hide();
+
+    $("#loadingScreen").dialog({
+        autoOpen: false,    // set this to false so we can manually open it
+        dialogClass: "loadingScreenWindow",
+        closeOnEscape: false,
+        draggable: false,
+        width: 300,
+        minHeight: 60, 
+        modal: true,
+        buttons: {},
+        resizable: false,
+        open: function() {
+            // scrollbar fix for IE
+            $('body').css('overflow','hidden');
+        },
+        close: function() {
+            // reset overflow
+            $('body').css('overflow','auto');
+        }
+    });
+
     
 
- /*   $.fn.tabbedDialog = function () {
-        this.tabs();
-        this;
-        this.find('.ui-tab-dialog-close').append($('a.ui-dialog-titlebar-close'));
-        this.find('.ui-tab-dialog-close').css({'position':'absolute','right':'0', 'top':'23px'});
-        this.find('.ui-tab-dialog-close > a').css({'float':'none','padding':'0'});
-        var tabul = this.find('ul:first');
-        this.parent().addClass('ui-tabs').prepend(tabul).draggable('option','handle',tabul); 
-        this.siblings('.ui-dialog-titlebar').remove();
-        tabul.addClass('ui-dialog-titlebar');
-        
-    }
-*/   
     // search dept spinner
     $( "#searchDepth" ).spinner({
       spin: function( event, ui ) {
@@ -120,17 +130,51 @@ s.addCamera('cam1'),
         camera: 'cam1'
     });
 
+function waitingDialog(waiting) { 
+        $("#loadingScreen").html(waiting.message && '' != waiting.message ? waiting.message : 'Please wait...');
+        $("#loadingScreen").dialog('option', 'title', waiting.title && '' != waiting.title ? waiting.title : 'Invoking Pathfinder Maven Crawler.');
+        $("#loadingScreen").dialog('open');
+    }
+function closeWaitingDialog() {
+    $("#loadingScreen").dialog('close');
+}
+
 function refreshGraph(){
     doCypherAll();
 }
 
 var sc = function successCrawl(data){
-    console.log(data); 
-    refreshGraph()
+    console.log(data.exception);
+    console.log(data.response);
+    console.log(data.return);
+
+    if(data.return==0){
+        $("#crawler_modal_status").html("<span style='color:green;'>Success</span>");
+        $("#crawler_modal_err").hide();
+    }
+    else{
+        $("#crawler_modal_status").html("<span style='color:red;'>Error</span>");
+        $("#crawler_modal_elog").html(data.exception);
+        if(data.exception.length>0){
+            $("#crawler_modal_err").show();
+        }
+    }
+
+    $("#crawler_modal_log").html(data.response);
+
+    $("#crawler_modal").dialog( "open" );
 }
 
 function crawlNode(e){
     crawl(e.data.node.id);
+}
+
+function checkCrawlInput(val,error){
+    if( $(val).val()==""){
+        alert("Crawl field "+error+" cannot be empty");
+        return false;
+    }
+    return true
 }
 
 function crawlForm(){
@@ -139,7 +183,14 @@ function crawlForm(){
     e += ":" + $("#crawlP").val();
     e += ":" + $("#crawlC").val();
     e += ":" + $("#crawlV").val();
-    crawl(e);
+    if( 
+        checkCrawlInput("#crawlG","GroupId") &&
+        checkCrawlInput("#crawlA","ArtifactId") &&
+        checkCrawlInput("#crawlP","Packaging") &&
+        checkCrawlInput("#crawlV","Version")
+     ){
+        crawl(e);
+    }
 }
 
 function crawl(e) {
@@ -147,8 +198,10 @@ function crawl(e) {
     $.ajax(pfurl + "/" + crawlerpath,{
       type: "POST",
       data: e,
-      error: function (jqXHR, textStatus, errorThrown) {alert(errorThrown);},
+      beforeSend: function(){ waitingDialog({}); },
+      error: function (jqXHR, textStatus, errorThrown) {alert("Error invoking crawler:"+errorThrown);},
       success: sc,
+      complete: function(){ closeWaitingDialog(); },
       dataType: "json"
     });
 

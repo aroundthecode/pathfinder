@@ -132,7 +132,7 @@ public class PathFinderCrawlMojo extends TreeMojo
 	@Parameter( property = "crawler.scope", defaultValue = "compile" )
 	private String crawlerScope;
 
-	private MavenProject project;
+	private MavenProject project = null;
 	/**
 	 * Override standard TreeMojo to retrieve project from parameters
 	 */
@@ -147,14 +147,14 @@ public class PathFinderCrawlMojo extends TreeMojo
 			//Build the project and get the result
 			project = m_projectBuilder.buildFromRepository(artifact,this.remoteRepositories,this.localRepository);
 		} catch (ArtifactResolutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
+			project = null;
 		} catch (ArtifactNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
+			project = null;
 		} catch (ProjectBuildingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getLog().error(e);
+			project = null;
 		}
 		return project;
 
@@ -170,7 +170,7 @@ public class PathFinderCrawlMojo extends TreeMojo
 
 		DependencyNodeVisitor visitor=null;
 		try {
-			
+
 			PathfinderClient client = new PathfinderClient(neo4jProtocol, neo4jHost, neo4jPort, neo4jPath);
 			//visitor = new LogNodeVisitor(writer, getLog());
 			visitor = new PathfinderNodeVisitor(writer, getLog(),client,project);
@@ -186,7 +186,12 @@ public class PathFinderCrawlMojo extends TreeMojo
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
 		project = getProject();
-		getLog().info("Project under analysis:"+project.getName());
-		super.execute();
+		if(project == null){
+			throw new MojoExecutionException("Failed to retrieve project to crawl!");
+		}
+		else{
+			getLog().info("Project under analysis:"+project.getName());
+			super.execute();
+		}
 	}
 }

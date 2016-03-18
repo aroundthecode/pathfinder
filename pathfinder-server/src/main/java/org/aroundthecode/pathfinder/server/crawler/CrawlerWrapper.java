@@ -68,7 +68,7 @@ public class CrawlerWrapper {
 			jHandler.setReturnStatus( result.getExitCode() );
 			jHandler.setException( result.getExecutionException() );
 		} 
-		catch (MavenInvocationException e) {
+		catch (Exception e) {
 			jHandler.setReturnStatus( -1 );
 			jHandler.setException( e );
 		}
