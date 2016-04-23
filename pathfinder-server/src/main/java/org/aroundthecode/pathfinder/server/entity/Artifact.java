@@ -29,6 +29,27 @@ public class Artifact {
 	private String classifier="";
 	@Fetch
 	private String version = "";
+	
+	@RelatedTo(type="COMPILE", direction=Direction.INCOMING)
+	public @Fetch Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
+	
+	@RelatedTo(type="PROVIDED", direction=Direction.INCOMING)
+	public @Fetch Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
+	
+	@RelatedTo(type="RUNTIME", direction=Direction.INCOMING)
+	public @Fetch Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
+	
+	@RelatedTo(type="TEST", direction=Direction.INCOMING)
+	public @Fetch Set<Artifact> dependenciesTest= new HashSet<Artifact>();
+	
+	@RelatedTo(type="SYSTEM", direction=Direction.INCOMING)
+	public @Fetch Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
+	
+	@RelatedTo(type="IMPORT", direction=Direction.INCOMING)
+	public @Fetch Set<Artifact> dependenciesImport= new HashSet<Artifact>();
+	
+	@RelatedTo(type="PARENT", direction=Direction.OUTGOING)
+	public @Fetch Artifact parentArtifact = null;
 
 	public Artifact() {
 	}
@@ -57,26 +78,6 @@ public class Artifact {
 		}
 	}
 
-	@RelatedTo(type="COMPILE", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
-
-	@RelatedTo(type="PROVIDED", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
-
-	@RelatedTo(type="RUNTIME", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
-
-	@RelatedTo(type="TEST", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesTest= new HashSet<Artifact>();
-
-	@RelatedTo(type="SYSTEM", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
-
-	@RelatedTo(type="IMPORT", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesImport= new HashSet<Artifact>();
-
-	@RelatedTo(type="PARENT", direction=Direction.OUTGOING)
-	public @Fetch Artifact parentArtifact = null;
 
 	public void hasParent(Artifact a){
 		this.parentArtifact = a;

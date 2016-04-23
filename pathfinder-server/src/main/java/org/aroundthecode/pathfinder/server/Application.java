@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.aroundthecode.pathfinder.server.configuration.ConfigurationManager;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.io.fs.FileUtils;
 import org.neo4j.kernel.GraphDatabaseAPI;
 import org.neo4j.server.WrappingNeoServerBootstrapper;
@@ -14,28 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
-import org.springframework.data.neo4j.config.Neo4jConfiguration;
 
 @SuppressWarnings("deprecation")
 @SpringBootApplication
-public class Application extends Neo4jConfiguration implements CommandLineRunner {
-
-	@Configuration
-	@EnableNeo4jRepositories(basePackages = "org.aroundthecode.pathfinder.server")
-	static class ApplicationConfig extends Neo4jConfiguration {
-
-		public ApplicationConfig() {
-			setBasePackage("org.aroundthecode.pathfinder.server");
-		}
-
-		@Bean(destroyMethod = "shutdown")
-		GraphDatabaseService graphDatabaseService() {
-			return new GraphDatabaseFactory().newEmbeddedDatabase(ConfigurationManager.getNeo4jDbPath());
-		}
-	}
+public class Application implements CommandLineRunner {
 
 	@Autowired
 	GraphDatabaseService db;

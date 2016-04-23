@@ -1,4 +1,4 @@
-package org.aroundthecode.pathfinder.maven.plugin.treeSerializers;
+package org.aroundthecode.pathfinder.maven.plugin.treeserializers;
 
 
 /*
@@ -33,7 +33,6 @@ import org.apache.maven.shared.dependency.graph.DependencyNode;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
-import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
 
 
 public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
@@ -41,8 +40,8 @@ DependencyNodeVisitor {
 
 	private Log log;
 	private String prj = null;
-	PathfinderClient client = null;
-	MavenProject project = null;
+	private PathfinderClient client = null;
+	private MavenProject project = null;
 
 	public PathfinderNodeVisitor(Writer writer, Log log,PathfinderClient client, MavenProject mavenProject) {
 		super(writer);

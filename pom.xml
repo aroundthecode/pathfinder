@@ -23,7 +23,6 @@
 
 		<!-- Jacoco version to use -->
 		<jacoco.version>0.7.1.201405082137</jacoco.version>
-<!-- 		<jacoco.outputDir>${project.build.directory}/jacoco</jacoco.outputDir> -->
 		<jacoco.outputDir>../target/jacoco</jacoco.outputDir>
 		<!-- Jacoco output file for UTs -->
 		<jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>

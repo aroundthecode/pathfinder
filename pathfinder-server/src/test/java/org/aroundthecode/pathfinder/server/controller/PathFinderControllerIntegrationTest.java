@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebIntegrationTest
 @FixMethodOrder( MethodSorters.NAME_ASCENDING)
-public class PathFinderControllerTest {
+public class PathFinderControllerIntegrationTest {
 
 	private static final String PF_SERVER_PROTOCOL = ConfigurationManager.getPathfinderProtocol();
 	private static final String PF_SERVER_HOST = ConfigurationManager.getPathfinderHost();
@@ -35,7 +35,7 @@ public class PathFinderControllerTest {
 	private static final String PF_SERVER_PATH = ConfigurationManager.getPathfinderPath();
 
 	@Test
-	public void test_10_Client() throws IOException {
+	public void test10Client() throws IOException {
 		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		assertNotNull(client);
 	}
@@ -43,7 +43,7 @@ public class PathFinderControllerTest {
 
 
 	@Test
-	public void test_20_Write() throws IOException {
+	public void test20Write() throws IOException {
 
 		JSONObject body = getJsonObject();
 		assertNotNull(body);
@@ -60,7 +60,7 @@ public class PathFinderControllerTest {
 	}
 
 	@Test
-	public void test_30_Dependencies() throws IOException {
+	public void test30Dependencies() throws IOException {
 
 		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 
@@ -80,7 +80,7 @@ public class PathFinderControllerTest {
 	}
 
 	@Test
-	public void test_40_Parent() throws IOException {
+	public void test40Parent() throws IOException {
 
 		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 
@@ -97,7 +97,7 @@ public class PathFinderControllerTest {
 
 
 	@Test
-	public void test_50_Read() throws IOException {
+	public void test50Read() throws IOException {
 		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		try {
 			JSONObject o = client.getArtifact(ArtifactTest.ID);
@@ -111,7 +111,7 @@ public class PathFinderControllerTest {
 	}
 
 	@Test
-	public void test_60_Crawler() {
+	public void test60Crawler() {
 
 		JSONObject obj = CrawlerWrapper.crawl("org.aroundthecode.pathfinder", "pathfinder-server", "pom", "", "0.1.0-SNAPSHOT");
 		assertNotNull(obj);

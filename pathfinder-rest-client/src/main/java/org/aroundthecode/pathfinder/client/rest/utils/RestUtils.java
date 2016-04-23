@@ -14,7 +14,7 @@ import org.json.simple.parser.ParseException;
 public class RestUtils {
 
 	protected static final String USER_AGENT = "pathfinder-rest-client";
-//	private static final Logger logger = LogManager.getLogger(RestUtils.class);
+	//	private static final Logger logger = LogManager.getLogger(RestUtils.class);
 	private static final JSONParser jparser = new JSONParser();
 
 
@@ -29,9 +29,10 @@ public class RestUtils {
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
 
-		int responseCode = con.getResponseCode();
-//		System.out.println("\nSending 'GET' request to URL : " + url);
-//		System.out.println("Response Code : " + responseCode);
+		//		int responseCode = 
+		con.getResponseCode();
+		//		System.out.println("\nSending 'GET' request to URL : " + url);
+		//		System.out.println("Response Code : " + responseCode);
 
 		BufferedReader in = null;
 		StringBuffer response = new StringBuffer();
@@ -76,9 +77,9 @@ public class RestUtils {
 		wr.close();
 
 		int responseCode = con.getResponseCode();
-//		System.out.println("\nSending 'POST' request to URL : " + url);
-//		System.out.println("Post parameters : " + body.toString());
-//		System.out.println("Response Code : " + responseCode);
+		//		System.out.println("\nSending 'POST' request to URL : " + url);
+		//		System.out.println("Post parameters : " + body.toString());
+		//		System.out.println("Response Code : " + responseCode);
 
 		StringBuffer response = new StringBuffer();
 		BufferedReader in = null;

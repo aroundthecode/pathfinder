@@ -13,7 +13,6 @@ import org.apache.maven.shared.invoker.DefaultInvoker;
 import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
-import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.aroundthecode.pathfinder.server.crawler.handler.JsonResponseHandler;
 import org.json.simple.JSONObject;
 

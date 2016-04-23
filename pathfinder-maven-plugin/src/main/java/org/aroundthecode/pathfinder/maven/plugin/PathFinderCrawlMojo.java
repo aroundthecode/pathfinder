@@ -38,7 +38,7 @@ import org.apache.maven.project.MavenProjectBuilder;
 import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
-import org.aroundthecode.pathfinder.maven.plugin.treeSerializers.PathfinderNodeVisitor;
+import org.aroundthecode.pathfinder.maven.plugin.treeserializers.PathfinderNodeVisitor;
 
 @Mojo( name = "crawler", defaultPhase = LifecyclePhase.NONE )
 public class PathFinderCrawlMojo extends TreeMojo
@@ -176,7 +176,7 @@ public class PathFinderCrawlMojo extends TreeMojo
 			visitor = new PathfinderNodeVisitor(writer, getLog(),client,project);
 
 		} catch (IOException e) {
-			getLog().error(e);;
+			getLog().error(e);
 		}
 
 		return visitor;

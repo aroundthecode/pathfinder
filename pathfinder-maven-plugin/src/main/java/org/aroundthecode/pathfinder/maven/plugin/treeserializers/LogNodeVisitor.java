@@ -1,4 +1,4 @@
-package org.aroundthecode.pathfinder.maven.plugin.treeSerializers;
+package org.aroundthecode.pathfinder.maven.plugin.treeserializers;
 
 
 /*

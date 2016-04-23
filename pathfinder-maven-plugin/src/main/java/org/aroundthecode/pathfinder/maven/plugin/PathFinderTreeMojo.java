@@ -25,7 +25,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
-import org.aroundthecode.pathfinder.maven.plugin.treeSerializers.PathfinderNodeVisitor;
+import org.aroundthecode.pathfinder.maven.plugin.treeserializers.PathfinderNodeVisitor;
 
 @Mojo( name = "store-tree", defaultPhase = LifecyclePhase.NONE )
 public class PathFinderTreeMojo extends TreeMojo
@@ -69,7 +69,7 @@ public class PathFinderTreeMojo extends TreeMojo
 			visitor = new PathfinderNodeVisitor(writer, getLog(),client,getProject());
 
 		} catch (IOException e) {
-			getLog().error(e);;
+			getLog().error(e);
 		}
 
 		return visitor;
