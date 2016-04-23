@@ -20,7 +20,22 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
+		<!-- Jacoco version to use -->
+		<jacoco.version>0.7.1.201405082137</jacoco.version>
+<!-- 		<jacoco.outputDir>${project.build.directory}/jacoco</jacoco.outputDir> -->
+		<jacoco.outputDir>../target/jacoco</jacoco.outputDir>
+		<!-- Jacoco output file for UTs -->
+		<jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>
+		<!-- Tells Sonar Jacoco coverage result file location for Unit Tests -->
+		<jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</jacoco.reportPath>
+		<!-- Jacoco output file for ITs -->
+		<jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
+		<!-- Tells Sonar Jacoco coverage result file location for Integration Tests -->
+		<jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</jacoco.itReportPath>
+		<surefire.extraargs></surefire.extraargs>
+		<failsafe.extraargs></failsafe.extraargs>
+
 		<server.port>8080</server.port>
 		<neo4j.port>${server.port}</neo4j.port>
 		<neo4j.db.port>8686</neo4j.db.port>
@@ -41,6 +56,88 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<configuration>
+					<destFile>${jacoco.itReportPath}</destFile>
+					<propertyName>jacoco.agent.it.arg</propertyName>
+					<append>true</append>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.1</version>
+				<configuration>
+					<argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled  ${jacoco.agent.ut.arg} ${surefire.extraargs}</argLine>
+					<excludes>
+						<exclude>**/*IntegrationTest*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<!-- exclude Unit test from integration phase -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled ${jacoco.agent.it.arg} ${failsafe.extraargs}</argLine>
+					<includes>
+						<include>**/*IntegrationTest*</include>
+					</includes>
+					<reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<!-- Prepares a variable, jacoco.agent.ut.arg, that contains the info 
+						to be passed to the JVM hosting the code being tested. -->
+					<execution>
+						<id>prepare-ut-agent</id>
+						<phase>process-test-classes</phase>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<destFile>${jacoco.reportPath}</destFile>
+							<propertyName>jacoco.agent.ut.arg</propertyName>
+							<append>true</append>
+						</configuration>
+					</execution>
+					<!-- Prepares a variable, jacoco.agent.it.arg, that contains the info 
+						to be passed to the JVM hosting the code being tested. -->
+					<execution>
+						<id>prepare-it-agent</id>
+						<!-- moved to package phase to be sure all pre-integration test have 
+							it already set to bring up environments with jacoco agent as JVM params -->
+						<phase>package</phase>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+						<configuration>
+							<destFile>${jacoco.itReportPath}</destFile>
+							<propertyName>jacoco.agent.it.arg</propertyName>
+							<append>true</append>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
