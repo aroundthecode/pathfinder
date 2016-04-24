@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebIntegrationTest
 @FixMethodOrder( MethodSorters.NAME_ASCENDING)
-public class PathFinderControllerIntegrationTest {
+public class PathFinderControllerTest {
 
 	private static final String PF_SERVER_PROTOCOL = ConfigurationManager.getPathfinderProtocol();
 	private static final String PF_SERVER_HOST = ConfigurationManager.getPathfinderHost();

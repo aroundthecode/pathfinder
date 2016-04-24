@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 @SuppressWarnings("deprecation")
 @SpringBootApplication
-public class Application implements CommandLineRunner {
+public class Application extends SpringBootServletInitializer implements CommandLineRunner {
 
 	@Autowired
 	GraphDatabaseService db;
@@ -42,6 +44,11 @@ public class Application implements CommandLineRunner {
 
 	}
 
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
+	
 	public static void main(String[] args) throws Exception {
 		FileUtils.deleteRecursively(new File(ConfigurationManager.getNeo4jDbPath()));
 
