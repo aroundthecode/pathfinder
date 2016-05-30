@@ -51,7 +51,7 @@ Patterns are then extracted to retrieve only information relevant to the project
 
 To start using pathfinder:
 
-- Checkout git repository
+- Checkout git repository and [build the project]
 
 - Learn how to start [pathfinder-server]
 
@@ -61,6 +61,14 @@ To start using pathfinder:
 
 - Read [Pathfinder User Guide] to start analyzing your projects
 
+
+## Building the project
+
+JDK 7 or newer and a recent version of Maven are the only requirements for building the project. 
+
+However, if ports 8080 or 8686 are occupied on your system, integration tests of [pathfinder-server] will be failing. You need 
+to change these defaults in `pom.xml`. Find and change values of `<server.port>` and `<neo4j.db.port>` or pass new values from
+command line. For example, `mvn clean install Dserver.port=8081`
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
@@ -72,5 +80,6 @@ To start using pathfinder:
    [pathfinder-maven-plugin]: <./pathfinder-maven-plugin>
    [pathfinder-web]: <./pathfinder-web>
    [Pathfinder User Guide]: <./docs>
+   [build the project]: #building-the-project
 
 
