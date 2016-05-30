@@ -68,7 +68,7 @@ JDK 7 or newer and a recent version of Maven are the only requirements for build
 
 However, if ports 8080 or 8686 are occupied on your system, integration tests of [pathfinder-server] will be failing. You need 
 to change these defaults in `pom.xml`. Find and change values of `<server.port>` and `<neo4j.db.port>` or pass new values from
-command line. For example, `mvn clean install Dserver.port=8081`
+command line. For example, `mvn clean install -Dserver.port=8081`
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
