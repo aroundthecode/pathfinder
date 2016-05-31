@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  font-size: xx-small;
+}
+
+#accordion{
+  font-size: xx-small;
+}
+
+table td tr{
+  font-size: xx-small;
+}
+
+.header{ 
+  height: 20px;
+}
+
+.menu{ 
+  width: 200px;
+  height: 550px
+}
+
+#graph{
+  top: 27;
+  bottom: 10;
+  left: 210;
+  right: 10;
+  position: absolute;
+}
+
+#graph-label {
+  font-size: xx-small;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+.ui-jqgrid .ui-jqgrid-htable th div{
+  font-size: xx-small;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    font-size: xx-small;
+}
+
+#depmng_conf_xml{
+  height: 480px;
+  width: 770px;
+  font-size: small;
+  overflow: auto;
+}
+
+#loadingScreen {
+    background: url(images/loading.gif) no-repeat 5px 8px;
+    padding-left: 25px;
+  }
+  /* hide the close x on the loading screen */
+.loadingScreenWindow .ui-dialog-titlebar-close {
+    display: none;
+  }

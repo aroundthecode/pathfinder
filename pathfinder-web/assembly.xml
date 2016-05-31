@@ -1,0 +1,13 @@
+<assembly>
+    <formats>
+        <format>zip</format>
+        </formats>
+    <includeBaseDirectory>false</includeBaseDirectory> 
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/web</directory>
+            <outputDirectory></outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+</fileSets>
+</assembly>

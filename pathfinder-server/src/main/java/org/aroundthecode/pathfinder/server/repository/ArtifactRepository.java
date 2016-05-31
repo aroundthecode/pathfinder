@@ -11,6 +11,11 @@ public interface ArtifactRepository extends CrudRepository<Artifact, String>, Pa
 
 	Artifact findByUniqueId(@Param("0")String uniqueId);
 	
-    Iterable<Artifact> findByDependenciesUniqueId(String uniqueId);
+	Iterable<Artifact> findByDependenciesCompileUniqueId(String uniqueId);
+	Iterable<Artifact> findByDependenciesProvidedUniqueId(String uniqueId);
+	Iterable<Artifact> findByDependenciesRuntimeUniqueId(String uniqueId);
+	Iterable<Artifact> findByDependenciesTestUniqueId(String uniqueId);
+	Iterable<Artifact> findByDependenciesSystemUniqueId(String uniqueId);
+	Iterable<Artifact> findByDependenciesImportUniqueId(String uniqueId);
 
 }

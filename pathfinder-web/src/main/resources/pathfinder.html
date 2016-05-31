@@ -1,0 +1,375 @@
+<html>
+<head>
+  <title>Pathfinder</title>
+</head>
+<body>
+
+  <table width="100%" style="margin-right: 10px;">
+    <tr>
+      <td colspan="2">
+        <div class="ui-widget-content header">
+          Pathfinder
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="180px">
+        <div class="menu">
+          <div id="accordion">
+
+          <h3>Filtering</h3>
+            <div>
+              <p>
+              Filter main graph nodes (RegExp)
+              </p>
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterG" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterA" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterP" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterC" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterV" value=".*"></td>
+                </tr>
+              </table>
+
+              <p>
+              Filter dependency nodes (RegExp)
+              </p>
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterG2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterA2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterP2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterC2" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterV2" value=".*"></td>
+                </tr>
+              </table>
+
+              <button onclick="doCypherAll()">Refresh</button>
+              <button onclick="$( '#toggle-cypher_all' ).toggle('drop')">Show Cypher</button>
+
+              <div id="toggle-cypher_all">
+                <p>Cypher query</p>
+                <textarea id="cypher_all" disabled=true style="height:120px;"></textarea>
+              </div>
+
+            </div>
+            <h3>Impact Path</h3>
+            <div>
+              <p>
+              Provide changed library as a starting node (NO RegExp).
+              Filtering rules will be applied as well
+              </p>
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchG" value="org.sample"></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchA" value="mypackage"></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchP" value="jar"></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchC" value=""></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchV" value="1.0.0"></td>
+                </tr>
+                <tr>
+                  <td>Search depth</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="searchDepth" value="2" size="5"></td>
+                </tr>
+              </table>
+              <button onclick="doCypherSearch()">Search</button>
+              <button onclick="$( '#toggle-cypher_search' ).toggle('drop')">Show Cypher</button>
+
+              <div id="toggle-cypher_search">
+                <p>Cypher query</p>
+                <textarea id="cypher_search" disabled=true style="height:120px;"></textarea>
+              </div>
+            </div>
+            <h3>Dependency Management</h3>
+            <div>
+              <p>
+              Your project contains many dependencies, this section allows you to gather them at once to optimize your Dependency Management or detect conflicting versions.
+              </p>
+              <br/>
+              <button id="depmngbut">Analyze Dependencies</button>
+
+            </div>
+            <h3>Node rearrange</h3>
+            <div>
+              <p>
+              Use this button to start/stop nodes auto-arrange.
+              </p>
+              <div class="ui-state-highlight ui-corner-all">
+                <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                <strong>Warning</strong>This may cause high load on your CPU.</p>
+              </div>
+              <br/>
+
+              <button id="autoarrangebutton">Auto-Arrange</button>
+
+            </div>
+            <h3>Graph Crawler</h3>
+            <div>
+              <p>
+              Click on node or fill the form,<br/>click on button to invoke crawler plugin on the artifact.
+              </p>
+              <div class="ui-state-highlight ui-corner-all">
+                <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                <strong>Warning</strong>&nbsp;This task may be long-lasting and asynch management is not implemented yet</p>
+              </div>
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlG" value=""></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlA" value=""></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlP" value="jar"></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlC" value=""></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="crawlV" value=""></td>
+                </tr>
+              </table>
+              <button onclick="crawlForm()">Crawl</button>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div id="graph" class="ui-widget-content">
+          <div id="graph-label">[0] Nodes</br>[0] Edges</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<!-- dependency management modal dialog -->
+<div id="depmng_modal">
+<div id="tabs">
+  <ul>
+    <li><a href="#depmng_grid_tab">Dependency List</a></li>
+    <li onclick="refreshDepMngMaven()" ><a href="#depmng_conf_tab">Dependency Management</a></li>
+  </ul>
+  <div id="depmng_grid_tab">
+    <div id="depmng_grid_pager"></div>
+    <table id="depmng_grid"></table>
+   </div>
+  <div id="depmng_conf_tab">
+    <div id="depmng_conf_xml_div">
+      <pre id="depmng_conf_xml"></pre>
+    </div>
+  </div>
+</div>  
+</div>
+
+<!-- crawler modal dialog -->
+<div id="crawler_modal" title="Crawler complete">
+  <p>
+    <span class="ui-icon ui-icon-circle-check" style="float:left;"></span>
+    Pathfinder maven crawler succesfully invoked. 
+  </p>
+  <p>
+    <table style="width:100%;font-size:x-small;">
+      <tr>
+        <td nowrap="true">Return Status</td>
+        <td id="crawler_modal_status"></td>
+      </tr>
+      <tr valign="top">  
+        <td nowrap="true">Maven Output</td>
+        <td>
+            <div id="crawler_modal_log_div">
+              <pre id="crawler_modal_log"></pre>
+            </div>
+        </td>
+      </tr><tr id="crawler_modal_err">
+        <td>Exception</td>
+        <td id="crawler_modal_elog"></td>
+      </tr>
+    </table>
+  </p>
+</div>
+
+<div id="loadingScreen"></div>
+
+<!-- JQuery -->
+<script src="./lib/jquery-1.11.3.min.js"></script>
+<script src="./lib/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./css/pathfinder.css">
+<link rel="stylesheet" type="text/css" href="./lib/jquery-ui-1.11.4.custom/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="./lib/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
+<!-- Linkourious Sigma -->
+<script src="./lib/linkurious.js-develop/src/sigma.core.js"></script>
+<script src="./lib/linkurious.js-develop/src/conrad.js"></script>
+<script src="./lib/linkurious.js-develop/src/utils/sigma.utils.js"></script>
+<script src="./lib/linkurious.js-develop/src/utils/sigma.polyfills.js"></script>
+<script src="./lib/linkurious.js-develop/src/sigma.settings.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.dispatcher.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.configurable.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.graph.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.camera.js"></script>
+<script src="./lib/linkurious.js-develop/src/classes/sigma.classes.quad.js"></script>
+<script src="./lib/linkurious.js-develop/src/captors/sigma.captors.mouse.js"></script>
+<script src="./lib/linkurious.js-develop/src/captors/sigma.captors.touch.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.canvas.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.webgl.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.svg.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/sigma.renderers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.edges.curvedArrow.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="./lib/linkurious.js-develop/src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.animation.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.bindEvents.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="./lib/linkurious.js-develop/src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/settings.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.labels.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.cross.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.diamond.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.equilateral.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.square.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.nodes.star.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.def.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.renderers.linkurious/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+
+<script src="./lib/linkurious.js-develop/plugins/sigma.parsers.json/sigma.parsers.json.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.parsers.cypher/sigma.parsers.cypher.js"></script>
+
+<script src="./lib/linkurious.js-develop/dist/plugins/sigma.renderers.edgeLabels.min.js"></script>
+
+<script src="./lib/linkurious.js-develop/plugins/sigma.plugins.animate/sigma.plugins.animate.js"></script>
+<script src="./lib/linkurious.js-develop/plugins/sigma.layouts.fruchtermanReingold/sigma.layout.fruchtermanReingold.js"></script>
+
+<!--Grid libraries -->
+<script src="./lib/jqGrid-5.0.1/js/i18n/grid.locale-en.js"></script>
+<script src="./lib/jqGrid-5.0.1/js/jquery.jqGrid.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="./lib/jqGrid-5.0.1/css/ui.jqgrid.css">
+
+
+<script src="./js/pathfinder-config.js"></script>
+<script src="./js/pathfinder.js"></script>
+
+</body>
+</html>
