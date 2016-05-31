@@ -80,6 +80,14 @@ public class CrawlerWrapper {
 		return mvnHome;
 	}
 
+    public static Invoker getInvoker() {
+        return invoker;
+    }
+
+    public static File getFilePom() {
+        return filePom;
+    }
+
 	public void setMvnHome(String mvnHome) {
 		CrawlerWrapper.mvnHome = mvnHome;
 	}
