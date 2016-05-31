@@ -26,11 +26,11 @@ public class CrawlerWrapperTest {
         try {
             InvocationResult result = CrawlerWrapper.getInvoker().execute(request);
             if (result.getExecutionException() != null) {
-                fail("Invocation resulted in exception" + result.getExecutionException().toString());
+                fail("Invocation resulted in exception. " + result.getExecutionException());
             }
             assertEquals("Maven invocation on dummy pom did not succeed", 0, result.getExitCode());
         } catch (MavenInvocationException e) {
-            fail("CrawlerWrapper did not find Maven installation. " + e.toString());
+            fail("CrawlerWrapper did not find Maven installation. " + e);
         }
 
     }
