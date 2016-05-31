@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public class CrawlerWrapperTest {
@@ -25,9 +26,7 @@ public class CrawlerWrapperTest {
 
         try {
             InvocationResult result = CrawlerWrapper.getInvoker().execute(request);
-            if (result.getExecutionException() != null) {
-                fail("Invocation resulted in exception. " + result.getExecutionException());
-            }
+            assertNull("Invocation resulted in exception. " + result.getExecutionException(), result.getExecutionException());
             assertEquals("Maven invocation on dummy pom did not succeed", 0, result.getExitCode());
         } catch (MavenInvocationException e) {
             fail("CrawlerWrapper did not find Maven installation. " + e);
