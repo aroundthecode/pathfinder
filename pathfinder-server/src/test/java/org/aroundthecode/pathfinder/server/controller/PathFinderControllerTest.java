@@ -34,13 +34,28 @@ public class PathFinderControllerTest {
 	private static final int    PF_SERVER_PORT = ConfigurationManager.getPathfinderPort();
 	private static final String PF_SERVER_PATH = ConfigurationManager.getPathfinderPath();
 
+	private static final String FILTERALL = 
+			//"MATCH n-[r]->n2 with n, [type(r), n2] as relative WHERE "
+			"MATCH n-[r]->n2 WHERE "
+			+ "n2.groupId =~ \".*\" AND "
+			+ "n2.artifactId =~ \".*\" AND "
+			+ "n2.packaging =~ \".*\" AND "
+			+ "n2.classifier =~ \".*\" AND "
+			+ "n2.version =~ \".*\" AND "
+			+ "n.groupId =~ \".*\" AND "
+			+ "n.artifactId =~ \".*\" AND "
+			+ "n.packaging =~ \".*\" AND "
+			+ "n.classifier =~ \".*\" AND "
+			+ "n.version =~ \".*\" "
+			+ "RETURN n,type(r) as rel ,n2";
+//			+ "RETURN { n, collect(relative) } as col";
+	
+	
 	@Test
 	public void test10Client() throws IOException {
 		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		assertNotNull(client);
 	}
-
-
 
 	@Test
 	public void test20Write() throws IOException {
@@ -123,6 +138,39 @@ public class PathFinderControllerTest {
 	private JSONObject getJsonObject() {
 		return getJsonObject("");
 	}
+	
+	@Test
+	public void test51Filter() throws IOException {
+
+		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
+		try {
+			String response = client.filterAll(".*",".*",".*",".*",".*",".*",".*",".*",".*", ".*");
+			assertNotNull(response);
+			System.out.println(response);
+
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+
+	}
+	
+	@Test
+	public void test52Query() throws IOException {
+
+		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
+		try {
+			String response = client.query(FILTERALL);
+			assertNotNull(response);
+			System.out.println(response);
+
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+
+	}
+	
+	
+	
 
 	@SuppressWarnings("unchecked")
 	private JSONObject getJsonObject(String prefix) {

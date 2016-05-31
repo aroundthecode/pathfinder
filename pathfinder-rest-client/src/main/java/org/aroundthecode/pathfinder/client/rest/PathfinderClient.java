@@ -3,6 +3,7 @@ package org.aroundthecode.pathfinder.client.rest;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
@@ -10,6 +11,7 @@ import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+@SuppressWarnings("unchecked")
 public class PathfinderClient {
 
 	private static final int SLEEP = 10000;
@@ -72,7 +74,6 @@ public class PathfinderClient {
 				);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String createDependency(String uniqueIdFrom,String uniqueIdTo,String scope) throws IOException {
 
 		JSONObject body = new JSONObject();
@@ -83,7 +84,6 @@ public class PathfinderClient {
 		return RestUtils.sendPost(getBaseurl() + "node/depends", body);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String addParent(String mainUniqueId,String parentUniqueId) throws IOException {
 
 		JSONObject body = new JSONObject();
@@ -92,6 +92,33 @@ public class PathfinderClient {
 
 		return RestUtils.sendPost(getBaseurl() + "node/parent", body);
 	}
+	
+	public String query(String cypherQuery) throws IOException {
+
+		JSONObject body = new JSONObject();
+		body.put("q", cypherQuery);
+
+		return RestUtils.sendPost(getBaseurl() + "/cypher/query", body);
+	}
+	
+	public String filterAll(String filterGN1, String filterAN1, String filterPN1, String filterCN1, String filterVN1, String filterGN2, String filterAN2, String filterPN2, String filterCN2, String filterVN2) throws IOException {
+
+		StringBuffer sb = new StringBuffer("/query/filterall?");
+		
+		sb.append("gn1=").append(URLEncoder.encode(filterGN1,"UTF-8")).append("&");
+		sb.append("an1=").append(URLEncoder.encode(filterAN1,"UTF-8")).append("&");
+		sb.append("pn1=").append(URLEncoder.encode(filterPN1,"UTF-8")).append("&");
+		sb.append("cn1=").append(URLEncoder.encode(filterCN1,"UTF-8")).append("&");
+		sb.append("vn1=").append(URLEncoder.encode(filterVN1,"UTF-8")).append("&");
+		
+		sb.append("gn2=").append(URLEncoder.encode(filterGN2,"UTF-8")).append("&");
+		sb.append("an2=").append(URLEncoder.encode(filterAN2,"UTF-8")).append("&");
+		sb.append("pn2=").append(URLEncoder.encode(filterPN2,"UTF-8")).append("&");
+		sb.append("cn2=").append(URLEncoder.encode(filterCN2,"UTF-8")).append("&");
+		sb.append("vn2=").append(URLEncoder.encode(filterVN2,"UTF-8"));
+
+		return RestUtils.sendGet(getBaseurl() + sb.toString() );
+	}
 
 	public JSONObject getArtifact(String uniqueId) throws IOException, ParseException {
 
@@ -99,7 +126,6 @@ public class PathfinderClient {
 		return RestUtils.string2Json(response);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static JSONObject createJson(String groupId, String artifactId,
 			String packaging, String classifier, String version) {
 		JSONObject body = new JSONObject();

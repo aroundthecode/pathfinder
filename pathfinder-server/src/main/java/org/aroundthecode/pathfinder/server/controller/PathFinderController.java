@@ -11,8 +11,13 @@ import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
 import org.aroundthecode.pathfinder.server.entity.Artifact;
 import org.aroundthecode.pathfinder.server.repository.ArtifactRepository;
+import org.aroundthecode.pathfinder.server.utils.QueryUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.GraphDatabase;
@@ -28,8 +33,75 @@ public class PathFinderController {
 	@Autowired ArtifactRepository artifactRepository;
 
 	@Autowired GraphDatabase graphDatabase;
-	
+
+	@Autowired
+	GraphDatabaseService db;
+
 	private static final Logger log = LogManager.getLogger(PathFinderController.class.getName());
+
+	@RequestMapping(value="/cypher/query", method=RequestMethod.POST)
+	public String doQuery(@RequestBody String body) throws ParseException 
+	{
+		JSONObject o = RestUtils.string2Json(body);
+		String query = o.get("q").toString();
+
+		String rows = "";
+
+		try ( Transaction ignored = db.beginTx();
+				Result result = db.execute( query ) )
+				{
+			while ( result.hasNext() )
+			{
+				Map<String,Object> row = result.next();
+				
+				Node n1 = (Node) row.get("n");
+				Node n2 = (Node) row.get("n2");
+				String r = (String) row.get("rel");
+				rows += n1.getProperty("uniqueId") + " - " + r + " - " + n2.getProperty("uniqueId") + "\n";
+			}
+				}
+		return rows;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/query/filterall", method=RequestMethod.GET)
+	public JSONArray doFilterAll(
+			@RequestParam(value="gn1", defaultValue=".*") String filterGN1,
+			@RequestParam(value="an1", defaultValue=".*") String filterAN1,
+			@RequestParam(value="pn1", defaultValue=".*") String filterPN1,
+			@RequestParam(value="cn1", defaultValue=".*") String filterCN1,
+			@RequestParam(value="vn1", defaultValue=".*") String filterVN1,
+			@RequestParam(value="gn2", defaultValue=".*") String filterGN2,
+			@RequestParam(value="an2", defaultValue=".*") String filterAN2,
+			@RequestParam(value="pn2", defaultValue=".*") String filterPN2,
+			@RequestParam(value="cn2", defaultValue=".*") String filterCN2,
+			@RequestParam(value="vn2", defaultValue=".*") String filterVN2
+			) throws ParseException 
+	{
+		String query = QueryUtils.getFilterAllQuery(filterGN1,filterAN1,filterPN1,filterCN1,filterVN1,filterGN2,filterAN2,filterPN2,filterCN2,filterVN2);
+
+		JSONArray out = new JSONArray();
+
+		try ( Transaction ignored = db.beginTx();
+				Result result = db.execute( query ) )
+				{
+			while ( result.hasNext() )
+			{
+				JSONObject o = new JSONObject();
+				Map<String,Object> row = result.next();
+				
+				Artifact a1 = new Artifact((Node) row.get("n1"));
+				Artifact a2 = new Artifact((Node) row.get("n2"));
+				
+				o.put("r", (String) row.get("rel"));
+				o.put("n1", a1.toJSON());
+				o.put("n2", a2.toJSON());
+				
+				out.add(o);
+			}
+				}
+		return out;
+	}
 
 
 	@RequestMapping(value="/node/get", method=RequestMethod.GET)
@@ -49,7 +121,7 @@ public class PathFinderController {
 		main.hasParent(parent);
 		saveArtifact(main);
 	}
-	
+
 	@RequestMapping(value="/node/depends", method=RequestMethod.POST)
 	public void depends(@RequestBody String body) throws ParseException 
 	{
@@ -80,14 +152,14 @@ public class PathFinderController {
 		Artifact a = Artifact.parsePropertiesFromJson(o);
 		return checkAndSaveArtifact(a);
 	}
-	
+
 	@RequestMapping(value="/crawler/crawl", method=RequestMethod.POST)
 	public JSONObject crawlArtifact(@RequestBody String body) throws ParseException, UnsupportedEncodingException 
 	{
 		String uid = URLDecoder.decode(body, "UTF-8");
 		uid = uid.substring(0, uid.lastIndexOf("="));
 		log.debug("Request body:[{}]",uid);
-		
+
 		Map<String, String> map = ArtifactUtils.splitUniqueId(uid);
 		return CrawlerWrapper.crawl(
 				map.get(ArtifactUtils.G),
@@ -95,7 +167,7 @@ public class PathFinderController {
 				map.get(ArtifactUtils.P), 
 				map.get(ArtifactUtils.C), 
 				map.get(ArtifactUtils.V)
-			);
+				);
 	}
 
 	private Artifact checkAndSaveArtifact(Artifact a) {

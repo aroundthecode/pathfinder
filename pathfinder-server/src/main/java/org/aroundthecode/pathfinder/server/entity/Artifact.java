@@ -8,6 +8,7 @@ import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
 import org.json.simple.JSONObject;
 import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -54,6 +55,10 @@ public class Artifact {
 	public Artifact() {
 	}
 
+	public Artifact(Node n){
+		this(n.getProperty("uniqueId").toString());
+	}
+	
 	public Artifact(String uniqueId) {
 		setUniqueId(uniqueId);
 	}
@@ -155,6 +160,17 @@ public class Artifact {
 	@Override
 	public int hashCode() {
 		return id == null ? System.identityHashCode(this) : id.hashCode();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject toJSON(){
+		JSONObject o = new JSONObject();
+		o.put(ArtifactUtils.G, getGroupId());
+		o.put(ArtifactUtils.A, getArtifactId());
+		o.put(ArtifactUtils.V, getVersion());
+		o.put(ArtifactUtils.P, getPackaging());
+		o.put(ArtifactUtils.C, getClassifier());
+		return o;
 	}
 
 	@Override
