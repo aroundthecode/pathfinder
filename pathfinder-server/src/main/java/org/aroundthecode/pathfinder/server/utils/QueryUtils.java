@@ -34,20 +34,20 @@ public class QueryUtils {
 	    StringBuffer whereclause = new StringBuffer("");
 
 	    whereclause
-	    .append(" WHERE n"+idx+".groupId =~ \"" + f.getFilterGN1() + "\"")
-		.append(" AND n"+idx+".artifactId =~ \"" + f.getFilterAN1() + "\"")
-		.append(" AND n"+idx+".packaging =~ \"" + f.getFilterPN1() + "\"")
-		.append(" AND n"+idx+".classifier =~ \"" + f.getFilterCN1() + "\"")
-		.append(" AND n"+idx+".version =~ \"" + f.getFilterVN1() + "\"");
+	    .append(" WHERE n").append(idx).append(".groupId =~ \"").append(f.getFilterGN1()).append("\"")
+		.append(" AND n").append(idx).append(".artifactId =~ \"").append(f.getFilterAN1()).append("\"")
+		.append(" AND n").append(idx).append(".packaging =~ \"").append(f.getFilterPN1()).append("\"")
+		.append(" AND n").append(idx).append(".classifier =~ \"").append(f.getFilterCN1()).append("\"")
+		.append(" AND n").append(idx).append(".version =~ \"").append(f.getFilterVN1()).append("\"");
 	    
 	    idx++;
 	    
 	    whereclause
-	    .append(" AND n"+idx+".groupId =~ \"" + f.getFilterGN2() + "\"")
-		.append(" AND n"+idx+".artifactId =~ \"" + f.getFilterAN2() + "\"")
-		.append(" AND n"+idx+".packaging =~ \"" + f.getFilterPN2() + "\"")
-		.append(" AND n"+idx+".classifier =~ \"" + f.getFilterCN2() + "\"")
-		.append(" AND n"+idx+".version =~ \"" + f.getFilterVN2() + "\"");
+	    .append(" AND n").append(idx).append(".groupId =~ \"").append(f.getFilterGN2()).append("\"")
+		.append(" AND n").append(idx).append(".artifactId =~ \"").append(f.getFilterAN2()).append("\"")
+		.append(" AND n").append(idx).append(".packaging =~ \"").append(f.getFilterPN2()).append("\"")
+		.append(" AND n").append(idx).append(".classifier =~ \"").append(f.getFilterCN2()).append("\"")
+		.append(" AND n").append(idx).append(".version =~ \"").append(f.getFilterVN2()).append("\"");
 	    
 	    return whereclause.toString();
 	}
@@ -63,21 +63,23 @@ public class QueryUtils {
 		.append( getSearchValue("artifactId", artifactId) )
 		.append( getSearchValue("packaging", packaging) )
 		.append( getSearchValue("version", version) )
-		.append( "classifier: '" + classifier + "'" );
+		.append( "classifier: '").append(classifier).append("'" );
 		
 		query.append(fixedQuery)
-	    .append(" })"+chain+" with n1 as node, [type(r1), n2] as relative")
+	    .append(" })")
+	    .append(chain)
 	    .append(getSearchWhereClause(1,f) )
-		.append(" RETURN { root: node, relatives: collect(relative) }");
+		.append(" RETURN n1 as node1,type(r1) as rel ,n2 as node2");
 		
 		 for(int i = 2 ; i <= depth; i++){
 		        chain += "-[r"+i+"]->(n"+(i+1)+")";
 
 		        query.append(" UNION ")
 		        .append(fixedQuery)
-		        .append(" })"+chain+" with n"+i+" as node, [type(r"+i+"), n"+(i+1)+"] as relative")
+		        .append(" })")
+		        .append(chain)
 		        .append( getSearchWhereClause(2,f) )
-		        .append(" RETURN { root: node, relatives: collect(relative) }");
+		        .append(" RETURN n"+(i+1)+" as node1,type(r"+i+") as rel ,n"+(i+1)+" as node2" );
 		    }
 		
 		return query.toString();
