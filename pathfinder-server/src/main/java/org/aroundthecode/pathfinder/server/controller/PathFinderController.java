@@ -11,6 +11,7 @@ import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
 import org.aroundthecode.pathfinder.server.entity.Artifact;
 import org.aroundthecode.pathfinder.server.repository.ArtifactRepository;
+import org.aroundthecode.pathfinder.server.utils.FilterItem;
 import org.aroundthecode.pathfinder.server.utils.QueryUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -78,7 +79,8 @@ public class PathFinderController {
 			@RequestParam(value="vn2", defaultValue=".*") String filterVN2
 			) throws ParseException 
 	{
-		String query = QueryUtils.getFilterAllQuery(filterGN1,filterAN1,filterPN1,filterCN1,filterVN1,filterGN2,filterAN2,filterPN2,filterCN2,filterVN2);
+		FilterItem f = new FilterItem(filterGN1, filterAN1, filterPN1, filterCN1, filterVN1, filterGN2, filterAN2, filterPN2, filterCN2, filterVN2);
+		String query = QueryUtils.getFilterAllQuery(f);
 
 		JSONArray out = new JSONArray();
 
