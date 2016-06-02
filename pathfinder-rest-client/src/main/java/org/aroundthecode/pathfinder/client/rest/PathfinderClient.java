@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.json.simple.JSONObject;
@@ -101,21 +102,47 @@ public class PathfinderClient {
 		return RestUtils.sendPost(getBaseurl() + "/cypher/query", body);
 	}
 	
-	public String filterAll(String filterGN1, String filterAN1, String filterPN1, String filterCN1, String filterVN1, String filterGN2, String filterAN2, String filterPN2, String filterCN2, String filterVN2) throws IOException {
+	public String filterAll(FilterItem f) throws IOException {
 
 		StringBuffer sb = new StringBuffer("/query/filterall?");
 		
-		sb.append("gn1=").append(URLEncoder.encode(filterGN1,"UTF-8")).append("&");
-		sb.append("an1=").append(URLEncoder.encode(filterAN1,"UTF-8")).append("&");
-		sb.append("pn1=").append(URLEncoder.encode(filterPN1,"UTF-8")).append("&");
-		sb.append("cn1=").append(URLEncoder.encode(filterCN1,"UTF-8")).append("&");
-		sb.append("vn1=").append(URLEncoder.encode(filterVN1,"UTF-8")).append("&");
+		sb.append("gn1=").append(URLEncoder.encode(f.getFilterGN1(),"UTF-8")).append("&");
+		sb.append("an1=").append(URLEncoder.encode(f.getFilterAN1(),"UTF-8")).append("&");
+		sb.append("pn1=").append(URLEncoder.encode(f.getFilterPN1(),"UTF-8")).append("&");
+		sb.append("cn1=").append(URLEncoder.encode(f.getFilterCN1(),"UTF-8")).append("&");
+		sb.append("vn1=").append(URLEncoder.encode(f.getFilterVN1(),"UTF-8")).append("&");
 		
-		sb.append("gn2=").append(URLEncoder.encode(filterGN2,"UTF-8")).append("&");
-		sb.append("an2=").append(URLEncoder.encode(filterAN2,"UTF-8")).append("&");
-		sb.append("pn2=").append(URLEncoder.encode(filterPN2,"UTF-8")).append("&");
-		sb.append("cn2=").append(URLEncoder.encode(filterCN2,"UTF-8")).append("&");
-		sb.append("vn2=").append(URLEncoder.encode(filterVN2,"UTF-8"));
+		sb.append("gn2=").append(URLEncoder.encode(f.getFilterGN2(),"UTF-8")).append("&");
+		sb.append("an2=").append(URLEncoder.encode(f.getFilterAN2(),"UTF-8")).append("&");
+		sb.append("pn2=").append(URLEncoder.encode(f.getFilterPN2(),"UTF-8")).append("&");
+		sb.append("cn2=").append(URLEncoder.encode(f.getFilterCN2(),"UTF-8")).append("&");
+		sb.append("vn2=").append(URLEncoder.encode(f.getFilterVN2(),"UTF-8"));
+
+		return RestUtils.sendGet(getBaseurl() + sb.toString() );
+	}
+	
+	public String impact(int depth,String groupId,String artifactId,String packaging,String classifier,String version,FilterItem f) throws IOException {
+
+		StringBuffer sb = new StringBuffer("/query/impact?");
+		
+		sb.append("d=").append(depth).append("&");
+		sb.append("g=").append(URLEncoder.encode(groupId,"UTF-8")).append("&");
+		sb.append("a=").append(URLEncoder.encode(artifactId,"UTF-8")).append("&");
+		sb.append("p=").append(URLEncoder.encode(packaging,"UTF-8")).append("&");
+		sb.append("c=").append(URLEncoder.encode(classifier,"UTF-8")).append("&");
+		sb.append("v=").append(URLEncoder.encode(version,"UTF-8")).append("&");
+		
+		sb.append("gn1=").append(URLEncoder.encode(f.getFilterGN1(),"UTF-8")).append("&");
+		sb.append("an1=").append(URLEncoder.encode(f.getFilterAN1(),"UTF-8")).append("&");
+		sb.append("pn1=").append(URLEncoder.encode(f.getFilterPN1(),"UTF-8")).append("&");
+		sb.append("cn1=").append(URLEncoder.encode(f.getFilterCN1(),"UTF-8")).append("&");
+		sb.append("vn1=").append(URLEncoder.encode(f.getFilterVN1(),"UTF-8")).append("&");
+		
+		sb.append("gn2=").append(URLEncoder.encode(f.getFilterGN2(),"UTF-8")).append("&");
+		sb.append("an2=").append(URLEncoder.encode(f.getFilterAN2(),"UTF-8")).append("&");
+		sb.append("pn2=").append(URLEncoder.encode(f.getFilterPN2(),"UTF-8")).append("&");
+		sb.append("cn2=").append(URLEncoder.encode(f.getFilterCN2(),"UTF-8")).append("&");
+		sb.append("vn2=").append(URLEncoder.encode(f.getFilterVN2(),"UTF-8"));
 
 		return RestUtils.sendGet(getBaseurl() + sb.toString() );
 	}

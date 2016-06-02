@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
+import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
 import org.aroundthecode.pathfinder.server.Application;
@@ -34,26 +35,15 @@ public class PathFinderControllerTest {
 	private static final int    PF_SERVER_PORT = ConfigurationManager.getPathfinderPort();
 	private static final String PF_SERVER_PATH = ConfigurationManager.getPathfinderPath();
 
+	private static PathfinderClient client = null;
+	
 	private static final String FILTERALL = 
-			//"MATCH n-[r]->n2 with n, [type(r), n2] as relative WHERE "
-			"MATCH n-[r]->n2 WHERE "
-			+ "n2.groupId =~ \".*\" AND "
-			+ "n2.artifactId =~ \".*\" AND "
-			+ "n2.packaging =~ \".*\" AND "
-			+ "n2.classifier =~ \".*\" AND "
-			+ "n2.version =~ \".*\" AND "
-			+ "n.groupId =~ \".*\" AND "
-			+ "n.artifactId =~ \".*\" AND "
-			+ "n.packaging =~ \".*\" AND "
-			+ "n.classifier =~ \".*\" AND "
-			+ "n.version =~ \".*\" "
-			+ "RETURN n,type(r) as rel ,n2";
-//			+ "RETURN { n, collect(relative) } as col";
+			"MATCH n-[r]->n2 RETURN n,type(r) as rel ,n2";
 	
 	
 	@Test
 	public void test10Client() throws IOException {
-		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
+		client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		assertNotNull(client);
 	}
 
@@ -62,7 +52,6 @@ public class PathFinderControllerTest {
 
 		JSONObject body = getJsonObject();
 		assertNotNull(body);
-		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		try {
 			String response = client.saveArtifact(ArtifactTest.ID);
 			assertNotNull(response);
@@ -76,8 +65,6 @@ public class PathFinderControllerTest {
 
 	@Test
 	public void test30Dependencies() throws IOException {
-
-		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 
 		//main artifact creation
 		JSONObject obj = getJsonObject();
@@ -97,8 +84,6 @@ public class PathFinderControllerTest {
 	@Test
 	public void test40Parent() throws IOException {
 
-		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
-
 		//main artifact creation
 		JSONObject obj = getJsonObject();
 		assertNotNull(obj);
@@ -113,7 +98,7 @@ public class PathFinderControllerTest {
 
 	@Test
 	public void test50Read() throws IOException {
-		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
+
 		try {
 			JSONObject o = client.getArtifact(ArtifactTest.ID);
 			assertNotNull(o);
@@ -140,11 +125,25 @@ public class PathFinderControllerTest {
 	}
 	
 	@Test
-	public void test51Filter() throws IOException {
-
-		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
+	public void test70Query() throws IOException {
+		
 		try {
-			String response = client.filterAll(".*",".*",".*",".*",".*",".*",".*",".*",".*", ".*");
+			String response = client.query(FILTERALL);
+			assertNotNull(response);
+			System.out.println(response);
+			
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+		
+	}
+
+	@Test
+	public void test71Filter() throws IOException {
+
+		try {
+			FilterItem f = new FilterItem();
+			String response = client.filterAll(f);
 			assertNotNull(response);
 			System.out.println(response);
 
@@ -155,21 +154,18 @@ public class PathFinderControllerTest {
 	}
 	
 	@Test
-	public void test52Query() throws IOException {
+	public void test72Impact() throws IOException {
 
-		PathfinderClient client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		try {
-			String response = client.query(FILTERALL);
+			FilterItem f = new FilterItem();
+			String response = client.impact(2, "org.aroundthecode.pathfinder", "pathfinder-client", "jar", "", "0.1.0-SNAPSHOT", f);
 			assertNotNull(response);
 			System.out.println(response);
 
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
-
 	}
-	
-	
 	
 
 	@SuppressWarnings("unchecked")

@@ -1,7 +1,8 @@
-package org.aroundthecode.pathfinder.server.utils;
+package org.aroundthecode.pathfinder.client.rest.items;
 
 import static org.junit.Assert.*;
 
+import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
 import org.junit.Test;
 
 public class FilterItemTest {

@@ -6,12 +6,12 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
 import org.aroundthecode.pathfinder.server.entity.Artifact;
 import org.aroundthecode.pathfinder.server.repository.ArtifactRepository;
-import org.aroundthecode.pathfinder.server.utils.FilterItem;
 import org.aroundthecode.pathfinder.server.utils.QueryUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -54,7 +54,7 @@ public class PathFinderController {
 			while ( result.hasNext() )
 			{
 				Map<String,Object> row = result.next();
-				
+
 				Node n1 = (Node) row.get("n");
 				Node n2 = (Node) row.get("n2");
 				String r = (String) row.get("rel");
@@ -63,8 +63,7 @@ public class PathFinderController {
 				}
 		return rows;
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@RequestMapping(value="/query/filterall", method=RequestMethod.GET)
 	public JSONArray doFilterAll(
 			@RequestParam(value="gn1", defaultValue=".*") String filterGN1,
@@ -82,8 +81,46 @@ public class PathFinderController {
 		FilterItem f = new FilterItem(filterGN1, filterAN1, filterPN1, filterCN1, filterVN1, filterGN2, filterAN2, filterPN2, filterCN2, filterVN2);
 		String query = QueryUtils.getFilterAllQuery(f);
 
-		JSONArray out = new JSONArray();
+		JSONArray out = doNodeRelationNodeQuery(query);
+		return out;
+	}
 
+	@RequestMapping(value="/query/impact", method=RequestMethod.GET)
+	public JSONArray doImpact(
+			@RequestParam(value="d", defaultValue="2") int depth, 
+			@RequestParam(value="g") String groupId, 
+			@RequestParam(value="a") String artifactId, 
+			@RequestParam(value="p") String packaging, 
+			@RequestParam(value="c") String classifier, 
+			@RequestParam(value="v") String version,
+			@RequestParam(value="gn1", defaultValue=".*") String filterGN1,
+			@RequestParam(value="an1", defaultValue=".*") String filterAN1,
+			@RequestParam(value="pn1", defaultValue=".*") String filterPN1,
+			@RequestParam(value="cn1", defaultValue=".*") String filterCN1,
+			@RequestParam(value="vn1", defaultValue=".*") String filterVN1,
+			@RequestParam(value="gn2", defaultValue=".*") String filterGN2,
+			@RequestParam(value="an2", defaultValue=".*") String filterAN2,
+			@RequestParam(value="pn2", defaultValue=".*") String filterPN2,
+			@RequestParam(value="cn2", defaultValue=".*") String filterCN2,
+			@RequestParam(value="vn2", defaultValue=".*") String filterVN2
+			) throws ParseException 
+	{
+		FilterItem f = new FilterItem(filterGN1, filterAN1, filterPN1, filterCN1, filterVN1, filterGN2, filterAN2, filterPN2, filterCN2, filterVN2);
+		String query = QueryUtils.getImpactQuery(depth, groupId, artifactId, packaging, classifier, version, f);
+
+		JSONArray out = doNodeRelationNodeQuery(query);
+		return out;
+	}
+
+	/**
+	 * execute a Cypher query expecting a node-relation-node columns result to map to JSONArray
+	 * @param query Cypher query 
+	 * @return JSONArray with query result
+	 */
+	@SuppressWarnings("unchecked")
+	private JSONArray doNodeRelationNodeQuery(String query) {
+		JSONArray out = new JSONArray();
+		log.info("QUERY: [{}]",query);
 		try ( Transaction ignored = db.beginTx();
 				Result result = db.execute( query ) )
 				{
@@ -91,14 +128,14 @@ public class PathFinderController {
 			{
 				JSONObject o = new JSONObject();
 				Map<String,Object> row = result.next();
-				
-				Artifact a1 = new Artifact((Node) row.get("n1"));
-				Artifact a2 = new Artifact((Node) row.get("n2"));
-				
+
+				Artifact a1 = new Artifact((Node) row.get("node1"));
+				Artifact a2 = new Artifact((Node) row.get("node2"));
+
 				o.put("r", (String) row.get("rel"));
 				o.put("n1", a1.toJSON());
 				o.put("n2", a2.toJSON());
-				
+
 				out.add(o);
 			}
 				}

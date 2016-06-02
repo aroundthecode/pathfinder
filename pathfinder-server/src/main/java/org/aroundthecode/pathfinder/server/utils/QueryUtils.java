@@ -1,5 +1,7 @@
 package org.aroundthecode.pathfinder.server.utils;
 
+import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
+
 public class QueryUtils {
 
 	private static final String FILTERALL = 
@@ -14,7 +16,7 @@ public class QueryUtils {
 			+ "n2.packaging =~ \"%s\" AND "
 			+ "n2.classifier =~ \"%s\" AND "
 			+ "n2.version =~ \"%s\" "
-			+ "RETURN n1,type(r) as rel ,n2";
+			+ "RETURN n1 as node1,type(r) as rel ,n2 as node2";
 
 	public static String getFilterAllQuery(FilterItem f) {
 		return String.format(FILTERALL, f.getFilterGN1(),f.getFilterAN1(),f.getFilterPN1(),f.getFilterCN1(),f.getFilterVN1(),f.getFilterGN2(),f.getFilterAN2(),f.getFilterPN2(),f.getFilterCN2(),f.getFilterVN2());

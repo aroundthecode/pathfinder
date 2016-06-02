@@ -1,4 +1,4 @@
-package org.aroundthecode.pathfinder.server.utils;
+package org.aroundthecode.pathfinder.client.rest.items;
 
 public class FilterItem {
 
