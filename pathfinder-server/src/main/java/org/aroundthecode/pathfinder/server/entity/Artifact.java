@@ -165,6 +165,7 @@ public class Artifact {
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON(){
 		JSONObject o = new JSONObject();
+		o.put(ArtifactUtils.U, getUniqueId());
 		o.put(ArtifactUtils.G, getGroupId());
 		o.put(ArtifactUtils.A, getArtifactId());
 		o.put(ArtifactUtils.V, getVersion());
