@@ -42,7 +42,7 @@ public class PathFinderControllerTest {
 	
 	
 	@Test
-	public void test10Client() throws IOException, InterruptedException {
+	public void test10Client() throws IOException {
 		client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 		assertNotNull(client);
 	}

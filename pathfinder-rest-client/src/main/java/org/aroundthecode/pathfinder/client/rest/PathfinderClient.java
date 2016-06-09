@@ -18,22 +18,25 @@ public class PathfinderClient {
 	private static final int SLEEP = 10000;
 	private String baseurl = "http://localhost:8080";
 
-	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException, InterruptedException {
+	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException {
 
 		this.setBaseurl(protocol+"://"+domain+":"+port+path);
 
 		System.err.print("testing connection ["+getBaseurl()+"]...");
-		Socket socket = null;
+		Socket socket = new Socket();;
 		for (int i = 1; i <= 3; i++) {
 			try {
-				socket = new Socket();
 				socket.connect(new InetSocketAddress(domain, port), 10);
 				System.err.println("OK");
 				break;
 			} catch (IOException ex) {
 				if(i<3){
 					System.err.println("FAIL ["+i+"/3] Sleep 10 sec and retry");
-					Thread.sleep(SLEEP);
+					try {
+						Thread.sleep(SLEEP);
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
 				}
 				else{
 					System.err.println("FAIL ["+i+"/3] give up");
@@ -41,9 +44,7 @@ public class PathfinderClient {
 				}
 			} 
 			finally{
-				if(socket!=null){
 					socket.close();
-				}
 			}
 		}
 	}

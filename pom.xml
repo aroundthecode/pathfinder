@@ -33,7 +33,6 @@
 		<!-- Tells Sonar Jacoco coverage result file location for Integration Tests -->
 		<jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</jacoco.itReportPath>
 
-		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.jacoco.itReportPath>../target/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
 		<sonar.jacoco.reportPath>../target/jacoco/jacoco-ut.exec</sonar.jacoco.reportPath>
