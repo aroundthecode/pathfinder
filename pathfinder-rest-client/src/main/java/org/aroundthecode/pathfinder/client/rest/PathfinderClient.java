@@ -18,25 +18,22 @@ public class PathfinderClient {
 	private static final int SLEEP = 10000;
 	private String baseurl = "http://localhost:8080";
 
-	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException {
+	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException, InterruptedException {
 
 		this.setBaseurl(protocol+"://"+domain+":"+port+path);
 
 		System.err.print("testing connection ["+getBaseurl()+"]...");
-		Socket socket = new Socket();
+		Socket socket = null;
 		for (int i = 1; i <= 3; i++) {
 			try {
+				socket = new Socket();
 				socket.connect(new InetSocketAddress(domain, port), 10);
 				System.err.println("OK");
 				break;
 			} catch (IOException ex) {
 				if(i<3){
 					System.err.println("FAIL ["+i+"/3] Sleep 10 sec and retry");
-					try {
-						Thread.sleep(SLEEP);
-					} catch (InterruptedException e) {
-						throw new IOException(e);
-					}
+					Thread.sleep(SLEEP);
 				}
 				else{
 					System.err.println("FAIL ["+i+"/3] give up");
@@ -44,7 +41,9 @@ public class PathfinderClient {
 				}
 			} 
 			finally{
-				socket.close();
+				if(socket!=null){
+					socket.close();
+				}
 			}
 		}
 	}
@@ -93,7 +92,7 @@ public class PathfinderClient {
 
 		return RestUtils.sendPost(getBaseurl() + "node/parent", body);
 	}
-	
+
 	public String query(String cypherQuery) throws IOException {
 
 		JSONObject body = new JSONObject();
@@ -101,17 +100,17 @@ public class PathfinderClient {
 
 		return RestUtils.sendPost(getBaseurl() + "/cypher/query", body);
 	}
-	
+
 	public String filterAll(FilterItem f) throws IOException {
 
 		StringBuffer sb = new StringBuffer("/query/filterall?");
-		
+
 		sb.append("gn1=").append(URLEncoder.encode(f.getFilterGN1(),"UTF-8")).append("&");
 		sb.append("an1=").append(URLEncoder.encode(f.getFilterAN1(),"UTF-8")).append("&");
 		sb.append("pn1=").append(URLEncoder.encode(f.getFilterPN1(),"UTF-8")).append("&");
 		sb.append("cn1=").append(URLEncoder.encode(f.getFilterCN1(),"UTF-8")).append("&");
 		sb.append("vn1=").append(URLEncoder.encode(f.getFilterVN1(),"UTF-8")).append("&");
-		
+
 		sb.append("gn2=").append(URLEncoder.encode(f.getFilterGN2(),"UTF-8")).append("&");
 		sb.append("an2=").append(URLEncoder.encode(f.getFilterAN2(),"UTF-8")).append("&");
 		sb.append("pn2=").append(URLEncoder.encode(f.getFilterPN2(),"UTF-8")).append("&");
@@ -120,24 +119,24 @@ public class PathfinderClient {
 
 		return RestUtils.sendGet(getBaseurl() + sb.toString() );
 	}
-	
+
 	public String impact(int depth,String groupId,String artifactId,String packaging,String classifier,String version,FilterItem f) throws IOException {
 
 		StringBuffer sb = new StringBuffer("/query/impact?");
-		
+
 		sb.append("d=").append(depth).append("&");
 		sb.append("g=").append(URLEncoder.encode(groupId,"UTF-8")).append("&");
 		sb.append("a=").append(URLEncoder.encode(artifactId,"UTF-8")).append("&");
 		sb.append("p=").append(URLEncoder.encode(packaging,"UTF-8")).append("&");
 		sb.append("c=").append(URLEncoder.encode(classifier,"UTF-8")).append("&");
 		sb.append("v=").append(URLEncoder.encode(version,"UTF-8")).append("&");
-		
+
 		sb.append("gn1=").append(URLEncoder.encode(f.getFilterGN1(),"UTF-8")).append("&");
 		sb.append("an1=").append(URLEncoder.encode(f.getFilterAN1(),"UTF-8")).append("&");
 		sb.append("pn1=").append(URLEncoder.encode(f.getFilterPN1(),"UTF-8")).append("&");
 		sb.append("cn1=").append(URLEncoder.encode(f.getFilterCN1(),"UTF-8")).append("&");
 		sb.append("vn1=").append(URLEncoder.encode(f.getFilterVN1(),"UTF-8")).append("&");
-		
+
 		sb.append("gn2=").append(URLEncoder.encode(f.getFilterGN2(),"UTF-8")).append("&");
 		sb.append("an2=").append(URLEncoder.encode(f.getFilterAN2(),"UTF-8")).append("&");
 		sb.append("pn2=").append(URLEncoder.encode(f.getFilterPN2(),"UTF-8")).append("&");

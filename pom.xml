@@ -23,8 +23,7 @@
 
 		<!-- Jacoco version to use -->
 		<jacoco.version>0.7.6.201602180812</jacoco.version>
-<!-- 		<jacoco.outputDir>../target/jacoco</jacoco.outputDir> -->
-		<jacoco.outputDir>${project.build.directory}</jacoco.outputDir>
+		<jacoco.outputDir>../target/jacoco</jacoco.outputDir>
 		<!-- Jacoco output file for UTs -->
 		<jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>
 		<!-- Tells Sonar Jacoco coverage result file location for Unit Tests -->
@@ -33,6 +32,12 @@
 		<jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
 		<!-- Tells Sonar Jacoco coverage result file location for Integration Tests -->
 		<jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</jacoco.itReportPath>
+
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.jacoco.itReportPath>../target/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
+		<sonar.jacoco.reportPath>../target/jacoco/jacoco-ut.exec</sonar.jacoco.reportPath>
+
 		<surefire.extraargs></surefire.extraargs>
 		<failsafe.extraargs></failsafe.extraargs>
 
@@ -43,6 +48,26 @@
 		<neo4j.user>neo4j</neo4j.user>
 		<neo4j.pass>password</neo4j.pass>
 	</properties>
+	
+	<developers>
+		<developer>
+			<email>michele dot sacchetti at aroundthecode dot org</email>
+			<name>Michele Sacchetti</name>
+			<url>https://aroundthecode.org</url>
+			<id>aroundthecode</id>
+		</developer>
+	</developers>
+	
+	<scm>
+		<url>https://github.com/aroundthecode/pathfinder</url>
+		<connection>scm:git:git://github.com/aroundthecode/pathfinder.git</connection>
+		<developerConnection>scm:git:git@github.com:aroundthecode/pathfinder.git</developerConnection>
+	</scm>
+	
+	<issueManagement>
+		<url>https://github.com/aroundthecode/pathfinder/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
 
 	<modules>
 		<module>pathfinder-server</module>
@@ -52,7 +77,18 @@
 	</modules>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>3.0.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -63,7 +99,7 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${jacoco.version}</version>
 				<configuration>
-					<destFile>${jacoco.itReportPath}</destFile>
+					<destFile>${sonar.jacoco.itReportPath}</destFile>
 					<propertyName>jacoco.agent.it.arg</propertyName>
 					<append>true</append>
 				</configuration>
@@ -120,7 +156,7 @@
 							<goal>prepare-agent</goal>
 						</goals>
 						<configuration>
-							<destFile>${jacoco.reportPath}</destFile>
+							<destFile>${sonar.jacoco.reportPath}</destFile>
 							<propertyName>jacoco.agent.ut.arg</propertyName>
 							<append>true</append>
 						</configuration>
@@ -136,31 +172,9 @@
 							<goal>prepare-agent-integration</goal>
 						</goals>
 						<configuration>
-							<destFile>${jacoco.itReportPath}</destFile>
+							<destFile>${sonar.jacoco.itReportPath}</destFile>
 							<propertyName>jacoco.agent.it.arg</propertyName>
 							<append>true</append>
-						</configuration>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-						<configuration>
-							<dataFile>${jacoco.reportPath}</dataFile>
-							<outputDirectory>${jacoco.outputDir}</outputDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>report-it</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report-integration</goal>
-						</goals>
-						<configuration>
-							<dataFile>${jacoco.itReportPath}</dataFile>
-							<outputDirectory>${jacoco.outputDir}</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

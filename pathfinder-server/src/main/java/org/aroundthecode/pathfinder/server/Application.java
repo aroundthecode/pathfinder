@@ -15,6 +15,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SuppressWarnings("deprecation")
 @SpringBootApplication
@@ -38,20 +39,19 @@ public class Application extends SpringBootServletInitializer implements Command
 			neoServerBootstrapper = new WrappingNeoServerBootstrapper(api, config);
 			neoServerBootstrapper.start();
 		} catch(Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 		// end of Neo4j browser config
 
 	}
 
 	@Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
-	
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(Application.class);
+	}
+
 	public static void main(String[] args) throws Exception {
 		FileUtils.deleteRecursively(new File(ConfigurationManager.getNeo4jDbPath()));
-
 		SpringApplication.run(Application.class, args);
 	}
 

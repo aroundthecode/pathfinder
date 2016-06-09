@@ -88,7 +88,7 @@ public class CrawlerWrapper {
         return filePom;
     }
 
-	public void setMvnHome(String mvnHome) {
+	public synchronized static void setMvnHome(String mvnHome) {
 		CrawlerWrapper.mvnHome = mvnHome;
 	}
 

@@ -594,6 +594,7 @@ public class TreeMojo
      */
     public static boolean containsVersion( VersionRange allowedRange, ArtifactVersion theVersion )
     {
+    	boolean out = true;
         ArtifactVersion recommendedVersion = allowedRange.getRecommendedVersion();
         if ( recommendedVersion == null )
         {
@@ -603,13 +604,16 @@ public class TreeMojo
             {
                 if ( restriction.containsVersion( theVersion ) )
                 {
-                    return true;
+                	out = true;;
                 }
             }
         }
+        else{
+        	out = recommendedVersion.compareTo( theVersion ) <= 0;
+        }
 
         // only singular versions ever have a recommendedVersion
-        return recommendedVersion.compareTo( theVersion ) <= 0;
+        return out;
     }
 
     /**

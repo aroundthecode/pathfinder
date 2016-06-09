@@ -70,6 +70,8 @@ public class PathFinderTreeMojo extends TreeMojo
 
 		} catch (IOException e) {
 			getLog().error(e);
+		} catch (InterruptedException e) {
+			getLog().error(e);
 		}
 
 		return visitor;
