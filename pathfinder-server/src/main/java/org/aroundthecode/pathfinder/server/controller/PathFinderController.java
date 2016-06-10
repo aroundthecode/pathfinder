@@ -80,9 +80,7 @@ public class PathFinderController {
 	{
 		FilterItem f = new FilterItem(filterGN1, filterAN1, filterPN1, filterCN1, filterVN1, filterGN2, filterAN2, filterPN2, filterCN2, filterVN2);
 		String query = QueryUtils.getFilterAllQuery(f);
-
-		JSONArray out = doNodeRelationNodeQuery(query);
-		return out;
+		return doNodeRelationNodeQuery(query);
 	}
 
 	@RequestMapping(value="/query/impact", method=RequestMethod.GET)
@@ -108,8 +106,7 @@ public class PathFinderController {
 		FilterItem f = new FilterItem(filterGN1, filterAN1, filterPN1, filterCN1, filterVN1, filterGN2, filterAN2, filterPN2, filterCN2, filterVN2);
 		String query = QueryUtils.getImpactQuery(depth, groupId, artifactId, packaging, classifier, version, f);
 
-		JSONArray out = doNodeRelationNodeQuery(query);
-		return out;
+		return doNodeRelationNodeQuery(query);
 	}
 
 	/**
@@ -196,7 +193,7 @@ public class PathFinderController {
 	public JSONObject crawlArtifact(@RequestBody String body) throws ParseException, UnsupportedEncodingException 
 	{
 		String uid = URLDecoder.decode(body, "UTF-8");
-		uid = uid.substring(0, uid.lastIndexOf("="));
+		uid = uid.substring(0, uid.lastIndexOf('='));
 		log.debug("Request body:[{}]",uid);
 
 		Map<String, String> map = ArtifactUtils.splitUniqueId(uid);
