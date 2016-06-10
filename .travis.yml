@@ -6,4 +6,4 @@ env:
   secure: HUciwb/2AAdUp2BepJIo4RhfxezZchUuMF0Tr2QFARbM88g0KcI401GvKWG8/T0S2JroydhKerMefnno+74SDuzpE8pR9gde0u/HoVsrTO/NQVP6xJ2qhOLvDOC93mhaSVyyqORQ5lovS1P8g35mwPuXAW8DrtAoQtUNDzznvz1YcG2NwcmRmaf+SjUdvQlmtsI1Jkn0ZmpavRwgJWDWS6CxnC6edRXkdAvwzfl8F11S+I3MLo/CC3amX+EMyovv4bJanwSabDKjfUmZBdZ614DX3pUKHW8PzOkx6r/5cVOCONf0OM+w9rMlj2iUHf6Idd74eD058jv5vQpysQyNQyfplGOT6pOhomrLqEkksJTFjeil+qS9N1ERtjwVLyD5M6A2wrJxz+S+sFXR3jzVgVdyamGfVuwOB1xKuKgfdBzqLq4/eF1x3W35vz09NO0j/CcBz+R90NGF7LsQcHw+8siMGbGwjkezo31olztw1QUjKIDNZqU1wlOqGcybz45407n/xB6haPxwDj4JDAFnE+j3mhBqK7bd+9fgKJU6ni+jcTsOPqNy8KLuUrrgPeLuVouVgTKysjUon0hkieqitv1+uf6RwUjbEgw5k1PtDSwwL+oaxjvvTJHAGS5OOmTWqcR+eDp6q3oa5fBQ6HS8p0tFp6Uf6HT8WKqW2Et5fxs=
 jdk: oraclejdk8
 language: java
-script: "mvn clean install sonar:sonar -Dsonar.host.url=https://nemo.sonarqube.org -Dsonar.login=${env.SONAR_TOKEN}"
+script: "mvn clean install sonar:sonar -Dsonar.host.url=https://nemo.sonarqube.org -Dsonar.login=$SONAR_TOKEN"
