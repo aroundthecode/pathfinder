@@ -139,9 +139,7 @@ function closeWaitingDialog() {
     $("#loadingScreen").dialog('close');
 }
 
-function refreshGraph(){
-    doCypherAll();
-}
+
 
 var sc = function successCrawl(data){
     console.log(data.exception);
@@ -222,7 +220,7 @@ s.bind('doubleClickNode',crawlNode);
 s.bind('clickNode',fillCrawlForm);
 
 //populate with full data first
-doCypherAll();
+refreshGraph()
 
 //Change node color depending on version
 function getColor(v) {

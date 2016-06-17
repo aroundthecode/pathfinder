@@ -40,12 +40,20 @@
 		<surefire.extraargs></surefire.extraargs>
 		<failsafe.extraargs></failsafe.extraargs>
 
+		<!-- main server port -->
 		<server.port>8080</server.port>
 		<neo4j.port>${server.port}</neo4j.port>
+		
+		<!-- instance also neo4j server -->
+		<neo4j.db.enable>false</neo4j.db.enable>
+		<!-- port for neo4j server server port -->
 		<neo4j.db.port>8686</neo4j.db.port>
+		<!-- host for neo4j server server -->
 		<neo4j.host>localhost</neo4j.host>
+		<!-- credentials neo4j server server -->
 		<neo4j.user>neo4j</neo4j.user>
 		<neo4j.pass>password</neo4j.pass>
+		
 	</properties>
 	
 	<developers>

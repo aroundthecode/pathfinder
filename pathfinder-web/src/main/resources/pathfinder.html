@@ -27,42 +27,6 @@
                   <td>GroupId</td>
                 </tr>
                 <tr>
-                  <td><input type="text" id="filterG" value=".*"></td>
-                </tr>
-                <tr>
-                  <td>ArtifactId</td>
-                </tr>
-                <tr>
-                  <td><input type="text" id="filterA" value=".*"></td>
-                </tr>
-                <tr>
-                  <td>Packaging</td>
-                </tr>
-                <tr>
-                  <td><input type="text" id="filterP" value=".*"></td>
-                </tr>
-                <tr>
-                  <td>Classifier</td>
-                </tr>
-                <tr>
-                  <td><input type="text" id="filterC" value=".*"></td>
-                </tr>
-                <tr>
-                  <td>Version</td>
-                </tr>
-                <tr>
-                  <td><input type="text" id="filterV" value=".*"></td>
-                </tr>
-              </table>
-
-              <p>
-              Filter dependency nodes (RegExp)
-              </p>
-              <table>
-                <tr>
-                  <td>GroupId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterG2" value=".*"></td>
                 </tr>
                 <tr>
@@ -91,13 +55,44 @@
                 </tr>
               </table>
 
-              <button onclick="doCypherAll()">Refresh</button>
-              <button onclick="$( '#toggle-cypher_all' ).toggle('drop')">Show Cypher</button>
+              <p>
+              Filter dependency nodes (RegExp)
+              </p>
+              <table>
+                <tr>
+                  <td>GroupId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterG1" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>ArtifactId</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterA1" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterP1" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Classifier</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterC1" value=".*"></td>
+                </tr>
+                <tr>
+                  <td>Version</td>
+                </tr>
+                <tr>
+                  <td><input type="text" id="filterV1" value=".*"></td>
+                </tr>
+              </table>
 
-              <div id="toggle-cypher_all">
-                <p>Cypher query</p>
-                <textarea id="cypher_all" disabled=true style="height:120px;"></textarea>
-              </div>
+              <button onclick="refreshGraph()">Refresh</button>
+              <button id="autoarrangebutton">Auto-Arrange</button>
 
             </div>
             <h3>Impact Path</h3>
@@ -111,13 +106,13 @@
                   <td>GroupId</td>
                 </tr>
                 <tr>
-                  <td><input type="text" id="searchG" value="org.sample"></td>
+                  <td><input type="text" id="searchG" value="org.aroundthecode.pathfinder"></td>
                 </tr>
                 <tr>
                   <td>ArtifactId</td>
                 </tr>
                 <tr>
-                  <td><input type="text" id="searchA" value="mypackage"></td>
+                  <td><input type="text" id="searchA" value="pathfinder-rest-client"></td>
                 </tr>
                 <tr>
                   <td>Packaging</td>
@@ -135,7 +130,7 @@
                   <td>Version</td>
                 </tr>
                 <tr>
-                  <td><input type="text" id="searchV" value="1.0.0"></td>
+                  <td><input type="text" id="searchV" value="0.1.0-SNAPSHOT"></td>
                 </tr>
                 <tr>
                   <td>Search depth</td>
@@ -144,13 +139,8 @@
                   <td><input type="text" id="searchDepth" value="2" size="5"></td>
                 </tr>
               </table>
-              <button onclick="doCypherSearch()">Search</button>
-              <button onclick="$( '#toggle-cypher_search' ).toggle('drop')">Show Cypher</button>
-
-              <div id="toggle-cypher_search">
-                <p>Cypher query</p>
-                <textarea id="cypher_search" disabled=true style="height:120px;"></textarea>
-              </div>
+              <button onclick="impactPath()">Search</button>
+              
             </div>
             <h3>Dependency Management</h3>
             <div>
@@ -161,20 +151,7 @@
               <button id="depmngbut">Analyze Dependencies</button>
 
             </div>
-            <h3>Node rearrange</h3>
-            <div>
-              <p>
-              Use this button to start/stop nodes auto-arrange.
-              </p>
-              <div class="ui-state-highlight ui-corner-all">
-                <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-                <strong>Warning</strong>This may cause high load on your CPU.</p>
-              </div>
-              <br/>
-
-              <button id="autoarrangebutton">Auto-Arrange</button>
-
-            </div>
+            
             <h3>Graph Crawler</h3>
             <div>
               <p>
@@ -369,8 +346,8 @@
 
 
 <script src="./js/pathfinder-config.js"></script>
+<script src="./js/pathfinder-server-invoker.js"></script>
 <script src="./js/pathfinder.js"></script>
-<script src="./js/pathfinder-maven-invoker.js"></script>
 
 
 </body>

@@ -15,7 +15,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 
 @SuppressWarnings("deprecation")
 @SpringBootApplication
@@ -27,21 +26,23 @@ public class Application extends SpringBootServletInitializer implements Command
 	@Override
 	public void run(String... args) throws Exception {
 
-		// used for Neo4j browser
-		try {
-			WrappingNeoServerBootstrapper neoServerBootstrapper;
-			GraphDatabaseAPI api = (GraphDatabaseAPI) db;
+		if( ConfigurationManager.isNeo4jDbEnable() ){
+			// used for Neo4j browser
+			try {
+				WrappingNeoServerBootstrapper neoServerBootstrapper;
+				GraphDatabaseAPI api = (GraphDatabaseAPI) db;
 
-			ServerConfigurator config = new ServerConfigurator(api);
-			config.configuration().addProperty(Configurator.WEBSERVER_ADDRESS_PROPERTY_KEY, ConfigurationManager.getNeo4jDbHost());
-			config.configuration().addProperty(Configurator.WEBSERVER_PORT_PROPERTY_KEY, ConfigurationManager.getNeo4jDbPort());
+				ServerConfigurator config = new ServerConfigurator(api);
+				config.configuration().addProperty(Configurator.WEBSERVER_ADDRESS_PROPERTY_KEY, ConfigurationManager.getNeo4jDbHost());
+				config.configuration().addProperty(Configurator.WEBSERVER_PORT_PROPERTY_KEY, ConfigurationManager.getNeo4jDbPort());
 
-			neoServerBootstrapper = new WrappingNeoServerBootstrapper(api, config);
-			neoServerBootstrapper.start();
-		} catch(Exception e) {
-			logger.error(e);
+				neoServerBootstrapper = new WrappingNeoServerBootstrapper(api, config);
+				neoServerBootstrapper.start();
+			} catch(Exception e) {
+				logger.error(e);
+			}
+			// end of Neo4j browser config
 		}
-		// end of Neo4j browser config
 
 	}
 
