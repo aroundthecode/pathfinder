@@ -1,9 +1,19 @@
---- 
-cache: 
-  directories: 
-    - $HOME/.m2
-env: 
+cache:
+  directories:
+  - $HOME/.m2
+env:
   secure: HUciwb/2AAdUp2BepJIo4RhfxezZchUuMF0Tr2QFARbM88g0KcI401GvKWG8/T0S2JroydhKerMefnno+74SDuzpE8pR9gde0u/HoVsrTO/NQVP6xJ2qhOLvDOC93mhaSVyyqORQ5lovS1P8g35mwPuXAW8DrtAoQtUNDzznvz1YcG2NwcmRmaf+SjUdvQlmtsI1Jkn0ZmpavRwgJWDWS6CxnC6edRXkdAvwzfl8F11S+I3MLo/CC3amX+EMyovv4bJanwSabDKjfUmZBdZ614DX3pUKHW8PzOkx6r/5cVOCONf0OM+w9rMlj2iUHf6Idd74eD058jv5vQpysQyNQyfplGOT6pOhomrLqEkksJTFjeil+qS9N1ERtjwVLyD5M6A2wrJxz+S+sFXR3jzVgVdyamGfVuwOB1xKuKgfdBzqLq4/eF1x3W35vz09NO0j/CcBz+R90NGF7LsQcHw+8siMGbGwjkezo31olztw1QUjKIDNZqU1wlOqGcybz45407n/xB6haPxwDj4JDAFnE+j3mhBqK7bd+9fgKJU6ni+jcTsOPqNy8KLuUrrgPeLuVouVgTKysjUon0hkieqitv1+uf6RwUjbEgw5k1PtDSwwL+oaxjvvTJHAGS5OOmTWqcR+eDp6q3oa5fBQ6HS8p0tFp6Uf6HT8WKqW2Et5fxs=
 jdk: oraclejdk8
 language: java
-script: "mvn clean install sonar:sonar -Dsonar.host.url=https://nemo.sonarqube.org -Dsonar.login=$SONAR_TOKEN"
+script: mvn clean install sonar:sonar -Dsonar.host.url=https://nemo.sonarqube.org
+  -Dsonar.login=$SONAR_TOKEN
+deploy:
+  provider: openshift
+  user: openshift01@aroundthecode.org
+  password:
+    secure: Pd7No1e+xfJ+Z1QG53KASdNnJ6xaVBqZJrkneNr9WHVtipIRribHdnAectdv/IKbaFqGrRy8gXBsWt6dDFuSwREOzqvFwqkkpRVVNZc0KsehpQUz9WtMyejns7l3FiPfpazhCWwE1NSPQdajkRWvkhs4P7lv+5nHGHAC4A1VNboZ4DJnrhAmMOOpQ8AgAQzay9zjCK0Zgdnjd7J5GBLdeyrqe+kbuXpT8s3mkYJZqSlznU/az191i3O/ZTL0G+UybwGR9a9ymbynOi/lyXvpU1YEK2xm5KehSHuJ55i2NZ5Jx2ChcjBOXFif2jHN6Mie/87oL276r4pAodkt88se1ZBVsMbb/tCJa4+5k/Fokq7gpXdhl38Wwd/Nj3Fg0Q2fzedubIz6IvxSAbtyAfkXNzlcGv8Cjcr2O0q+Mw8lmdD8mr6SQq2pO/qbixgEt7canHztNG3scLR1QYZ3l25NbuGZtrNfninI9nBy7UHUtBW+4v8MSWVbl9IwtK8cEzLJxDD0Z42YyvS6xZn3PTpGOXihr//dBQJsi36KpORaUv5JdMtike2iIUmWHSt2507NaQlSv8JI5/k5OB9Rr7X4psJIkfqwwaiX/w/cBTA3vWhZQV/ns+d5VejOqqF6PH4vt4fzsFHzJ32gdpG5g1r+U60jJXsSCh5PRfscOHNS20g=
+  app: pathfinder
+  domain: aroundthecode1
+  on:
+    repo: aroundthecode/pathfinder
+    branch: openshift
