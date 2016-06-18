@@ -10,8 +10,14 @@ language: java
 #script: mvn clean install sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN
 before_deploy:
   - "echo 'BEFORE DEPLOY'"
+  - "git clone ssh://575f1ec07628e117b9000010@pathfinder-aroundthecode1.rhcloud.com/~/git/pathfinder.git/ os-pathfinder"
   - "ls -ltra ."
-  - "cp pathfinder-server/target/pathfinder.war webapp"
+  - "mkdir -p webapps"
+  - "cp pathfinder-server/target/pathfinder.war os-pathfinder/webapps/ROOT.war"
+  - "ls -ltra ."
+  - "cd os-pathfinder"
+  - "git commit -m'Travis build $TRAVIS_BUILD_NUMBER commit' webapps/ROOT.war"
+  - "git push origin master"
 deploy:
   provider: openshift
   user: openshift01@aroundthecode.org
