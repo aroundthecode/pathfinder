@@ -58,6 +58,13 @@
 			<version>${project.version}</version>
 			<type>zip</type>
 		</dependency>
+		
+<!-- 		why not included by client? -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -109,6 +116,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>pathfinder</finalName>
 
 		<testResources>
 			<testResource>
