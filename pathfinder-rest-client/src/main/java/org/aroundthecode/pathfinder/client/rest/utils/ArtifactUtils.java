@@ -5,7 +5,9 @@ import java.util.Map;
 
 public class ArtifactUtils {
 
-
+	/**
+	 * Enum representation for dependencies types
+	 */
 	public enum Dependency {
 		COMPILE, PROVIDED, RUNTIME, TEST,
 		SYSTEM, IMPORT 
@@ -19,6 +21,10 @@ public class ArtifactUtils {
 	public static final String P = "packaging";
 	public static final String C = "classifier";
 	public static final String V = "version";
+	
+	public static final String PN = "parentNode";
+	
+	public static final String D = "dependencies";
 
 	public static final String getUniqueId(String groupId,String artifactId,String packaging,String classifier,String version){
 		//https://maven.apache.org/pom.html

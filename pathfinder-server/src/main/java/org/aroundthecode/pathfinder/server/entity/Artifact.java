@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
@@ -14,7 +15,15 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-
+/**
+ * Neo4j Node Entity to map a maven artifact
+ * @author msacchetti
+ *
+ */
+/**
+ * @author msacchetti
+ *
+ */
 @NodeEntity
 public class Artifact {
 
@@ -30,39 +39,58 @@ public class Artifact {
 	private String classifier="";
 	@Fetch
 	private String version = "";
-	
+
 	@RelatedTo(type="COMPILE", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="PROVIDED", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="RUNTIME", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="TEST", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesTest= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="SYSTEM", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="IMPORT", direction=Direction.INCOMING)
 	public @Fetch Set<Artifact> dependenciesImport= new HashSet<Artifact>();
-	
+
 	@RelatedTo(type="PARENT", direction=Direction.OUTGOING)
 	public @Fetch Artifact parentArtifact = null;
 
+	/**
+	 * Empty constructor, just for Spring Data
+	 */
 	public Artifact() {
 	}
 
+	/**
+	 * Maps a generic Neo4j node to class Artifact via <b>uniqueId</b> attribute
+	 * @param n Neo4j node with <b>uniqueId</b> attribute
+	 */
 	public Artifact(Node n){
 		this(n.getProperty("uniqueId").toString());
 	}
-	
+
+	/**
+	 * Init class Artifact via <b>uniqueId</b> attribute
+	 * @param uniqueId String representing <b>uniqueId</b> attribute, pattern groupId:artifacId:packaging:classifier:version
+	 */
 	public Artifact(String uniqueId) {
 		setUniqueId(uniqueId);
 	}
 
+	/**
+	 * Init class Artifact via all maven artifact attribute
+	 * @param groupId maven groupId string
+	 * @param artifactId maven artifactId string
+	 * @param version maven version string
+	 * @param type maven type string
+	 * @param classifier maven classifier string
+	 */
 	public Artifact(String groupId,String artifactId, String version,String type, String classifier) {
 		setGroupId(groupId);
 		setArtifactId(artifactId);
@@ -71,6 +99,10 @@ public class Artifact {
 		setVersion(version);
 	}
 
+	/**
+	 * Setter for uniqueId attribute
+	 * @param uniqueId String representing <b>uniqueId</b> attribute, pattern groupId:artifacId:packaging:classifier:version
+	 */
 	public void setUniqueId(String uniqueId) 
 	{
 		Map<String, String> map = ArtifactUtils.splitUniqueId(uniqueId);
@@ -83,18 +115,30 @@ public class Artifact {
 		}
 	}
 
-
+	/**
+	 * Getter for parent artifact
+	 * @return parent artifact
+	 */
+	public Artifact getParent(){
+		return parentArtifact;
+	}
+	
+	/**
+	 * Setter for parent artifact
+	 * @param a parent Artifact NodeEntity 
+	 */
 	public void hasParent(Artifact a){
 		this.parentArtifact = a;
 	}
 
+	/**
+	 * Add given node as current node dependency
+	 * @param a Dependency node
+	 * @param type Dependency type
+	 */
 	public void dependsOn(Artifact a,String type) {
 
 		switch (Dependency.valueOf(type)) {
-		default:
-		case COMPILE:
-			dependenciesCompile.add(a);
-			break;
 		case PROVIDED:
 			dependenciesProvided.add(a);
 			break;
@@ -110,58 +154,119 @@ public class Artifact {
 		case IMPORT:
 			dependenciesImport.add(a);
 			break;
+		case COMPILE:
+		default:
+			dependenciesCompile.add(a);
+			break;
 		}
 	}
 
+	/**
+	 * Getter for groupId attribute
+	 * @return groupId attribute
+	 */
 	public String getGroupId() {
 		return groupId;
 	}
+
+	/**
+	 * Setter for groupId attribute
+	 * @param groupId attribute value
+	 */
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 		this.uniqueId = getUniqueId();
 	}
 
+	/**
+	 * Getter for artifactId attribute
+	 * @return artifactId attribute
+	 */
 	public String getArtifactId() {
 		return artifactId;
 	}
+
+	/**
+	 * Setter for artifactId attribute
+	 * @param artifactId attribute value
+	 */
 	public void setArtifactId(String artifactId) {
 		this.artifactId = artifactId;
 		this.uniqueId = getUniqueId();
 	}
 
+	/**
+	 * Getter for version attribute
+	 * @return version attribute
+	 */
 	public String getVersion() {
 		return version;
 	}
+
+	/**
+	 * Setter for version attribute
+	 * @param version attribute value
+	 */
 	public void setVersion(String version) {
 		this.version = version;
 		this.uniqueId = getUniqueId();
 	}
 
+	/**
+	 * Getter for packaging attribute
+	 * @return packaging attribute
+	 */
 	public String getPackaging() {
 		return packaging;
 	}
+
+	/**
+	 * Setter for packaging attribute
+	 * @param packaging attribute value
+	 */
 	public void setPackaging(String packaging) {
 		this.packaging = packaging;
 		this.uniqueId = getUniqueId();
 	}
 
+	/**
+	 * Getter for classifier attribute
+	 * @return classifier attribute
+	 */
 	public String getClassifier() {
 		return classifier;
 	}
+
+	/**
+	 * Setter for classifier attribute
+	 * @param classifier attribute value
+	 */
 	public void setClassifier(String classifier) {
 		this.classifier = classifier;
 		this.uniqueId = getUniqueId();
 	}
 
+	/**
+	 * Getter for uniqueId attribute
+	 * @return uniqueId attribute
+	 */
 	public String getUniqueId(){
-		return ArtifactUtils.getUniqueId(getGroupId(), getArtifactId(), getPackaging(), getClassifier(), getVersion());
+		this.uniqueId = ArtifactUtils.getUniqueId(getGroupId(), getArtifactId(), getPackaging(), getClassifier(), getVersion());
+		return this.uniqueId;
 	}
 
+	/**
+	 * hashCode method
+	 */
 	@Override
 	public int hashCode() {
 		return id == null ? System.identityHashCode(this) : id.hashCode();
 	}
-	
+
+	/**
+	 * Return the JSON representation of the Artifact
+	 * @return JSONObject representing Artifact
+	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON(){
 		JSONObject o = new JSONObject();
@@ -171,35 +276,56 @@ public class Artifact {
 		o.put(ArtifactUtils.V, getVersion());
 		o.put(ArtifactUtils.P, getPackaging());
 		o.put(ArtifactUtils.C, getClassifier());
+
+		if(parentArtifact!=null && parentArtifact.getUniqueId()!=null){
+			o.put(ArtifactUtils.PN, parentArtifact.getUniqueId());
+		}
+
+		JSONObject od =  new JSONObject();
+		JSONArray d = new JSONArray();
+		for (Artifact a : dependenciesCompile) {
+			d.add( a.getUniqueId());
+		}
+		od.put(Dependency.COMPILE, d.clone());
+
+		d.clear();
+		for (Artifact a : dependenciesImport) {
+			d.add( a.getUniqueId());
+		}
+		od.put(Dependency.IMPORT, d.clone());
+
+		d.clear();
+		for (Artifact a : dependenciesProvided) {
+			d.add( a.getUniqueId());
+		}
+		od.put(Dependency.PROVIDED, d.clone());
+
+		d.clear();
+		for (Artifact a : dependenciesRuntime) {
+			d.add( a.getUniqueId());
+		}
+		od.put(Dependency.RUNTIME, d.clone());
+
+		d.clear();
+		for (Artifact a : dependenciesSystem) {
+			d.add( a.getUniqueId());
+		}
+		od.put(Dependency.SYSTEM, d.clone());
+
+		d.clear();
+		for (Artifact a : dependenciesTest) {
+			d.add( a.getUniqueId());
+		}
+		od.put(Dependency.TEST, d.clone());
+
+		o.put(ArtifactUtils.D, od);
+
 		return o;
 	}
 
 	@Override
 	public String toString() {
-		StringBuffer results = new StringBuffer( uniqueId ).append( "'s dependencies include\n");
-		if(parentArtifact!=null){
-			results.append( parentArtifact.getUniqueId()  ).append( " [parent]\n");
-		}
-
-		for (Artifact a : dependenciesCompile) {
-			results.append("\t- " ).append( a.getUniqueId() ).append( " [compile]\n");
-		}
-		for (Artifact a : dependenciesProvided) {
-			results.append("\t- " ).append( a.getUniqueId() ).append( " [provided]\n");
-		}
-		for (Artifact a : dependenciesRuntime) {
-			results.append("\t- " ).append( a.getUniqueId() ).append( " [runtime]\n");
-		}
-		for (Artifact a : dependenciesTest) {
-			results.append("\t- " ).append( a.getUniqueId() ).append( " [test]\n");
-		}
-		for (Artifact a : dependenciesSystem) {
-			results.append("\t- " ).append( a.getUniqueId() ).append( " [system]\n");
-		}
-		for (Artifact a : dependenciesImport) {
-			results.append("\t- " ).append( a.getUniqueId() ).append( " [import]\n");
-		}
-		return results.toString();
+		return toJSON().toString();
 	}
 
 	@Override
@@ -213,6 +339,11 @@ public class Artifact {
 		return this.toString().equals(((Artifact)other).toString());
 	}
 
+	/**
+	 * Convert Json object to Artifact Node
+	 * @param o JSON representation of an artifact node
+	 * @return Artifact Node
+	 */
 	public static Artifact parsePropertiesFromJson(JSONObject o ){
 		Artifact a = new Artifact(
 				o.get(ArtifactUtils.G).toString(),
@@ -221,7 +352,11 @@ public class Artifact {
 				o.get(ArtifactUtils.P).toString(),
 				o.get(ArtifactUtils.C).toString()
 				);
-		//TODO manage dependencies too?
+		String pn = "" + o.get(ArtifactUtils.PN);
+		if( pn != ""){
+			a.hasParent( new Artifact(pn));
+		}
+		//TODO manage dependencies
 		return a;
 	}
 

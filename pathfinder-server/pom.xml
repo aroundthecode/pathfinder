@@ -59,6 +59,12 @@
 			<type>zip</type>
 		</dependency>
 
+		<!-- why not included by client? -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>

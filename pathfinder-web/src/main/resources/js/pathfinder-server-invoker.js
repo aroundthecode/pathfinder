@@ -48,6 +48,8 @@ var nrnd = function NRNDraw(data){
         }
 
     });
+
+    updateLabel("[" + s.graph.nodes().length + "] Nodes</br>[" + s.graph.edges().length + "] Edges");
     s.refresh();
     $("#autoarrangebutton").click();
 }
