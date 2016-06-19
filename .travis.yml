@@ -4,6 +4,7 @@ cache:
 jdk: oraclejdk8
 language: java
 before_deploy:
+  - "mkdir webapps"
   - "cp pathfinder-server/target/pathfinder.war webapps/ROOT.war"
 deploy:
   provider: openshift
