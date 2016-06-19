@@ -9,9 +9,8 @@ jdk: oraclejdk8
 language: java
 #script: mvn clean install sonar:sonar -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN
 before_deploy:
-  - "echo 'BEFORE DEPLOY'"
+  - "ssh-keygen -F pathfinder-aroundthecode1.rhcloud.com >> $HOME/.ssh/known_hosts"
   - "git clone ssh://575f1ec07628e117b9000010@pathfinder-aroundthecode1.rhcloud.com/~/git/pathfinder.git/ os-pathfinder"
-  - "ls -ltra ."
   - "mkdir -p webapps"
   - "cp pathfinder-server/target/pathfinder.war os-pathfinder/webapps/ROOT.war"
   - "ls -ltra ."
