@@ -358,15 +358,16 @@ public class Artifact {
 		}
 
 		JSONObject deps = (JSONObject) o.get(ArtifactUtils.D);
-
-		for (Dependency dep : Dependency.values()) 
-		{
-			JSONArray d = (JSONArray) deps.get(dep.toString());
-			for(int i = 0; i< d.size(); i++ )
+		if(deps!=null){
+			for (Dependency dep : Dependency.values()) 
 			{
-				String uid = d.get(i).toString();
-				Artifact da = new Artifact(uid);
-				a.dependsOn(da, dep.name());
+				JSONArray d = (JSONArray) deps.get(dep.toString());
+				for(int i = 0; i< d.size(); i++ )
+				{
+					String uid = d.get(i).toString();
+					Artifact da = new Artifact(uid);
+					a.dependsOn(da, dep.name());
+				}
 			}
 		}
 		return a;
