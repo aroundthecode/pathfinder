@@ -1,14 +1,15 @@
 <html>
 <head>
   <title>Pathfinder</title>
+  <link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.ico">
+  
 </head>
 <body>
-
   <table width="100%" style="margin-right: 10px;">
     <tr>
       <td colspan="2">
         <div class="ui-widget-content header">
-          Pathfinder
+        	<img src="imgs/logo.png" class="logo"/>Pathfinder
         </div>
       </td>
     </tr>
@@ -253,7 +254,14 @@
     </table>
   </p>
 </div>
-
+<div id="toolbar">
+	<table>
+		<tr>
+			<td><img class="tbutton" onclick="jsonOpen()" src="imgs/open.png" alt="Upload pathfinder analysis file" title="Upload pathfinder analysis file"/></td>
+			<td><img class="tbutton" onclick="jsonDown()" src="imgs/download.png" alt="Download pathfinder analysis as file" title="Download pathfinder analysis as file"/></td>
+		</tr>
+	</table>
+</div>
 <div id="loadingScreen"></div>
 
 <!-- JQuery -->

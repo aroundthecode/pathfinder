@@ -510,3 +510,6 @@ function refreshDepMngMaven(){
      $("#depmng_conf_xml").html(dpmngxml);
 
 }
+
+function jsonOpen(){alert("File upload - Work in progress");}
+function jsonDown(){alert("File download - Work in progress");}

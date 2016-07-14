@@ -11,8 +11,36 @@ table td tr{
   font-size: xx-small;
 }
 
+#toolbar{
+	position: absolute;
+	width: 130px;
+	height: 70px;
+	left: 89%;
+	top: 88%;
+	vertical-align:middle;
+}
+
+.tbutton{
+	opacity:0.2;
+}
+
+.tbutton:hover {
+    opacity:0.9;
+}
+
+
+
 .header{ 
-  height: 20px;
+	height: 18px;
+	padding-bottom: 2px;
+}
+
+.logo{ 
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-left: 5px;
+	height: 16px;
+	width: 16px
 }
 
 .menu{ 
