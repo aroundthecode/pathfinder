@@ -185,7 +185,7 @@ public class PathFinderController {
 	public Artifact saveArtifact(@RequestBody String body) throws ParseException 
 	{
 		JSONObject o = RestUtils.string2Json(body);
-		Artifact a = Artifact.parsePropertiesFromJson(o);
+		Artifact a = Artifact.parse(o);
 		return checkAndSaveArtifact(a);
 	}
 

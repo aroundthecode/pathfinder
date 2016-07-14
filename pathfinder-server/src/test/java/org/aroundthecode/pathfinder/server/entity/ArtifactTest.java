@@ -1,11 +1,16 @@
 package org.aroundthecode.pathfinder.server.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
+import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
 public class ArtifactTest {
@@ -67,7 +72,52 @@ public class ArtifactTest {
 	}
 
 	@Test
-	public void testArtifactJson() {
+	public void testArtifactToJson() {
+		Artifact a = getTestArtifact();
+
+		JSONObject o = a.toJSON();
+		assertNotNull(o);
+
+		assertEquals(o.get(ArtifactUtils.U), a.getUniqueId());
+		assertEquals(o.get(ArtifactUtils.G), a.getGroupId());
+		assertEquals(o.get(ArtifactUtils.A), a.getArtifactId());
+		assertEquals(o.get(ArtifactUtils.P), a.getPackaging());
+		assertEquals(o.get(ArtifactUtils.C), a.getClassifier());
+		assertEquals(o.get(ArtifactUtils.V), a.getVersion());
+		assertEquals(o.get(ArtifactUtils.PN), a.getParent().getUniqueId() );
+		
+		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.COMPILE.toString())).size(), a.dependenciesCompile.size() );
+		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.PROVIDED.toString())).size(), a.dependenciesProvided.size() );
+		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.RUNTIME.toString())).size(), a.dependenciesRuntime.size() );
+		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.TEST.toString())).size(), a.dependenciesTest.size() );
+		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.SYSTEM.toString())).size(), a.dependenciesSystem.size() );
+		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.IMPORT.toString())).size(), a.dependenciesImport.size() );
+		
+		System.out.println(o.toJSONString());
+		
+	}
+
+	@Test
+	public void testArtifactFromJson() throws ParseException {
+		Artifact a = getTestArtifact();
+
+		JSONObject o = a.toJSON();
+		assertNotNull(o);
+		
+		Artifact a2 = Artifact.parse(o);
+		assertEquals(a, a2);
+		
+		String jsonString = "{\"groupId\":\"my.group\",\"dependencies\":{\"RUNTIME\":[\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\"],\"TEST\":[\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\"],\"COMPILE\":[\"my.group:COMPILE-1:jar:none:1.0.0\"],\"SYSTEM\":[\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\"],\"PROVIDED\":[\"my.group:PROVIDED-2:jar:none:1.0.0\",\"my.group:PROVIDED-2:jar:none:1.0.0\"],\"IMPORT\":[\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\"]},\"parentNode\":\"my.group:parent:jar:none:1.0.0\",\"packaging\":\"jar\",\"classifier\":\"none\",\"artifactId\":\"test\",\"version\":\"1.0.0\",\"uniqueId\":\"my.group:test:jar:none:1.0.0\"}";
+		JSONObject o2 = RestUtils.string2Json(jsonString);
+		Artifact a3 = Artifact.parse(o2);
+		assertEquals(a, a3);
+	}
+	
+	/**
+	 * Utility method to generate artifact for json tests
+	 * @return Artifact test object
+	 */
+	private Artifact getTestArtifact() {
 		Artifact a = new Artifact(ID);
 
 		Artifact p = new Artifact(ID);
@@ -83,26 +133,8 @@ public class ArtifactTest {
 			}
 			count++;
 		}
-
-		JSONObject o = a.toJSON();
-		assertNotNull(o);
-
-		assertEquals(o.get(ArtifactUtils.U), a.getUniqueId());
-		assertEquals(o.get(ArtifactUtils.G), a.getGroupId());
-		assertEquals(o.get(ArtifactUtils.A), a.getArtifactId());
-		assertEquals(o.get(ArtifactUtils.P), a.getPackaging());
-		assertEquals(o.get(ArtifactUtils.C), a.getClassifier());
-		assertEquals(o.get(ArtifactUtils.V), a.getVersion());
-		assertEquals(o.get(ArtifactUtils.PN), a.getParent().getUniqueId() );
-		
-		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.COMPILE)).size(), a.dependenciesCompile.size() );
-		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.PROVIDED)).size(), a.dependenciesProvided.size() );
-		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.RUNTIME)).size(), a.dependenciesRuntime.size() );
-		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.TEST)).size(), a.dependenciesTest.size() );
-		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.SYSTEM)).size(), a.dependenciesSystem.size() );
-		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.IMPORT)).size(), a.dependenciesImport.size() );
-		
-		
-		
+		return a;
 	}
+	
+	
 }

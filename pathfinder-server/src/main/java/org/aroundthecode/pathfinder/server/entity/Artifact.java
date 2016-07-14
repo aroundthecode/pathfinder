@@ -122,7 +122,7 @@ public class Artifact {
 	public Artifact getParent(){
 		return parentArtifact;
 	}
-	
+
 	/**
 	 * Setter for parent artifact
 	 * @param a parent Artifact NodeEntity 
@@ -286,37 +286,37 @@ public class Artifact {
 		for (Artifact a : dependenciesCompile) {
 			d.add( a.getUniqueId());
 		}
-		od.put(Dependency.COMPILE, d.clone());
+		od.put(Dependency.COMPILE.toString(), d.clone());
 
 		d.clear();
 		for (Artifact a : dependenciesImport) {
 			d.add( a.getUniqueId());
 		}
-		od.put(Dependency.IMPORT, d.clone());
+		od.put(Dependency.IMPORT.toString(), d.clone());
 
 		d.clear();
 		for (Artifact a : dependenciesProvided) {
 			d.add( a.getUniqueId());
 		}
-		od.put(Dependency.PROVIDED, d.clone());
+		od.put(Dependency.PROVIDED.toString(), d.clone());
 
 		d.clear();
 		for (Artifact a : dependenciesRuntime) {
 			d.add( a.getUniqueId());
 		}
-		od.put(Dependency.RUNTIME, d.clone());
+		od.put(Dependency.RUNTIME.toString(), d.clone());
 
 		d.clear();
 		for (Artifact a : dependenciesSystem) {
 			d.add( a.getUniqueId());
 		}
-		od.put(Dependency.SYSTEM, d.clone());
+		od.put(Dependency.SYSTEM.toString(), d.clone());
 
 		d.clear();
 		for (Artifact a : dependenciesTest) {
 			d.add( a.getUniqueId());
 		}
-		od.put(Dependency.TEST, d.clone());
+		od.put(Dependency.TEST.toString(), d.clone());
 
 		o.put(ArtifactUtils.D, od);
 
@@ -344,7 +344,7 @@ public class Artifact {
 	 * @param o JSON representation of an artifact node
 	 * @return Artifact Node
 	 */
-	public static Artifact parsePropertiesFromJson(JSONObject o ){
+	public static Artifact parse(JSONObject o ){
 		Artifact a = new Artifact(
 				o.get(ArtifactUtils.G).toString(),
 				o.get(ArtifactUtils.A).toString(),
@@ -356,7 +356,19 @@ public class Artifact {
 		if( pn != ""){
 			a.hasParent( new Artifact(pn));
 		}
-		//TODO manage dependencies
+
+		JSONObject deps = (JSONObject) o.get(ArtifactUtils.D);
+
+		for (Dependency dep : Dependency.values()) 
+		{
+			JSONArray d = (JSONArray) deps.get(dep.toString());
+			for(int i = 0; i< d.size(); i++ )
+			{
+				String uid = d.get(i).toString();
+				Artifact da = new Artifact(uid);
+				a.dependsOn(da, dep.name());
+			}
+		}
 		return a;
 	}
 

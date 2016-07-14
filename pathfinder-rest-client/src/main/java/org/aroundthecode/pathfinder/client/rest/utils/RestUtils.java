@@ -7,17 +7,34 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * Utility class to perform POST and GET request to remote REST server
+ * @author msacchetti
+ *
+ */
 public class RestUtils {
 
 	protected static final String USER_AGENT = "pathfinder-rest-client";
-	//	private static final Logger logger = LogManager.getLogger(RestUtils.class);
+	private static final Logger log = LogManager.getLogger(RestUtils.class.getName());
 	private static final JSONParser jparser = new JSONParser();
 
 
+	private RestUtils(){
+
+	}
+
+	/**
+	 * Utility method to perform GET request to given URL
+	 * @param url URL to be invoked
+	 * @return plain text representation of response
+	 * @throws IOException
+	 */
 	public static final String sendGet(String url)  throws IOException {
 
 		URL obj = new URL(url);
@@ -29,36 +46,35 @@ public class RestUtils {
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
 
-		//		int responseCode = 
-		con.getResponseCode();
-		//		System.out.println("\nSending 'GET' request to URL : " + url);
-		//		System.out.println("Response Code : " + responseCode);
+		int responseCode = con.getResponseCode();
+		if(log.isDebugEnabled()){
+			log.debug("GET [" + url+"] " + responseCode);
+		}
 
-		BufferedReader in = null;
-		StringBuffer response = new StringBuffer();
-		try {
-			in = new BufferedReader(
-					new InputStreamReader(con.getInputStream()));
+		StringBuilder response = new StringBuilder();
+
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream())) ) {
+
 			String inputLine;
-
-
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
 		}
 		catch (Exception e) {
-			System.err.println("sendGet - reading response " +e.getMessage());
-		}
-		finally{
-			if(in!=null){
-				in.close();
-			}
+			log.error("sendGet - reading response " +e.getMessage(),e);
 		}
 
 		return response.toString();
 
 	}
 
+	/**
+	 * Utility method to perform POST request to given URL
+	 * @param url URL to be invoked
+	 * @param body POST body data
+	 * @return plain text representation of response
+	 * @throws IOException
+	 */
 	public static final String sendPost(String url, JSONObject body) throws IOException {
 
 		URL obj = new URL(url);
@@ -77,32 +93,33 @@ public class RestUtils {
 		wr.close();
 
 		int responseCode = con.getResponseCode();
-		//		System.out.println("\nSending 'POST' request to URL : " + url);
-		//		System.out.println("Post parameters : " + body.toString());
-		//		System.out.println("Response Code : " + responseCode);
+		if(log.isDebugEnabled()){
+			log.debug("POST [" + url+"] body["+body.toString()+"]" + responseCode);
+		}
 
-		StringBuffer response = new StringBuffer();
-		BufferedReader in = null;
-		try {
-			in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		StringBuilder response = new StringBuilder();
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream())) ) {
+
 			String inputLine;
 
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
-		} catch (Exception e) {
-			System.err.println("sendPost - reading response " +e.getMessage());
 		}
-		finally{
-			if(in!=null){
-				in.close();
-			}
+		catch (Exception e) {
+			log.error("sendPost - reading response " +e.getMessage(),e);
 		}
 
 		return response.toString();
 
 	}
 
+	/**
+	 * Utility method to convert a String representing a JSON to JSONObject 
+	 * @param s String with JSON data
+	 * @return JSONObject from give string
+	 * @throws ParseException
+	 */
 	public static final JSONObject string2Json(String s) throws ParseException{
 		return (JSONObject) jparser.parse(s);
 	}
