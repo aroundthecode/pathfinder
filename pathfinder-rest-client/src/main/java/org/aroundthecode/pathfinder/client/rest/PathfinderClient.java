@@ -1,5 +1,6 @@
 package org.aroundthecode.pathfinder.client.rest;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -42,18 +43,18 @@ public class PathfinderClient {
 	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException {
 
 		this.setBaseurl(protocol+"://"+domain+":"+port+path);
-		log.error("Testing connection [{}]...",getBaseurl());
+		log.warn("Testing connection [{}]...",getBaseurl());
 		
 		
 		try(Socket socket = new Socket()){
 			for (int i = 1; i <= RETRY_TIMES; i++) {
 				try {
 					socket.connect(new InetSocketAddress(domain, port), 10);
-					log.error("Connected");
+					log.warn("Connected");
 					break;
 				} catch (IOException ex) {
 					if(i<3){
-						log.error("Connection failed [{}/{}], will sleep {}s and retry...",i,RETRY_TIMES,RETRY_SLEEP);
+						log.error("Connection failed [{}/{}], will sleep {}ms and retry...",i,RETRY_TIMES,RETRY_SLEEP);
 						try {
 							Thread.sleep(RETRY_SLEEP);
 						} catch (InterruptedException e) {
@@ -235,6 +236,15 @@ public class PathfinderClient {
 
 		String response = RestUtils.sendGet(getBaseurl() + "node/get?id="+ uniqueId);
 		return RestUtils.string2Json(response);
+	}
+	
+	/**
+	 * Invoke /node/download to Pathfinder server to download the full project file
+	 * @return File pointing to temporary download resource
+	 * @throws IOException
+	 */
+	public File downloadProject() throws IOException{
+		return RestUtils.downloadFile(getBaseurl() + "/node/download");
 	}
 
 	/**

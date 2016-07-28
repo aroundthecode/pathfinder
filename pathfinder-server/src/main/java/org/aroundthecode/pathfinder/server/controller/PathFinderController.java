@@ -1,8 +1,11 @@
 package org.aroundthecode.pathfinder.server.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +31,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * PathFinderController wraps Neo4J and Spring data to expose end user REST api
+ * @author msacchetti
+ *
+ */
 @RestController
 public class PathFinderController {
 
@@ -40,6 +48,12 @@ public class PathFinderController {
 
 	private static final Logger log = LogManager.getLogger(PathFinderController.class.getName());
 
+	/**
+	 * Execute cypher query passed in post method as a json object with "q" key
+	 * @param body. {"q":"cypher query goes here"}
+	 * @return a String object, each line representing  nodeId-relationType-nodeId
+	 * @throws ParseException
+	 */
 	@RequestMapping(value="/cypher/query", method=RequestMethod.POST)
 	public String doQuery(@RequestBody String body) throws ParseException 
 	{
@@ -205,6 +219,46 @@ public class PathFinderController {
 				map.get(ArtifactUtils.V)
 				);
 	}
+
+
+	/**
+	 * Generate a list of JSONObject for the whole Artifact database
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping(value="/node/download", method=RequestMethod.GET)
+	public void downloadNodes(HttpServletResponse response) throws IOException {
+
+		Iterable<Artifact> all = null;
+		Transaction tx = graphDatabase.beginTx();
+		response.getWriter().write("[");
+		try {
+			all = artifactRepository.findAll();
+			tx.success();
+			boolean skip=true;
+			if(all!=null){
+				for (Artifact artifact : all) {
+					if(skip){
+						skip=false;
+					}
+					else{
+						response.getWriter().write(",");
+					}
+					artifact.toJSON().writeJSONString(response.getWriter());
+				}
+			}
+		} finally {
+			tx.close();
+		}
+		response.getWriter().write("]");
+
+
+		response.setContentType("application/json");      
+		response.setHeader("Content-Disposition", "attachment; filename=pathfinder.json");
+
+	}
+
+
 
 	private Artifact checkAndSaveArtifact(Artifact a) {
 		Transaction tx = graphDatabase.beginTx();

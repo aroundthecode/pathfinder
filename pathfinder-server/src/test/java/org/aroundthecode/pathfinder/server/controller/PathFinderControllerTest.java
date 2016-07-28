@@ -2,18 +2,23 @@ package org.aroundthecode.pathfinder.server.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
+import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
 import org.aroundthecode.pathfinder.server.Application;
 import org.aroundthecode.pathfinder.server.configuration.ConfigurationManager;
 import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
 import org.aroundthecode.pathfinder.server.entity.ArtifactTest;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.FixMethodOrder;
@@ -23,6 +28,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -163,6 +169,23 @@ public class PathFinderControllerTest {
 			System.out.println(response);
 
 		} catch (IOException e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void test73Download() {
+
+		try {
+			File f = client.downloadProject();
+			assertNotNull(f);
+			assertTrue(f.exists());
+			
+			FileReader fr = new FileReader(f);
+			JSONArray obj = RestUtils.string2JSONArray(fr);
+			assertNotNull(obj);
+
+		} catch (IOException | ParseException e) {
 			fail(e.getMessage());
 		}
 	}
