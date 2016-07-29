@@ -33,7 +33,8 @@ public class RestUtils {
 	private static final int BUFSIZE = 1024;
 
 
-	private RestUtils(){
+	private RestUtils() {
+		throw new IllegalAccessError("Utility class");
 	}
 
 	/**

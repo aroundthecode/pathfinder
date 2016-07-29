@@ -16,6 +16,11 @@ import org.apache.maven.shared.invoker.Invoker;
 import org.aroundthecode.pathfinder.server.crawler.handler.JsonResponseHandler;
 import org.json.simple.JSONObject;
 
+/**
+ * Utility class to wrap Pathfinder maven crawler plugin
+ * @author msacchetti
+ *
+ */
 public class CrawlerWrapper {
 
 	private static String mvnHome = "/opt/apache-maven";
@@ -23,6 +28,9 @@ public class CrawlerWrapper {
 	private static File filePom = null;
 	private static final Logger log = LogManager.getLogger(CrawlerWrapper.class.getName());
 
+	private CrawlerWrapper() {
+		throw new IllegalAccessError("Utility class");
+	}
 	
 	static{
 		String mHome = System.getenv("M2_HOME");

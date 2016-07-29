@@ -2,8 +2,17 @@ package org.aroundthecode.pathfinder.server.utils;
 
 import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
 
+/**
+ * Utility class to manage Cypher queries
+ * @author msacchetti
+ *
+ */
 public class QueryUtils {
 
+	private QueryUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+	
 	private static final String FILTERALL = 
 			"MATCH n1-[r]->n2 WHERE "
 			+ "n1.groupId =~ \"%s\" AND "
