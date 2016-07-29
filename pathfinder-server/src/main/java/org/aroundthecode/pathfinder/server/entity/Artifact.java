@@ -20,10 +20,6 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
  * @author msacchetti
  *
  */
-/**
- * @author msacchetti
- *
- */
 @NodeEntity
 public class Artifact {
 
@@ -40,31 +36,53 @@ public class Artifact {
 	@Fetch
 	private String version = "";
 
+	/**
+	 * Relation for COMPILE scope
+	 */
 	@RelatedTo(type="COMPILE", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
 
+	/**
+	 * Relation for PROVIDED scope
+	 */
 	@RelatedTo(type="PROVIDED", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
 
+	/**
+	 * Relation for RUNTIME scope
+	 */
 	@RelatedTo(type="RUNTIME", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
 
+	/**
+	 * Relation for TEST scope
+	 */
 	@RelatedTo(type="TEST", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesTest= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesTest= new HashSet<Artifact>();
 
+	/**
+	 * Relation for SYSTEM scope
+	 */
 	@RelatedTo(type="SYSTEM", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
+	@Fetch public  Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
 
+	/**
+	 * Relation for IMPORT scope
+	 */
 	@RelatedTo(type="IMPORT", direction=Direction.INCOMING)
-	public @Fetch Set<Artifact> dependenciesImport= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesImport= new HashSet<Artifact>();
 
+	/**
+	 * PARENT Relation
+	 */
 	@RelatedTo(type="PARENT", direction=Direction.OUTGOING)
-	public @Fetch Artifact parentArtifact = null;
+	@Fetch public Artifact parentArtifact = null;
 
 	/**
 	 * Empty constructor, just for Spring Data
 	 */
 	public Artifact() {
+		//nothing to do here, just neo4j compatibility 
 	}
 
 	/**

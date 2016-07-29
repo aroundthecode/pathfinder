@@ -5,8 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
@@ -25,6 +23,9 @@ import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.GraphDatabase;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -154,12 +155,22 @@ public class PathFinderController {
 	}
 
 
+	/**
+	 * Return a single artifact item given its unique ID
+	 * @param uniqueId String representing <b>uniqueId</b> attribute, pattern groupId:artifacId:packaging:classifier:version
+	 * @return Json Artifact representation
+	 */
 	@RequestMapping(value="/node/get", method=RequestMethod.GET)
 	public Artifact getArtifact(@RequestParam(value="id", defaultValue=ArtifactUtils.EMPTYID) String uniqueId) 
 	{
 		return artifactRepository.findByUniqueId(uniqueId);
 	}
 
+	/**
+	 * Set a PARENT relation between two Artifacts
+	 * @param body Json with <b>main</b> and <b>parent</b> keys representing given artifacts unique IDs
+	 * @throws ParseException
+	 */
 	@RequestMapping(value="/node/parent", method=RequestMethod.POST)
 	public void parent(@RequestBody String body) throws ParseException 
 	{
@@ -172,6 +183,11 @@ public class PathFinderController {
 		saveArtifact(main);
 	}
 
+	/**
+	 * Set a scoped relation between two Artifacts
+	 * @param body Json with <b>from</b>,<b>to</b> and <b>scope</b> keys representing given artifacts unique IDs and relationship scope type
+	 * @throws ParseException
+	 */
 	@RequestMapping(value="/node/depends", method=RequestMethod.POST)
 	public void depends(@RequestBody String body) throws ParseException 
 	{
@@ -222,16 +238,16 @@ public class PathFinderController {
 
 
 	/**
-	 * Generate a list of JSONObject for the whole Artifact database
-	 * @param response
+	 * Generate a list of JSONObject for the whole Artifact database to be downloaded as a file
+	 * @return download Json file as attachment
 	 * @throws IOException
 	 */
-	@RequestMapping(value="/node/download", method=RequestMethod.GET)
-	public void downloadNodes(HttpServletResponse response) throws IOException {
+	@RequestMapping(value="/node/download", method=RequestMethod.GET )
+	public HttpEntity<byte[]>  downloadNodes() throws IOException {
 
 		Iterable<Artifact> all = null;
 		Transaction tx = graphDatabase.beginTx();
-		response.getWriter().write("[");
+		StringBuilder sb = new StringBuilder("[");
 		try {
 			all = artifactRepository.findAll();
 			tx.success();
@@ -242,20 +258,22 @@ public class PathFinderController {
 						skip=false;
 					}
 					else{
-						response.getWriter().write(",");
+						sb.append(",");
 					}
-					artifact.toJSON().writeJSONString(response.getWriter());
+					sb.append(artifact.toJSON());
 				}
 			}
 		} finally {
 			tx.close();
 		}
-		response.getWriter().write("]");
+		sb.append("]");
 
+		HttpHeaders header = new HttpHeaders();
+	    header.setContentType(new MediaType("application", "pdf"));
+	    header.set("Content-Disposition", "attachment; filename=pathfinder.json" );
+	    header.setContentLength(sb.length());
 
-		response.setContentType("application/json");      
-		response.setHeader("Content-Disposition", "attachment; filename=pathfinder.json");
-
+	    return new HttpEntity<byte[]>(sb.toString().getBytes(),header);
 	}
 
 

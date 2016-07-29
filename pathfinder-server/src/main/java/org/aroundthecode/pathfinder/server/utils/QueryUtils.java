@@ -9,10 +9,6 @@ import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
  */
 public class QueryUtils {
 
-	private QueryUtils() {
-		throw new IllegalAccessError("Utility class");
-	}
-	
 	private static final String FILTERALL = 
 			"MATCH n1-[r]->n2 WHERE "
 			+ "n1.groupId =~ \"%s\" AND "
@@ -27,6 +23,10 @@ public class QueryUtils {
 			+ "n2.version =~ \"%s\" "
 			+ "RETURN n1 as node1,type(r) as rel ,n2 as node2";
 
+	private QueryUtils() {
+		throw new IllegalAccessError("Utility class");
+	}
+	
 	public static String getFilterAllQuery(FilterItem f) {
 		return String.format(FILTERALL, f.getFilterGN1(),f.getFilterAN1(),f.getFilterPN1(),f.getFilterCN1(),f.getFilterVN1(),f.getFilterGN2(),f.getFilterAN2(),f.getFilterPN2(),f.getFilterCN2(),f.getFilterVN2());
 	}

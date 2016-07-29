@@ -15,7 +15,8 @@
 
 
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
+		<sonar.java.source>1.8</sonar.java.source>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
