@@ -32,9 +32,7 @@ public class ArtifactTest {
 		assertEquals("", a.getVersion());
 		assertEquals("jar", a.getPackaging());
 		assertEquals("", a.getClassifier());
-
 		assertEquals(ArtifactUtils.EMPTYID, a.getUniqueId());
-
 	}
 
 	@Test
@@ -48,6 +46,10 @@ public class ArtifactTest {
 		assertEquals(IDC, a.getClassifier());
 
 		assertEquals(ID, a.getUniqueId());
+		
+		Long now = System.currentTimeMillis();
+		a.setTimestamp( now );
+		assertEquals(now, a.getTimestamp());
 
 	}
 
@@ -73,7 +75,10 @@ public class ArtifactTest {
 
 	@Test
 	public void testArtifactToJson() {
+		
 		Artifact a = getTestArtifact();
+		Long now = System.currentTimeMillis();
+		a.setTimestamp( now );
 
 		JSONObject o = a.toJSON();
 		assertNotNull(o);
@@ -85,6 +90,7 @@ public class ArtifactTest {
 		assertEquals(o.get(ArtifactUtils.C), a.getClassifier());
 		assertEquals(o.get(ArtifactUtils.V), a.getVersion());
 		assertEquals(o.get(ArtifactUtils.PN), a.getParent().getUniqueId() );
+		assertEquals(o.get(ArtifactUtils.T), a.getTimestamp().toString() );
 		
 		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.COMPILE.toString())).size(), a.dependenciesCompile.size() );
 		assertEquals(((JSONArray)((JSONObject)o.get(ArtifactUtils.D)).get(Dependency.PROVIDED.toString())).size(), a.dependenciesProvided.size() );
@@ -107,7 +113,7 @@ public class ArtifactTest {
 		Artifact a2 = Artifact.parse(o);
 		assertEquals(a, a2);
 		
-		String jsonString = "{\"groupId\":\"my.group\",\"dependencies\":{\"RUNTIME\":[\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\"],\"TEST\":[\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\"],\"COMPILE\":[\"my.group:COMPILE-1:jar:none:1.0.0\"],\"SYSTEM\":[\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\"],\"PROVIDED\":[\"my.group:PROVIDED-2:jar:none:1.0.0\",\"my.group:PROVIDED-2:jar:none:1.0.0\"],\"IMPORT\":[\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\"]},\"parentNode\":\"my.group:parent:jar:none:1.0.0\",\"packaging\":\"jar\",\"classifier\":\"none\",\"artifactId\":\"test\",\"version\":\"1.0.0\",\"uniqueId\":\"my.group:test:jar:none:1.0.0\"}";
+		String jsonString = "{\"timestamp\":1000,\"groupId\":\"my.group\",\"dependencies\":{\"RUNTIME\":[\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\"],\"TEST\":[\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\"],\"COMPILE\":[\"my.group:COMPILE-1:jar:none:1.0.0\"],\"SYSTEM\":[\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\"],\"PROVIDED\":[\"my.group:PROVIDED-2:jar:none:1.0.0\",\"my.group:PROVIDED-2:jar:none:1.0.0\"],\"IMPORT\":[\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\"]},\"parentNode\":\"my.group:parent:jar:none:1.0.0\",\"packaging\":\"jar\",\"classifier\":\"none\",\"artifactId\":\"test\",\"version\":\"1.0.0\",\"uniqueId\":\"my.group:test:jar:none:1.0.0\"}";
 		JSONObject o2 = RestUtils.string2Json(jsonString);
 		Artifact a3 = Artifact.parse(o2);
 		assertEquals(a, a3);

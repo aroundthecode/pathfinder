@@ -26,7 +26,7 @@ public class ArtifactUtils {
 	public static final String P = "packaging";
 	public static final String C = "classifier";
 	public static final String V = "version";
-	
+	public static final String T = "timestamp";
 	public static final String PN = "parentNode";
 	
 	public static final String D = "dependencies";

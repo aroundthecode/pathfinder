@@ -512,4 +512,4 @@ function refreshDepMngMaven(){
 }
 
 function jsonOpen(){alert("File upload - Work in progress");}
-function jsonDown(){document.location=pfurl  + "/node/download";}
+function jsonDown(){document.location= document.location.protocol + "//"+ document.location.hostname  + "/node/download";}

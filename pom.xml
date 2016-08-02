@@ -15,8 +15,8 @@
 
 
 	<properties>
-		<java.version>1.8</java.version>
-		<sonar.java.source>1.8</sonar.java.source>
+		<java.version>1.7</java.version>
+		<sonar.java.source>1.7</sonar.java.source>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -44,7 +44,7 @@
 		<!-- main server port -->
 		<server.port>8080</server.port>
 		<neo4j.port>${server.port}</neo4j.port>
-		
+
 		<!-- instance also neo4j server -->
 		<neo4j.db.enable>false</neo4j.db.enable>
 		<!-- port for neo4j server server port -->
@@ -54,9 +54,9 @@
 		<!-- credentials neo4j server server -->
 		<neo4j.user>neo4j</neo4j.user>
 		<neo4j.pass>password</neo4j.pass>
-		
+
 	</properties>
-	
+
 	<developers>
 		<developer>
 			<email>michele dot sacchetti at aroundthecode dot org</email>
@@ -65,24 +65,17 @@
 			<id>aroundthecode</id>
 		</developer>
 	</developers>
-	
+
 	<scm>
 		<url>https://github.com/aroundthecode/pathfinder</url>
 		<connection>scm:git:git://github.com/aroundthecode/pathfinder.git</connection>
 		<developerConnection>scm:git:git@github.com:aroundthecode/pathfinder.git</developerConnection>
 	</scm>
-	
+
 	<issueManagement>
 		<url>https://github.com/aroundthecode/pathfinder/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
-
-	<modules>
-		<module>pathfinder-server</module>
-		<module>pathfinder-rest-client</module>
-		<module>pathfinder-maven-plugin</module>
-		<module>pathfinder-web</module>
-	</modules>
 
 	<build>
 		<pluginManagement>
@@ -202,5 +195,31 @@
 			<url>http://m2.neo4j.org/</url>
 		</repository>
 	</repositories>
+
+
+	<profiles>
+		<profile>
+			<id>full-build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>pathfinder-server</module>
+				<module>pathfinder-rest-client</module>
+				<module>pathfinder-maven-plugin</module>
+				<module>pathfinder-web</module>
+			</modules>
+		</profile>
+
+		<!-- No-modules build -->
+		<profile>
+			<id>openshift</id>
+			<modules>
+				<module>pathfinder-server</module>
+				<module>pathfinder-rest-client</module>
+				<module>pathfinder-web</module>
+			</modules>
+		</profile>
+	</profiles>
 
 </project>

@@ -35,6 +35,9 @@ public class Artifact {
 	private String classifier="";
 	@Fetch
 	private String version = "";
+	@Fetch
+	private Long timestamp = 1l;
+	
 
 	/**
 	 * Relation for COMPILE scope
@@ -99,10 +102,11 @@ public class Artifact {
 	 */
 	public Artifact(String uniqueId) {
 		setUniqueId(uniqueId);
+		setTimestamp( System.currentTimeMillis() );
 	}
 
 	/**
-	 * Init class Artifact via all maven artifact attribute
+	 * Initialize class Artifact via all maven artifact attribute
 	 * @param groupId maven groupId string
 	 * @param artifactId maven artifactId string
 	 * @param version maven version string
@@ -115,6 +119,7 @@ public class Artifact {
 		setPackaging(type);
 		setClassifier(classifier);
 		setVersion(version);
+		setTimestamp( System.currentTimeMillis() );
 	}
 
 	/**
@@ -274,6 +279,20 @@ public class Artifact {
 	}
 
 	/**
+	 * @return the timestamp
+	 */
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	/**
+	 * @param timestamp the timestamp to set
+	 */
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	/**
 	 * hashCode method
 	 */
 	@Override
@@ -294,6 +313,8 @@ public class Artifact {
 		o.put(ArtifactUtils.V, getVersion());
 		o.put(ArtifactUtils.P, getPackaging());
 		o.put(ArtifactUtils.C, getClassifier());
+		
+		o.put(ArtifactUtils.T, getTimestamp().toString());
 
 		if(parentArtifact!=null && parentArtifact.getUniqueId()!=null){
 			o.put(ArtifactUtils.PN, parentArtifact.getUniqueId());
@@ -354,7 +375,7 @@ public class Artifact {
 		if (! (other instanceof Artifact)) 
 			return false;
 
-		return this.toString().equals(((Artifact)other).toString());
+		return this.getUniqueId().equals(((Artifact)other).getUniqueId());
 	}
 
 	/**
@@ -370,6 +391,14 @@ public class Artifact {
 				o.get(ArtifactUtils.P).toString(),
 				o.get(ArtifactUtils.C).toString()
 				);
+		
+		if( o.get(ArtifactUtils.T) != null ){
+			a.setTimestamp( Long.valueOf( o.get(ArtifactUtils.T).toString() ));
+		}
+		else{
+			a.setTimestamp( Long.valueOf( Long.toString(System.currentTimeMillis()) ));
+		}
+		
 		String pn = "" + o.get(ArtifactUtils.PN);
 		if( pn != ""){
 			a.hasParent( new Artifact(pn));

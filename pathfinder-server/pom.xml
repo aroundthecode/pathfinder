@@ -162,9 +162,48 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
+
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<configuration>
+									<target>
+										<!-- move final war where openshift can find it -->
+										<move
+											file="${project.build.directory}/${project.artifactId}-${project.version}.war"
+											tofile="${basedir}/../webapps/ROOT.war" overwrite="true" />
+										<!-- cleanup to save space -->
+										<delete dir="${project.build.directory}" />
+										<delete dir="${basedir}/../docs" />
+										<delete dir="${basedir}/../data" />
+										<delete dir="${basedir}/../pathfinder-web/target" />
+										<delete dir="${basedir}/../pathfinder-rest-client/target" />
+										<delete dir="${basedir}/../pathfinder-maven-plugin/target" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<repositories>
 		<repository>
 			<id>spring-releases</id>

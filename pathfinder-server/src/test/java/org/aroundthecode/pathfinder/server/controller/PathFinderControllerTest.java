@@ -48,13 +48,17 @@ public class PathFinderControllerTest {
 	
 	
 	@Test
-	public void test10Client() throws IOException {
-		client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
-		assertNotNull(client);
+	public void test10Client()  {
+		try {
+			client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
+			assertNotNull(client);
+		} catch (IOException e) {
+			fail(e.getMessage());
+			}
 	}
 
 	@Test
-	public void test20Write() throws IOException {
+	public void test20Write()  {
 
 		JSONObject body = getJsonObject();
 		assertNotNull(body);
@@ -70,40 +74,48 @@ public class PathFinderControllerTest {
 	}
 
 	@Test
-	public void test30Dependencies() throws IOException {
+	public void test30Dependencies()  {
 
-		//main artifact creation
-		JSONObject obj = getJsonObject();
-		assertNotNull(obj);
-		client.saveArtifact(ArtifactTest.ID);
+		try {
+			//main artifact creation
+			JSONObject obj = getJsonObject();
+			assertNotNull(obj);
+			client.saveArtifact(ArtifactTest.ID);
 
-		//dependency artifacts, one per scope
-		//create and link
-		for ( Dependency dir : Dependency.values()) {
-			JSONObject o =  getJsonObject(dir.toString());
-			//client.saveArtifact(o.get(ArtifactUtils.U).toString());
-			client.createDependency(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString(), dir.toString() );
+			//dependency artifacts, one per scope
+			//create and link
+			for ( Dependency dir : Dependency.values()) {
+				JSONObject o =  getJsonObject(dir.toString());
+				//client.saveArtifact(o.get(ArtifactUtils.U).toString());
+				client.createDependency(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString(), dir.toString() );
+			}
+		} catch (IOException e) {
+			fail(e.getMessage());
 		}
 
 	}
 
 	@Test
-	public void test40Parent() throws IOException {
+	public void test40Parent() {
 
-		//main artifact creation
-		JSONObject obj = getJsonObject();
-		assertNotNull(obj);
-		JSONObject o =  getJsonObject("parent");
-		assertNotNull(o);
-		client.saveArtifact( o.get(ArtifactUtils.U).toString());
+		try {
+			//main artifact creation
+			JSONObject obj = getJsonObject();
+			assertNotNull(obj);
+			JSONObject o =  getJsonObject("parent");
+			assertNotNull(o);
+			client.saveArtifact( o.get(ArtifactUtils.U).toString());
 
-		client.addParent(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString() );
+			client.addParent(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString() );
+		} catch (IOException e) {
+			fail(e.getMessage());
+			}
 
 	}
 
 
 	@Test
-	public void test50Read() throws IOException {
+	public void test50Read(){
 
 		try {
 			JSONObject o = client.getArtifact(ArtifactTest.ID);
@@ -131,7 +143,7 @@ public class PathFinderControllerTest {
 	}
 	
 	@Test
-	public void test70Query() throws IOException {
+	public void test70Query() {
 		
 		try {
 			String response = client.query(FILTERALL);
@@ -145,7 +157,7 @@ public class PathFinderControllerTest {
 	}
 
 	@Test
-	public void test71Filter() throws IOException {
+	public void test71Filter() {
 
 		try {
 			FilterItem f = new FilterItem();
@@ -160,7 +172,7 @@ public class PathFinderControllerTest {
 	}
 	
 	@Test
-	public void test72Impact() throws IOException {
+	public void test72Impact() {
 
 		try {
 			FilterItem f = new FilterItem();
@@ -201,6 +213,7 @@ public class PathFinderControllerTest {
 		body.put(ArtifactUtils.C, ArtifactTest.IDC);
 		body.put(ArtifactUtils.V, ArtifactTest.IDV);
 		body.put(ArtifactUtils.U, ArtifactUtils.getUniqueId(ArtifactTest.IDG, artifactId, ArtifactTest.IDP, ArtifactTest.IDC, ArtifactTest.IDV));
+		body.put(ArtifactUtils.T, System.currentTimeMillis());
 		return body;
 	}
 

@@ -3,6 +3,7 @@ package org.aroundthecode.pathfinder.server.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -61,7 +62,7 @@ public class PathFinderController {
 		JSONObject o = RestUtils.string2Json(body);
 		String query = o.get("q").toString();
 
-		String rows = "";
+		StringBuilder rows = new StringBuilder("");
 
 		try ( Transaction ignored = db.beginTx();
 				Result result = db.execute( query ) )
@@ -73,12 +74,30 @@ public class PathFinderController {
 				Node n1 = (Node) row.get("n");
 				Node n2 = (Node) row.get("n2");
 				String r = (String) row.get("rel");
-				rows += n1.getProperty("uniqueId") + " - " + r + " - " + n2.getProperty("uniqueId") + "\n";
+				rows.append(n1.getProperty("uniqueId"))
+					.append(" - ").append( r )
+					.append(" - ").append( n2.getProperty("uniqueId"))
+					.append("\n");
 			}
 				}
-		return rows;
+		return rows.toString();
 	}
 
+	/**
+	 * Return the full graph with given filter apply
+	 * @param filterGN1 inner nodes groupId filter
+	 * @param filterAN1 inner nodes artifacId filter
+	 * @param filterPN1 inner nodes package filter
+	 * @param filterCN1 inner nodes classifier filter
+	 * @param filterVN1 inner nodes version filter
+	 * @param filterGN2 outer nodes groupId filter
+	 * @param filterAN2 outer nodes artifacId filter
+	 * @param filterPN2 outer nodes package filter
+	 * @param filterCN2 outer nodes classifier filter
+	 * @param filterVN2 outer nodes version filter
+	 * @return JsonArray representation of the whole graph in form of node1 - relation - node2
+	 * @throws ParseException
+	 */
 	@RequestMapping(value="/query/filterall", method=RequestMethod.GET)
 	public JSONArray doFilterAll(
 			@RequestParam(value="gn1", defaultValue=".*") String filterGN1,
@@ -98,6 +117,28 @@ public class PathFinderController {
 		return doNodeRelationNodeQuery(query);
 	}
 
+	/**
+	 * * Return a graph representing all artifact depending from the main one within a maximum of <i>depth</i> hops 
+
+	 * @param depth masimum number of note to traverse duing the analysis
+	 * @param groupId main artifact groupId
+	 * @param artifactId main artifact artifactId
+	 * @param packaging main artifact packaging
+	 * @param classifier main artifact classifier
+	 * @param version main artifact version
+	 * @param filterGN1 inner nodes groupId filter
+	 * @param filterAN1 inner nodes artifacId filter
+	 * @param filterPN1 inner nodes package filter
+	 * @param filterCN1 inner nodes classifier filter
+	 * @param filterVN1 inner nodes version filter
+	 * @param filterGN2 outer nodes groupId filter
+	 * @param filterAN2 outer nodes artifacId filter
+	 * @param filterPN2 outer nodes package filter
+	 * @param filterCN2 outer nodes classifier filter
+	 * @param filterVN2 outer nodes version filter
+	 * @return JsonArray representation of the whole graph in form of node1 - relation - node2
+	 * @throws ParseException
+	 */
 	@RequestMapping(value="/query/impact", method=RequestMethod.GET)
 	public JSONArray doImpact(
 			@RequestParam(value="d", defaultValue="2") int depth, 
@@ -201,6 +242,10 @@ public class PathFinderController {
 
 	}
 
+	/**
+	 * Internal method to save artifact 
+	 * @param a Artifact to be stored
+	 */
 	private void saveArtifact(Artifact a) {
 		Transaction tx = graphDatabase.beginTx();
 		try {
@@ -211,6 +256,13 @@ public class PathFinderController {
 		}
 	}
 
+	/**
+	 * <p>Save given Artifact to database.</p>
+	 * <b>Note:</b> this method will consider only uniqueId attributes to save the base artifact data, to populate dependencies or parent see <i>depends</i> and <i>parent</i> methods
+	 * @param body json representation of the Artifact
+	 * @return Artifact item of saved object
+	 * @throws ParseException if json is not parsable
+	 */
 	@RequestMapping(value="/node/save", method=RequestMethod.POST)
 	public Artifact saveArtifact(@RequestBody String body) throws ParseException 
 	{
@@ -219,6 +271,13 @@ public class PathFinderController {
 		return checkAndSaveArtifact(a);
 	}
 
+	/**
+	 * Invoke pathfinder-mave-plugin crawl goal over the give artifact
+	 * @param body JSON containing artifact uniqueId
+	 * @return JsonoObject containing maven Invoker execution details
+	 * @throws ParseException if JSON is nor parsable
+	 * @throws UnsupportedEncodingException if UniqueId URLDecode fails
+	 */
 	@RequestMapping(value="/crawler/crawl", method=RequestMethod.POST)
 	public JSONObject crawlArtifact(@RequestBody String body) throws ParseException, UnsupportedEncodingException 
 	{
@@ -246,54 +305,53 @@ public class PathFinderController {
 	public HttpEntity<byte[]>  downloadNodes() throws IOException {
 
 		Iterable<Artifact> all = null;
-		Transaction tx = graphDatabase.beginTx();
+
 		StringBuilder sb = new StringBuilder("[");
-		try {
+		try(Transaction tx = graphDatabase.beginTx();) 
+		{
 			all = artifactRepository.findAll();
 			tx.success();
 			boolean skip=true;
-			if(all!=null){
-				for (Artifact artifact : all) {
-					if(skip){
-						skip=false;
-					}
-					else{
-						sb.append(",");
-					}
-					sb.append(artifact.toJSON());
-				}
+			if(all==null){
+				all = Collections.<Artifact> emptyList();
 			}
-		} finally {
-			tx.close();
-		}
+			for (Artifact artifact : all) {
+				if(skip){
+					skip=false;
+				}
+				else{
+					sb.append(",");
+				}
+				sb.append(artifact.toJSON());
+			}
+		} 
 		sb.append("]");
 
 		HttpHeaders header = new HttpHeaders();
-	    header.setContentType(new MediaType("application", "pdf"));
-	    header.set("Content-Disposition", "attachment; filename=pathfinder.json" );
-	    header.setContentLength(sb.length());
+		header.setContentType(new MediaType("application", "pdf"));
+		header.set("Content-Disposition", "attachment; filename=pathfinder.json" );
+		header.setContentLength(sb.length());
 
-	    return new HttpEntity<byte[]>(sb.toString().getBytes(),header);
+		return new HttpEntity<>(sb.toString().getBytes(),header);
 	}
 
 
 
 	private Artifact checkAndSaveArtifact(Artifact a) {
-		Transaction tx = graphDatabase.beginTx();
-		try {
+		Artifact out = null;
+		try(Transaction tx = graphDatabase.beginTx();)
+		{
 
 			String uniqueId = a.getUniqueId();
-			a = artifactRepository.findByUniqueId(uniqueId);
+			out = artifactRepository.findByUniqueId(uniqueId);
 
-			if(a==null){
-				a = artifactRepository.save( new Artifact(uniqueId));
+			if(out==null){
+				out = artifactRepository.save( new Artifact(uniqueId));
 			}
 
 			tx.success();
-		} finally {
-			tx.close();
-		}
-		return a;
+		} 
+		return out;
 	}
 
 
