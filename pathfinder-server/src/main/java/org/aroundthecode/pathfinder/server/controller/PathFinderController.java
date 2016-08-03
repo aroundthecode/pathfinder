@@ -264,11 +264,11 @@ public class PathFinderController {
 	 * @throws ParseException if json is not parsable
 	 */
 	@RequestMapping(value="/node/save", method=RequestMethod.POST)
-	public Artifact saveArtifact(@RequestBody String body) throws ParseException 
+	public void saveArtifact(@RequestBody String body) throws ParseException 
 	{
 		JSONObject o = RestUtils.string2Json(body);
 		Artifact a = Artifact.parse(o);
-		return checkAndSaveArtifact(a);
+		checkAndSaveArtifact(a);
 	}
 
 	/**
