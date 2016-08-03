@@ -8,7 +8,7 @@ import java.util.Map;
  * @author msacchetti
  *
  */
-public class ArtifactUtils {
+public final class ArtifactUtils {
 
 	/**
 	 * Enum representation for dependencies types
@@ -32,7 +32,6 @@ public class ArtifactUtils {
 	public static final String D = "dependencies";
 
 	private ArtifactUtils() {
-		throw new IllegalAccessError("Utility class");
 	}
 	
 	public static final String getUniqueId(String groupId,String artifactId,String packaging,String classifier,String version){

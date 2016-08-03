@@ -7,7 +7,7 @@ import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
  * @author msacchetti
  *
  */
-public class QueryUtils {
+public final class QueryUtils {
 
 	private static final String FILTERALL = 
 			"MATCH n1-[r]->n2 WHERE "
@@ -24,7 +24,6 @@ public class QueryUtils {
 			+ "RETURN n1 as node1,type(r) as rel ,n2 as node2";
 
 	private QueryUtils() {
-		throw new IllegalAccessError("Utility class");
 	}
 	
 	public static String getFilterAllQuery(FilterItem f) {
@@ -42,7 +41,7 @@ public class QueryUtils {
 	
 	private static String getSearchWhereClause(int idx, FilterItem f){
 
-	    StringBuffer whereclause = new StringBuffer("");
+	    StringBuilder whereclause = new StringBuilder("");
 
 	    whereclause
 	    .append(" WHERE n").append(idx).append(".groupId =~ \"").append(f.getFilterGN1()).append("\"")
@@ -65,10 +64,10 @@ public class QueryUtils {
 	
 	public static String getImpactQuery(int depth, String groupId,String artifactId,String packaging,String classifier,String version, FilterItem f){
 		
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		String chain = "-[r1]->(n2)";
 		
-		StringBuffer fixedQuery = new StringBuffer();
+		StringBuilder fixedQuery = new StringBuilder();
 		fixedQuery.append("MATCH (n1:Artifact { ")
 		.append( getSearchValue("groupId", groupId) )
 		.append( getSearchValue("artifactId", artifactId) )
