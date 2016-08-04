@@ -210,10 +210,11 @@ public class PathFinderController {
 	/**
 	 * Set a PARENT relation between two Artifacts
 	 * @param body Json with <b>main</b> and <b>parent</b> keys representing given artifacts unique IDs
+	 * @return 
 	 * @throws ParseException
 	 */
 	@RequestMapping(value="/node/parent", method=RequestMethod.POST)
-	public void parent(@RequestBody String body) throws ParseException 
+	public Artifact parent(@RequestBody String body) throws ParseException 
 	{
 		JSONObject o = RestUtils.string2Json(body);
 		Artifact main = new Artifact(o.get("main").toString());
@@ -221,16 +222,17 @@ public class PathFinderController {
 		main = checkAndSaveArtifact(main);
 		parent = checkAndSaveArtifact(parent);
 		main.hasParent(parent);
-		saveArtifact(main);
+		return saveArtifact(main);
 	}
 
 	/**
 	 * Set a scoped relation between two Artifacts
 	 * @param body Json with <b>from</b>,<b>to</b> and <b>scope</b> keys representing given artifacts unique IDs and relationship scope type
+	 * @return saved Artifact
 	 * @throws ParseException
 	 */
 	@RequestMapping(value="/node/depends", method=RequestMethod.POST)
-	public void depends(@RequestBody String body) throws ParseException 
+	public Artifact depends(@RequestBody String body) throws ParseException 
 	{
 		JSONObject o = RestUtils.string2Json(body);
 		Artifact aFrom = new Artifact(o.get("from").toString());
@@ -238,22 +240,25 @@ public class PathFinderController {
 		aFrom = checkAndSaveArtifact(aFrom);
 		aTo = checkAndSaveArtifact(aTo);
 		aFrom.dependsOn(aTo,o.get("scope").toString());
-		saveArtifact(aFrom);
+		return saveArtifact(aFrom);
 
 	}
 
 	/**
 	 * Internal method to save artifact 
 	 * @param a Artifact to be stored
+	 * @return 
 	 */
-	private void saveArtifact(Artifact a) {
+	private Artifact saveArtifact(Artifact a) {
 		Transaction tx = graphDatabase.beginTx();
+		Artifact out = null;
 		try {
-			artifactRepository.save(a);
+			out = artifactRepository.save(a);
 			tx.success();
 		} finally {
 			tx.close();
 		}
+		return out;
 	}
 
 	/**
@@ -264,11 +269,11 @@ public class PathFinderController {
 	 * @throws ParseException if json is not parsable
 	 */
 	@RequestMapping(value="/node/save", method=RequestMethod.POST)
-	public Artifact saveArtifact(@RequestBody String body) throws ParseException 
+	public JSONObject saveArtifact(@RequestBody String body) throws ParseException 
 	{
 		JSONObject o = RestUtils.string2Json(body);
 		Artifact a = Artifact.parse(o);
-		return checkAndSaveArtifact(a);
+		return checkAndSaveArtifact(a).toJSON();
 	}
 
 	/**
@@ -341,7 +346,6 @@ public class PathFinderController {
 		Artifact out = null;
 		try(Transaction tx = graphDatabase.beginTx();)
 		{
-
 			String uniqueId = a.getUniqueId();
 			out = artifactRepository.findByUniqueId(uniqueId);
 

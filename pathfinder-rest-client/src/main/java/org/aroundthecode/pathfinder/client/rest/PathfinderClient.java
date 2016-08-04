@@ -2,16 +2,32 @@ package org.aroundthecode.pathfinder.client.rest;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
+import org.aroundthecode.pathfinder.client.rest.manager.PathfinderUrlManager;
+import org.aroundthecode.pathfinder.client.rest.manager.configuration.PathfinderConnectionConfiguration;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
-import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
+import org.aroundthecode.tools.remote.api.auth.Auth;
+import org.aroundthecode.tools.remote.api.auth.NoAuth;
+import org.aroundthecode.tools.remote.api.configuration.AbstractConnectionConfiguration;
+import org.aroundthecode.tools.remote.api.configuration.AbstractConnectionConfiguration.AllowedProtocol;
+import org.aroundthecode.tools.remote.api.response.EmptyResponseParser;
+import org.aroundthecode.tools.remote.api.response.JsonArrayResponseParser;
+import org.aroundthecode.tools.remote.api.response.JsonObjectResponseParser;
+import org.aroundthecode.tools.remote.api.response.StringResponseParser;
+import org.aroundthecode.tools.remote.api.response.TemporaryFileResponseParser;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -26,9 +42,12 @@ public class PathfinderClient {
 	private static final String CHARSET = "UTF-8";
 	private static final int RETRY_TIMES = 3;
 	private static final int RETRY_SLEEP = 10000;
-	private String baseurl = "http://localhost:8080";
+	
+	private static final int NOERROR = 299;
 	private static final Logger log = LogManager.getLogger(PathfinderClient.class.getName());
 
+	private NameValuePair[] headers = new NameValuePair[2];
+	private PathfinderUrlManager um = null;
 
 	/**
 	 * Base constructor, provide connection parameters. 
@@ -42,10 +61,19 @@ public class PathfinderClient {
 	 */
 	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException {
 
-		this.setBaseurl(protocol+"://"+domain+":"+port+path);
-		log.warn("Testing connection [{}]...",getBaseurl());
-		
-		
+		PathfinderConnectionConfiguration conf= new PathfinderConnectionConfiguration(
+				AllowedProtocol.parse("app"),
+				domain
+				);
+		Auth auth = new NoAuth();
+		um = new PathfinderUrlManager(conf);
+
+		um.setAuth( auth );
+		headers[0] = new NameValuePair("Content-Type", AbstractConnectionConfiguration.APPLICATION_JSON);
+		headers[1] = new NameValuePair("Accept", AbstractConnectionConfiguration.APPLICATION_JSON);		
+
+
+
 		try(Socket socket = new Socket()){
 			for (int i = 1; i <= RETRY_TIMES; i++) {
 				try {
@@ -68,17 +96,11 @@ public class PathfinderClient {
 				} 
 			}
 		}
-		
-		
+
+
 	}
 
-	public final String getBaseurl() {
-		return baseurl;
-	}
 
-	public final void setBaseurl(String baseurl) {
-		this.baseurl = baseurl;
-	}
 
 	/**
 	 * Invoke node/save method to Pathfinder server to save Artifact data
@@ -90,11 +112,36 @@ public class PathfinderClient {
 	 * @return JSON String representation of saved artifact
 	 * @throws IOException
 	 */
-	public String saveArtifact(String groupId,String artifactId,String packaging,String classifier,String version) throws IOException {
+	public JSONObject saveArtifact(String groupId,String artifactId,String packaging,String classifier,String version) throws IOException {
 
-		JSONObject body = PathfinderClient.createJson(groupId, artifactId, packaging,classifier, version);
-		return RestUtils.sendPost(getBaseurl() + "node/save", body);
+		JSONObject resp = null;
+		JsonObjectResponseParser jparser = new JsonObjectResponseParser();
+		try {
+
+			String json = createJson(groupId, artifactId, packaging, classifier, version).toString();
+			um.getLog().debug("saveArtifact: [{}]",json);
+			RequestEntity postData = getStringRequestEntity(json);
+
+			int ret = um.doPost(PathfinderConnectionConfiguration.URL_NODE_SAVE, jparser,new NameValuePair[0],headers,  postData);
+			if(ret!=HttpStatus.SC_OK){
+				um.getLog().error("saveArtifact - Request failed, return status [{}]", ret);
+			}
+			else{
+				resp = jparser.getResponse();
+				um.getLog().debug("saveArtifact - response [{}]",resp);
+
+			}
+		} catch (IOException e) {
+			um.getLog().error("saveArtifact", e);
+		}
+
+		return resp;
+
 	}
+
+
+
+
 
 	/**
 	 * Invoke node/save method to Pathfinder server to save Artifact data
@@ -102,7 +149,7 @@ public class PathfinderClient {
 	 * @return JSON String representation of saved artifact
 	 * @throws IOException
 	 */
-	public String saveArtifact(String uniqueId) throws IOException {
+	public JSONObject saveArtifact(String uniqueId) throws IOException {
 
 		Map<String, String> map = ArtifactUtils.splitUniqueId(uniqueId);
 		return saveArtifact(
@@ -122,14 +169,30 @@ public class PathfinderClient {
 	 * @return JSON String representation of source artifact with new dependency
 	 * @throws IOException
 	 */
-	public String createDependency(String uniqueIdFrom,String uniqueIdTo,String scope) throws IOException {
+	public JSONObject createDependency(String uniqueIdFrom,String uniqueIdTo,String scope) throws IOException {
 
+		JSONObject resp = null;
+		JsonObjectResponseParser jparser = new JsonObjectResponseParser();
 		JSONObject body = new JSONObject();
 		body.put("from", uniqueIdFrom);
 		body.put("to", uniqueIdTo);
 		body.put("scope", scope);
 
-		return RestUtils.sendPost(getBaseurl() + "node/depends", body);
+		um.getLog().debug("createDependency: [{}]",body.toString());
+		RequestEntity postData = getStringRequestEntity(body.toString());
+
+		int ret = um.doPost(PathfinderConnectionConfiguration.URL_NODE_DEPENDS, jparser,new NameValuePair[0],headers,  postData);
+		if(ret!=HttpStatus.SC_OK){
+			um.getLog().error("createDependency - Request failed, return status [{}]", ret);
+		}
+		else{
+			resp = jparser.getResponse();
+			um.getLog().debug("createDependency - response [{}]", resp);
+
+		}
+
+		return resp;
+
 	}
 
 	/**
@@ -139,13 +202,28 @@ public class PathfinderClient {
 	 * @return JSON String representation of main artifact with new dependency
 	 * @throws IOException
 	 */
-	public String addParent(String mainUniqueId,String parentUniqueId) throws IOException {
+	public JSONObject addParent(String mainUniqueId,String parentUniqueId) throws IOException {
 
+		JSONObject resp = null;
+		JsonObjectResponseParser jparser = new JsonObjectResponseParser();
 		JSONObject body = new JSONObject();
 		body.put("main", mainUniqueId);
 		body.put("parent", parentUniqueId);
 
-		return RestUtils.sendPost(getBaseurl() + "node/parent", body);
+		um.getLog().debug("addParent: [{}]",body.toString());
+		RequestEntity postData = getStringRequestEntity(body.toString());
+
+		int ret = um.doPost(PathfinderConnectionConfiguration.URL_NODE_PARENT, jparser,new NameValuePair[0],headers,  postData);
+		if(ret!=HttpStatus.SC_OK){
+			um.getLog().error("addParent - Request failed, return status [{}]", ret);
+		}
+		else{
+			resp = jparser.getResponse();
+			um.getLog().debug("addParent - response [{}]", resp);
+
+		}
+
+		return resp;
 	}
 
 	/**
@@ -156,10 +234,25 @@ public class PathfinderClient {
 	 */
 	public String query(String cypherQuery) throws IOException {
 
+		String resp = null;
+		StringResponseParser sparser = new StringResponseParser();
 		JSONObject body = new JSONObject();
 		body.put("q", cypherQuery);
 
-		return RestUtils.sendPost(getBaseurl() + "/cypher/query", body);
+		um.getLog().debug("query: [{}]",body.toString());
+		RequestEntity postData = getStringRequestEntity(body.toString());
+
+		int ret = um.doPost(PathfinderConnectionConfiguration.URL_CYPHER_QUERY, sparser,new NameValuePair[0],headers,  postData);
+		if(ret!=HttpStatus.SC_OK){
+			um.getLog().error("query - Request failed, return status [{}]", ret);
+		}
+		else{
+			resp = sparser.getResponse();
+			um.getLog().debug("query - response [{}]", resp);
+
+		}
+
+		return resp;
 	}
 
 	/**
@@ -168,23 +261,35 @@ public class PathfinderClient {
 	 * @return JSON Array of JSON object providing Artifact and relations data
 	 * @throws IOException
 	 */
-	public String filterAll(FilterItem f) throws IOException {
+	public JSONArray filterAll(FilterItem f) throws IOException {
 
-		StringBuilder sb = new StringBuilder("/query/filterall?");
+		NameValuePair[] filters = new NameValuePair[10];
+		int i = 0;
 
-		sb.append("gn1=").append(URLEncoder.encode(f.getFilterGN1(),CHARSET)).append("&");
-		sb.append("an1=").append(URLEncoder.encode(f.getFilterAN1(),CHARSET)).append("&");
-		sb.append("pn1=").append(URLEncoder.encode(f.getFilterPN1(),CHARSET)).append("&");
-		sb.append("cn1=").append(URLEncoder.encode(f.getFilterCN1(),CHARSET)).append("&");
-		sb.append("vn1=").append(URLEncoder.encode(f.getFilterVN1(),CHARSET)).append("&");
+		filters[i++] = new NameValuePair("gn1", URLEncoder.encode(f.getFilterGN1(),CHARSET));
+		filters[i++] = new NameValuePair("an1", URLEncoder.encode(f.getFilterAN1(),CHARSET));
+		filters[i++] = new NameValuePair("pn1", URLEncoder.encode(f.getFilterPN1(),CHARSET));
+		filters[i++] = new NameValuePair("cn1", URLEncoder.encode(f.getFilterCN1(),CHARSET));
+		filters[i++] = new NameValuePair("vn1", URLEncoder.encode(f.getFilterVN1(),CHARSET));
 
-		sb.append("gn2=").append(URLEncoder.encode(f.getFilterGN2(),CHARSET)).append("&");
-		sb.append("an2=").append(URLEncoder.encode(f.getFilterAN2(),CHARSET)).append("&");
-		sb.append("pn2=").append(URLEncoder.encode(f.getFilterPN2(),CHARSET)).append("&");
-		sb.append("cn2=").append(URLEncoder.encode(f.getFilterCN2(),CHARSET)).append("&");
-		sb.append("vn2=").append(URLEncoder.encode(f.getFilterVN2(),CHARSET));
+		filters[i++] = new NameValuePair("gn2", URLEncoder.encode(f.getFilterGN2(),CHARSET));
+		filters[i++] = new NameValuePair("an2", URLEncoder.encode(f.getFilterAN2(),CHARSET));
+		filters[i++] = new NameValuePair("pn2", URLEncoder.encode(f.getFilterPN2(),CHARSET));
+		filters[i++] = new NameValuePair("cn2", URLEncoder.encode(f.getFilterCN2(),CHARSET));
+		filters[i] = new NameValuePair("vn2", URLEncoder.encode(f.getFilterVN2(),CHARSET));
 
-		return RestUtils.sendGet(getBaseurl() + sb.toString() );
+		JSONArray resp = null;
+		JsonArrayResponseParser aparser = new JsonArrayResponseParser();
+		int ret = um.doGet(PathfinderConnectionConfiguration.URL_QUERY_FILTERALL, aparser,filters,headers);
+		if(ret!=HttpStatus.SC_OK){
+			um.getLog().error("filterAll - Request failed, return status [{}]", ret);
+		}
+		else{
+			resp = aparser.getResponse();
+			um.getLog().debug("filterAll - response [{}]", resp);
+		}
+
+		return resp;
 	}
 
 	/**
@@ -199,30 +304,42 @@ public class PathfinderClient {
 	 * @return JSON Array of JSON object providing Artifact and relations data
 	 * @throws IOException
 	 */
-	public String impact(int depth,String groupId,String artifactId,String packaging,String classifier,String version,FilterItem f) throws IOException {
+	public JSONArray impact(int depth,String groupId,String artifactId,String packaging,String classifier,String version,FilterItem f) throws IOException {
 
-		StringBuilder sb = new StringBuilder("/query/impact?");
+		NameValuePair[] filters = new NameValuePair[16];
+		int i = 0;
 
-		sb.append("d=").append(depth).append("&");
-		sb.append("g=").append(URLEncoder.encode(groupId,CHARSET)).append("&");
-		sb.append("a=").append(URLEncoder.encode(artifactId,CHARSET)).append("&");
-		sb.append("p=").append(URLEncoder.encode(packaging,CHARSET)).append("&");
-		sb.append("c=").append(URLEncoder.encode(classifier,CHARSET)).append("&");
-		sb.append("v=").append(URLEncoder.encode(version,CHARSET)).append("&");
+		filters[i++] = new NameValuePair("d", Integer.toString(depth) );
+		filters[i++] = new NameValuePair("g", URLEncoder.encode(groupId,CHARSET));
+		filters[i++] = new NameValuePair("a", URLEncoder.encode(artifactId,CHARSET));
+		filters[i++] = new NameValuePair("p", URLEncoder.encode(packaging,CHARSET));
+		filters[i++] = new NameValuePair("c", URLEncoder.encode(classifier,CHARSET));
+		filters[i++] = new NameValuePair("v", URLEncoder.encode(version,CHARSET));
 
-		sb.append("gn1=").append(URLEncoder.encode(f.getFilterGN1(),CHARSET)).append("&");
-		sb.append("an1=").append(URLEncoder.encode(f.getFilterAN1(),CHARSET)).append("&");
-		sb.append("pn1=").append(URLEncoder.encode(f.getFilterPN1(),CHARSET)).append("&");
-		sb.append("cn1=").append(URLEncoder.encode(f.getFilterCN1(),CHARSET)).append("&");
-		sb.append("vn1=").append(URLEncoder.encode(f.getFilterVN1(),CHARSET)).append("&");
+		filters[i++] = new NameValuePair("gn1", URLEncoder.encode(f.getFilterGN1(),CHARSET));
+		filters[i++] = new NameValuePair("an1", URLEncoder.encode(f.getFilterAN1(),CHARSET));
+		filters[i++] = new NameValuePair("pn1", URLEncoder.encode(f.getFilterPN1(),CHARSET));
+		filters[i++] = new NameValuePair("cn1", URLEncoder.encode(f.getFilterCN1(),CHARSET));
+		filters[i++] = new NameValuePair("vn1", URLEncoder.encode(f.getFilterVN1(),CHARSET));
 
-		sb.append("gn2=").append(URLEncoder.encode(f.getFilterGN2(),CHARSET)).append("&");
-		sb.append("an2=").append(URLEncoder.encode(f.getFilterAN2(),CHARSET)).append("&");
-		sb.append("pn2=").append(URLEncoder.encode(f.getFilterPN2(),CHARSET)).append("&");
-		sb.append("cn2=").append(URLEncoder.encode(f.getFilterCN2(),CHARSET)).append("&");
-		sb.append("vn2=").append(URLEncoder.encode(f.getFilterVN2(),CHARSET));
+		filters[i++] = new NameValuePair("gn2", URLEncoder.encode(f.getFilterGN2(),CHARSET));
+		filters[i++] = new NameValuePair("an2", URLEncoder.encode(f.getFilterAN2(),CHARSET));
+		filters[i++] = new NameValuePair("pn2", URLEncoder.encode(f.getFilterPN2(),CHARSET));
+		filters[i++] = new NameValuePair("cn2", URLEncoder.encode(f.getFilterCN2(),CHARSET));
+		filters[i] = new NameValuePair("vn2", URLEncoder.encode(f.getFilterVN2(),CHARSET));
 
-		return RestUtils.sendGet(getBaseurl() + sb.toString() );
+		JSONArray resp = null;
+		JsonArrayResponseParser aparser = new JsonArrayResponseParser();
+		int ret = um.doGet(PathfinderConnectionConfiguration.URL_QUERY_IMPACT, aparser,filters,headers);
+		if(ret!=HttpStatus.SC_OK){
+			um.getLog().error("impact - Request failed, return status [{}]", ret);
+		}
+		else{
+			resp = aparser.getResponse();
+			um.getLog().debug("impact - response [{}]", resp);
+		}
+
+		return resp;
 	}
 
 	/**
@@ -232,19 +349,48 @@ public class PathfinderClient {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public JSONObject getArtifact(String uniqueId) throws IOException, ParseException {
+	public JSONObject getArtifact(String uniqueId) throws IOException {
 
-		String response = RestUtils.sendGet(getBaseurl() + "node/get?id="+ uniqueId);
-		return RestUtils.string2Json(response);
+		JSONObject resp = null;
+		JsonObjectResponseParser jparser = new JsonObjectResponseParser();
+		NameValuePair[] params = new NameValuePair[1];
+		params[0] = new NameValuePair("id", uniqueId);
+		
+		int ret = um.doGet(PathfinderConnectionConfiguration.URL_NODE_GET, jparser,params,headers);
+		if(ret!=HttpStatus.SC_OK){
+			um.getLog().error("getArtifact - Request failed, return status [{}]", ret);
+		}
+		else{
+			resp = jparser.getResponse();
+			um.getLog().debug("getArtifact - response [{}]", resp);
+		}
+
+		return resp;
 	}
-	
+
 	/**
 	 * Invoke /node/download to Pathfinder server to download the full project file
 	 * @return File pointing to temporary download resource
 	 * @throws IOException
 	 */
 	public File downloadProject() throws IOException{
-		return RestUtils.downloadFile(getBaseurl() + "/node/download");
+		
+		File out = null;
+		TemporaryFileResponseParser fparser = new TemporaryFileResponseParser("/tmp");
+		try {
+			int ret = um.downloadFile(PathfinderConnectionConfiguration.URL_NODE_DOWNLOAD, fparser, new NameValuePair[0], new NameValuePair[0]);
+			if(ret>NOERROR){
+				um.getLog().error("downloadProject - Request failed, return status" + ret);
+			}
+			else{
+				out = fparser.getResponse();
+				um.getLog().debug("downloadProject - response:"+out.getAbsolutePath());
+			}
+		} catch (IOException e) {
+			um.getLog().error("downloadProject - request failed", e);
+		}
+		return out;
+
 	}
 
 	/**
@@ -265,6 +411,19 @@ public class PathfinderClient {
 		body.put("classifier", classifier);
 		body.put("version", version);
 		return body;
+	}
+
+	/**
+	 * Convert a string to a RequestEntity ready to be submited as a POST
+	 * @param data the string to be converted
+	 * @return RequestEntity
+	 * @throws UnsupportedEncodingException
+	 */
+	private static RequestEntity getStringRequestEntity(String data)
+			throws UnsupportedEncodingException {
+		return new StringRequestEntity(data ,
+				AbstractConnectionConfiguration.APPLICATION_JSON,
+				AbstractConnectionConfiguration.CHARSET_NAME);
 	}
 
 }

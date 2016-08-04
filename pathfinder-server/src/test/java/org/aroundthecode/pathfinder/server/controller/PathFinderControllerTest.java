@@ -63,7 +63,7 @@ public class PathFinderControllerTest {
 		JSONObject body = getJsonObject();
 		assertNotNull(body);
 		try {
-			String response = client.saveArtifact(ArtifactTest.ID);
+			JSONObject response = client.saveArtifact(ArtifactTest.ID);
 			assertNotNull(response);
 			System.out.println(response);
 
@@ -122,7 +122,7 @@ public class PathFinderControllerTest {
 			assertNotNull(o);
 			System.out.println(o.toString());
 		}
-		catch (IOException | ParseException e) {
+		catch (IOException e) {
 			fail(e.getMessage());
 		}
 
@@ -161,7 +161,7 @@ public class PathFinderControllerTest {
 
 		try {
 			FilterItem f = new FilterItem();
-			String response = client.filterAll(f);
+			JSONArray response = client.filterAll(f);
 			assertNotNull(response);
 			System.out.println(response);
 
@@ -176,7 +176,7 @@ public class PathFinderControllerTest {
 
 		try {
 			FilterItem f = new FilterItem();
-			String response = client.impact(2, "org.aroundthecode.pathfinder", "pathfinder-client", "jar", "", "0.1.0-SNAPSHOT", f);
+			JSONArray response = client.impact(2, "org.aroundthecode.pathfinder", "pathfinder-client", "jar", "", "0.1.0-SNAPSHOT", f);
 			assertNotNull(response);
 			System.out.println(response);
 

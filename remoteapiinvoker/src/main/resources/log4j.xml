@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+  <appender name="APPENDER_OUT" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <!-- Print the date in ISO 8601 format -->
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %p [%C:%L] - %m%n"/>
+    </layout>
+  </appender>
+ <appender name="APPENDER_FILE" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="mioLog.log"/>
+    <param name="MaxFileSize" value="100KB"/>
+    <!-- Keep one backup file -->
+    <param name="MaxBackupIndex" value="1"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %p [%C:%L] - %m%n"/>
+    </layout>
+  </appender>
+  <root>
+  <level value="error"/>
+    <appender-ref ref="APPENDER_OUT" />
+    <appender-ref ref="APPENDER_FILE" />
+  </root>
+  
+  <root> 
+    <priority value ="error" /> 
+    <appender-ref  ref="console" /> 
+  </root>
+  
+  <logger name="org.aroundthecode">
+	<level value="info" /> 
+</logger>
+</log4j:configuration>
