@@ -131,10 +131,10 @@ public class PathFinderControllerTest {
 	@Test
 	public void test60Crawler() {
 
-		JSONObject obj = CrawlerWrapper.crawl("org.aroundthecode.pathfinder", "pathfinder-server", "pom", "", "0.1.0-SNAPSHOT");
+		JSONObject obj = CrawlerWrapper.crawl("org.apache.maven.shared", "maven-invoker", "jar", "", "2.2");
 		assertNotNull(obj);
-		assertEquals(0,obj.get("return"));
 		System.out.println(obj);
+		assertEquals(0,obj.get("return"));
 
 	}
 
