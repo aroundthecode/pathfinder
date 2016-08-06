@@ -391,7 +391,7 @@ public abstract class AbstractUrlManager {
 					in.close();
 				}
 			} catch (IOException e) {
-				getLog().info("Error closing stream");
+				getLog().info("Error closing stream",e);
 			}
 		}	
 		return status;
@@ -487,13 +487,6 @@ public abstract class AbstractUrlManager {
 		return log;
 	}
 
-	/**
-	 * Set Logger
-	 * @return
-	 */
-	protected void setLog( Logger l) {
-		log = l;
-	}
 
 	/**
 	 * Get {@link HttpClient} used for requests

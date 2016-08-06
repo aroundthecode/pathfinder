@@ -36,19 +36,12 @@ public class StringResponseParser implements ResponseParser {
 		Writer writer = new StringWriter();
 		 
         char[] buffer = new char[BUF_SIZE];
-        Reader reader = new BufferedReader(new InputStreamReader(in, AbstractConnectionConfiguration.CHARSET_NAME));
-        try {
+        
+        try(Reader reader = new BufferedReader(new InputStreamReader(in, AbstractConnectionConfiguration.CHARSET_NAME));) {
             int n;
             while ((n = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, n);
             }
-        
-		} finally {
-            try {
-				reader.close();
-			} catch (IOException e) {
-				getLog().warn(e.getMessage());
-			}
         }
         setResponse(writer.toString());
 	}

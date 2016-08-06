@@ -45,7 +45,7 @@ public abstract class AbstractConnectionConfiguration {
 		try {
 			psf = new EasySSLProtocolSocketFactory();
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(e.getMessage(),e);
 		}
 	}
 	
@@ -87,18 +87,10 @@ public abstract class AbstractConnectionConfiguration {
 			return socketFactory;
 		}
 
-		public void setsocketFactory(ProtocolSocketFactory sf) {
-			this.socketFactory = sf;
-		}
-
 		public String getProtocol() {
 			return protocol;
 		}
 
-		public void setProtocol(String protocol) {
-			this.protocol = protocol;
-		}
-		
 		public static AllowedProtocol parse(String name){
 			
 			for(final AllowedProtocol ap : AllowedProtocol.values()) {

@@ -61,32 +61,24 @@ public class TemporaryFileResponseParser implements ResponseParser {
 		String file = (getStoragePath() + "/" + getFilename() ).replaceAll("//", "/");
 		File f = new File(file);
 		f.deleteOnExit();
-		BufferedInputStream bis = null;
-		OutputStream out = null;
-		try {
-			bis = new BufferedInputStream(response);
-			out = new BufferedOutputStream( new FileOutputStream(f) );
+		try(
+				BufferedInputStream bis= new BufferedInputStream(response);
+				FileOutputStream fos = new FileOutputStream(f);
+				OutputStream out = new BufferedOutputStream( fos );
+				) {
+
 			byte[] buffer = new byte[BUFSIZE];
 			int count = -1;
 			while ((count = bis.read(buffer)) != -1) {
 				out.write(buffer, 0, count);
 			}
-		} catch (FileNotFoundException e) {
-			getLog().error(this.getClass().getName() + " : " + e.getMessage());
 		} catch (IOException e) {
-			getLog().error(this.getClass().getName() + " : " + e.getMessage());
+			getLog().error(this.getClass().getName() + " : " + e.getMessage(),e);
 		}finally{
 			try {
-				if(out!=null){
-					out.flush();
-					out.close();
-				}
-				if(bis!=null){
-					bis.close();
-				}
 				response.close();
 			} catch (IOException e) {
-				getLog().error(this.getClass().getName() + " : " + e.getMessage());
+				getLog().error(e.getMessage(),e);
 			}
 		}
 
