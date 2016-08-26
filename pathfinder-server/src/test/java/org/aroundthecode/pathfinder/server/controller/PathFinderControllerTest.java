@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
@@ -42,19 +43,20 @@ public class PathFinderControllerTest {
 	private static final String PF_SERVER_PATH = ConfigurationManager.getPathfinderPath();
 
 	private static PathfinderClient client = null;
-	
+
 	private static final String FILTERALL = 
 			"MATCH n-[r]->n2 RETURN n,type(r) as rel ,n2";
-	
-	
+
+
 	@Test
 	public void test10Client()  {
 		try {
 			client = new PathfinderClient(PF_SERVER_PROTOCOL,PF_SERVER_HOST,PF_SERVER_PORT,PF_SERVER_PATH);
 			assertNotNull(client);
+			client.truncateProject();
 		} catch (IOException e) {
 			fail(e.getMessage());
-			}
+		}
 	}
 
 	@Test
@@ -109,7 +111,7 @@ public class PathFinderControllerTest {
 			client.addParent(obj.get(ArtifactUtils.U).toString(), o.get(ArtifactUtils.U).toString() );
 		} catch (IOException e) {
 			fail(e.getMessage());
-			}
+		}
 
 	}
 
@@ -129,7 +131,7 @@ public class PathFinderControllerTest {
 	}
 
 	@Test
-	public void test60Crawler() {
+	public void test999Crawler() {
 
 		JSONObject obj = CrawlerWrapper.crawl("org.apache.maven.shared", "maven-invoker", "jar", "", "2.2");
 		assertNotNull(obj);
@@ -138,22 +140,20 @@ public class PathFinderControllerTest {
 
 	}
 
-	private JSONObject getJsonObject() {
-		return getJsonObject("");
-	}
-	
+
+
 	@Test
 	public void test70Query() {
-		
+
 		try {
 			String response = client.query(FILTERALL);
 			assertNotNull(response);
 			System.out.println(response);
-			
+
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
-		
+
 	}
 
 	@Test
@@ -170,7 +170,7 @@ public class PathFinderControllerTest {
 		}
 
 	}
-	
+
 	@Test
 	public void test72Impact() {
 
@@ -184,15 +184,15 @@ public class PathFinderControllerTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
-	public void test73Download() {
+	public void test80Download() {
 
 		try {
 			File f = client.downloadProject();
 			assertNotNull(f);
 			assertTrue(f.exists());
-			
+
 			FileReader fr = new FileReader(f);
 			JSONArray obj = RestUtils.string2JSONArray(fr);
 			assertNotNull(obj);
@@ -201,7 +201,33 @@ public class PathFinderControllerTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
+	@Test
+	public void test90Upload() {
+
+		try {
+
+			URL f = this.getClass().getResource("pathfinder.json");
+			assertNotNull(f);
+			JSONArray array = RestUtils.string2JSONArray( new FileReader( f.getFile() ));
+			assertNotNull(array);
+			client.truncateProject();
+			JSONObject out = client.uploadProject(array);
+			assertNotNull(out);
+			System.out.println(out.toString() );
+			assertTrue(out.get("fail").toString().equals("0"));
+			assertEquals(array.size()+"", out.get("success").toString());
+			assertEquals(array.size()+"", out.get("total").toString());
+
+
+		} catch (IOException | ParseException e) {
+			fail(e.getMessage());
+		}
+	}
+
+	private JSONObject getJsonObject() {
+		return getJsonObject("");
+	}
 
 	@SuppressWarnings("unchecked")
 	private JSONObject getJsonObject(String prefix) {

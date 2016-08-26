@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.aroundthecode.pathfinder.client.rest.items.FilterItem;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.RestUtils;
+import org.aroundthecode.pathfinder.server.controller.exception.ArtifactSaveException;
 import org.aroundthecode.pathfinder.server.crawler.CrawlerWrapper;
 import org.aroundthecode.pathfinder.server.entity.Artifact;
 import org.aroundthecode.pathfinder.server.repository.ArtifactRepository;
@@ -75,9 +76,9 @@ public class PathFinderController {
 				Node n2 = (Node) row.get("n2");
 				String r = (String) row.get("rel");
 				rows.append(n1.getProperty("uniqueId"))
-					.append(" - ").append( r )
-					.append(" - ").append( n2.getProperty("uniqueId"))
-					.append("\n");
+				.append(" - ").append( r )
+				.append(" - ").append( n2.getProperty("uniqueId"))
+				.append("\n");
 			}
 				}
 		return rows.toString();
@@ -212,17 +213,21 @@ public class PathFinderController {
 	 * @param body Json with <b>main</b> and <b>parent</b> keys representing given artifacts unique IDs
 	 * @return 
 	 * @throws ParseException
+	 * @throws ArtifactSaveException 
 	 */
 	@RequestMapping(value="/node/parent", method=RequestMethod.POST)
-	public Artifact parent(@RequestBody String body) throws ParseException 
+	public Artifact parent(@RequestBody String body) throws ArtifactSaveException 
 	{
-		JSONObject o = RestUtils.string2Json(body);
+		JSONObject o;
+		try {
+			o = RestUtils.string2Json(body);
+		} catch (ParseException e) {
+			throw new ArtifactSaveException(e);
+		}
 		Artifact main = new Artifact(o.get("main").toString());
 		Artifact parent = new Artifact(o.get("parent").toString());
-		main = checkAndSaveArtifact(main);
-		parent = checkAndSaveArtifact(parent);
 		main.hasParent(parent);
-		return saveArtifact(main);
+		return saveArtifactWithMerge(main);
 	}
 
 	/**
@@ -230,36 +235,25 @@ public class PathFinderController {
 	 * @param body Json with <b>from</b>,<b>to</b> and <b>scope</b> keys representing given artifacts unique IDs and relationship scope type
 	 * @return saved Artifact
 	 * @throws ParseException
+	 * @throws ArtifactSaveException 
 	 */
 	@RequestMapping(value="/node/depends", method=RequestMethod.POST)
-	public Artifact depends(@RequestBody String body) throws ParseException 
+	public Artifact depends(@RequestBody String body) throws ArtifactSaveException 
 	{
-		JSONObject o = RestUtils.string2Json(body);
+		JSONObject o;
+		try {
+			o = RestUtils.string2Json(body);
+		} catch (ParseException e) {
+			throw new ArtifactSaveException(e);
+		}
 		Artifact aFrom = new Artifact(o.get("from").toString());
 		Artifact aTo = new Artifact(o.get("to").toString());
-		aFrom = checkAndSaveArtifact(aFrom);
-		aTo = checkAndSaveArtifact(aTo);
 		aFrom.dependsOn(aTo,o.get("scope").toString());
-		return saveArtifact(aFrom);
+		return saveArtifactWithMerge(aFrom);
 
 	}
 
-	/**
-	 * Internal method to save artifact 
-	 * @param a Artifact to be stored
-	 * @return 
-	 */
-	private Artifact saveArtifact(Artifact a) {
-		Transaction tx = graphDatabase.beginTx();
-		Artifact out = null;
-		try {
-			out = artifactRepository.save(a);
-			tx.success();
-		} finally {
-			tx.close();
-		}
-		return out;
-	}
+
 
 	/**
 	 * <p>Save given Artifact to database.</p>
@@ -267,24 +261,30 @@ public class PathFinderController {
 	 * @param body json representation of the Artifact
 	 * @return Artifact item of saved object
 	 * @throws ParseException if json is not parsable
+	 * @throws ArtifactSaveException 
 	 */
 	@RequestMapping(value="/node/save", method=RequestMethod.POST)
-	public JSONObject saveArtifact(@RequestBody String body) throws ParseException 
+	public JSONObject saveArtifact(@RequestBody String body) throws ArtifactSaveException 
 	{
-		JSONObject o = RestUtils.string2Json(body);
+		JSONObject o;
+		try {
+			o = RestUtils.string2Json(body);
+		} catch (ParseException e) {
+			throw new ArtifactSaveException(e);
+		}
 		Artifact a = Artifact.parse(o);
-		return checkAndSaveArtifact(a).toJSON();
+		return saveArtifactWithMerge(a).toJSON();
 	}
 
 	/**
-	 * Invoke pathfinder-mave-plugin crawl goal over the give artifact
+	 * Invoke pathfinder-maven-plugin crawl goal over the give artifact
 	 * @param body JSON containing artifact uniqueId
 	 * @return JsonoObject containing maven Invoker execution details
 	 * @throws ParseException if JSON is nor parsable
 	 * @throws UnsupportedEncodingException if UniqueId URLDecode fails
 	 */
 	@RequestMapping(value="/crawler/crawl", method=RequestMethod.POST)
-	public JSONObject crawlArtifact(@RequestBody String body) throws ParseException, UnsupportedEncodingException 
+	public JSONObject crawlArtifact(@RequestBody String body) throws UnsupportedEncodingException 
 	{
 		String uid = URLDecoder.decode(body, "UTF-8");
 		uid = uid.substring(0, uid.lastIndexOf('='));
@@ -302,7 +302,7 @@ public class PathFinderController {
 
 
 	/**
-	 * Generate a list of JSONObject for the whole Artifact database to be downloaded as a file
+	 * Generate an array of JSONObject for the whole Artifact database to be download as a file
 	 * @return download Json file as attachment
 	 * @throws IOException
 	 */
@@ -340,25 +340,89 @@ public class PathFinderController {
 		return new HttpEntity<>(sb.toString().getBytes(),header);
 	}
 
+	/**
+	 * Import an array of JSONObject (typically produced by <b>/node/download</b> method) into the database
+	 * Note: previously data is not truncated nor backup, please refer to <b>/node/truncate</b> and <b>/node/download</b> for this
+	 * @param body JSONArray data of artifact to be imported
+	 * @return a JSONObject with total nodes available for import, amount of successful and failed import
+	 * @throws ParseException raised if input is not parsable as JSONArray
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/node/upload", method=RequestMethod.POST)
+	public JSONObject uploadNodes(@RequestBody String body) throws ParseException 
+	{
+		int nodesSuccess = 0;
+		int nodesFail = 0;
+		JSONArray in = RestUtils.string2JSONArray(body);
+		for (int i = 0; i < in.size(); i++) {
+			JSONObject item = (JSONObject) in.get(i);
+			log.info("Saving [{}]", item.get(ArtifactUtils.U).toString());
+			Artifact a = Artifact.parse(item);
+			try {
+				saveArtifactWithMerge(a);
+				nodesSuccess++;
+			} catch (ArtifactSaveException e) {
+				nodesFail++;
+				log.error("Could not save [{}]", item.get(ArtifactUtils.U).toString());
+				log.error(e);
+			}
+		}
 
+		JSONObject o = new JSONObject();
+		o.put("total", in.size() );
+		o.put("success", nodesSuccess);
+		o.put("fail", nodesFail);
+		return o;
+	}
 
-	private Artifact checkAndSaveArtifact(Artifact a) {
-		Artifact out = null;
+	/**
+	 * Deletes all nodes, HANDLE WITH CARE!
+	 */
+	@RequestMapping(value="/node/truncate", method=RequestMethod.POST)
+	public void truncate(){
 		try(Transaction tx = graphDatabase.beginTx();)
 		{
-			String uniqueId = a.getUniqueId();
-			out = artifactRepository.findByUniqueId(uniqueId);
-
-			if(out==null){
-				out = artifactRepository.save( new Artifact(uniqueId));
-			}
-
+			artifactRepository.deleteAll();
 			tx.success();
 		} 
-		return out;
+		catch (Exception e) {
+			log.error(e);
+		}
 	}
 
 
+	/**
+	 * Internal method to save artifact 
+	 * @param a Artifact to be stored
+	 * @return 
+	 * @throws ArtifactSaveException 
+	 */
+	private synchronized Artifact saveArtifactWithMerge(Artifact a) throws ArtifactSaveException {
+
+		Artifact out = null;
+		try(Transaction tx = graphDatabase.beginTx();) {
+
+			String uniqueId = a.getUniqueId();
+			out = artifactRepository.findByUniqueId(uniqueId);
+
+			if(out!=null){
+				log.info("Element [{}] already found in database, merging data.",uniqueId);
+				Artifact.merge(out, a);
+				out = artifactRepository.save(out);
+			}
+			else{
+				out = artifactRepository.save(a);
+			}
+
+			log.info("Saved with merge [{}].",uniqueId);
+			tx.success();
+		} 
+		catch (Exception e) {
+			log.error(e);
+			throw new ArtifactSaveException(e);
+		}
+		return out;
+	}
 
 
 }

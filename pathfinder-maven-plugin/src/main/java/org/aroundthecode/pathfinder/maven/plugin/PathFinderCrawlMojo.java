@@ -62,6 +62,7 @@ public class PathFinderCrawlMojo extends TreeMojo
 	/**
 	 * List of Remote Repositories used by the resolver
 	 */
+	@SuppressWarnings("rawtypes")
 	@Parameter( property = "project.remoteArtifactRepositories", readonly = true, required=true)
 	protected List remoteRepositories;
 
@@ -146,13 +147,7 @@ public class PathFinderCrawlMojo extends TreeMojo
 			artifactResolver.resolve(artifact, this.remoteRepositories,this.localRepository);
 			//Build the project and get the result
 			project = m_projectBuilder.buildFromRepository(artifact,this.remoteRepositories,this.localRepository);
-		} catch (ArtifactResolutionException e) {
-			getLog().error(e);
-			project = null;
-		} catch (ArtifactNotFoundException e) {
-			getLog().error(e);
-			project = null;
-		} catch (ProjectBuildingException e) {
+		} catch (ArtifactResolutionException | ArtifactNotFoundException |ProjectBuildingException e) {
 			getLog().error(e);
 			project = null;
 		}
@@ -182,7 +177,10 @@ public class PathFinderCrawlMojo extends TreeMojo
 		return visitor;
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
 		project = getProject();

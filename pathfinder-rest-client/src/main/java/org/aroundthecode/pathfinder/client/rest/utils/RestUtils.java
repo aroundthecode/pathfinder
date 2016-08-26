@@ -23,7 +23,7 @@ public class RestUtils {
 
 	/**
 	 * Utility method to convert a Reader representing a JSON to JSONObject 
-	 * @param s Reader with JSON data
+	 * @param r Reader with JSON data
 	 * @return JSONObject from give string
 	 * @throws ParseException
 	 * @throws IOException 
@@ -33,18 +33,6 @@ public class RestUtils {
 	}
 	
 	/**
-	 * Utility method to convert a Reader representing a JSON to JSONArray 
-	 * @param s Reader with JSON Array data
-	 * @return JSONArray from give string
-	 * @throws ParseException
-	 * @throws IOException 
-	 */
-	public static final JSONArray string2JSONArray(Reader r) throws ParseException, IOException{
-		return (JSONArray) jparser.parse(r);
-	}
-
-
-	/**
 	 * Utility method to convert a String representing a JSON to JSONObject 
 	 * @param s String with JSON data
 	 * @return JSONObject from give string
@@ -53,4 +41,28 @@ public class RestUtils {
 	public static final JSONObject string2Json(String s) throws ParseException{
 		return (JSONObject) jparser.parse(s);
 	}
+	
+	/**
+	 * Utility method to convert a Reader representing a JSON to JSONArray 
+	 * @param r Reader with JSON Array data
+	 * @return JSONArray from give string
+	 * @throws ParseException
+	 * @throws IOException 
+	 */
+	public static final JSONArray string2JSONArray(Reader r) throws ParseException, IOException{
+		return (JSONArray) jparser.parse(r);
+	}
+	
+	/**
+	 * Utility method to convert a String representing a JSON to JSONObject 
+	 * @param s String with JSON data
+	 * @return JSONObject from give string
+	 * @throws ParseException
+	 */
+	public static final JSONArray string2JSONArray(String s) throws ParseException{
+		return (JSONArray) jparser.parse(s);
+	}
+
+
+	
 }

@@ -25,6 +25,8 @@ public class PathfinderConnectionConfiguration extends BasicConnectionConfigurat
 	public static final String URL_NODE_DEPENDS 	= BASE_URL + "node/depends";
 	public static final String URL_NODE_SAVE 		= BASE_URL + "node/save";
 	public static final String URL_NODE_DOWNLOAD 	= BASE_URL + "node/download";
+	public static final String URL_NODE_UPLOAD 		= BASE_URL + "node/upload";
+	public static final String URL_NODE_TRUNCATE 	= BASE_URL + "node/truncate";
 	
 	public static final String URL_CRAWLER_CRAWL 	= BASE_URL + "crawler/crawl";
 	

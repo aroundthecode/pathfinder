@@ -22,6 +22,10 @@ public class ArtifactTest {
 	public static final String IDC = "none";
 	public static final String IDV = "1.0.0";
 	public static final String ID = IDG+":"+IDA+":"+IDP+":"+IDC+":"+IDV;
+	
+	public static final String PARSEJSON = "{\"timestamp\":1000,\"groupId\":\"my.group\",\"dependencies\":{\"RUNTIME\":[\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\"],\"TEST\":[\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\"],\"COMPILE\":[\"my.group:COMPILE-1:jar:none:1.0.0\"],\"SYSTEM\":[\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\"],\"PROVIDED\":[\"my.group:PROVIDED-2:jar:none:1.0.0\",\"my.group:PROVIDED-2:jar:none:1.0.0\"],\"IMPORT\":[\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\"]},\"parentNode\":\"my.group:parent:jar:none:1.0.0\",\"packaging\":\"jar\",\"classifier\":\"none\",\"artifactId\":\"test\",\"version\":\"1.0.0\",\"uniqueId\":\"my.group:test:jar:none:1.0.0\"}";
+
+	
 
 	@Test
 	public void testEmptyArtifact() {
@@ -113,10 +117,15 @@ public class ArtifactTest {
 		Artifact a2 = Artifact.parse(o);
 		assertEquals(a, a2);
 		
-		String jsonString = "{\"timestamp\":1000,\"groupId\":\"my.group\",\"dependencies\":{\"RUNTIME\":[\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\",\"my.group:RUNTIME-3:jar:none:1.0.0\"],\"TEST\":[\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\",\"my.group:TEST-4:jar:none:1.0.0\"],\"COMPILE\":[\"my.group:COMPILE-1:jar:none:1.0.0\"],\"SYSTEM\":[\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\",\"my.group:SYSTEM-5:jar:none:1.0.0\"],\"PROVIDED\":[\"my.group:PROVIDED-2:jar:none:1.0.0\",\"my.group:PROVIDED-2:jar:none:1.0.0\"],\"IMPORT\":[\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\",\"my.group:IMPORT-6:jar:none:1.0.0\"]},\"parentNode\":\"my.group:parent:jar:none:1.0.0\",\"packaging\":\"jar\",\"classifier\":\"none\",\"artifactId\":\"test\",\"version\":\"1.0.0\",\"uniqueId\":\"my.group:test:jar:none:1.0.0\"}";
-		JSONObject o2 = RestUtils.string2Json(jsonString);
+		JSONObject o2 = RestUtils.string2Json(PARSEJSON);
 		Artifact a3 = Artifact.parse(o2);
 		assertEquals(a, a3);
+		
+		//removing parent to check parsing works as well
+		o2.remove(ArtifactUtils.PN);
+		Artifact a4 = Artifact.parse(o2);
+		assertEquals(a.getUniqueId(), a4.getUniqueId());
+		
 	}
 	
 	/**

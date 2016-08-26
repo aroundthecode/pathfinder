@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils.Dependency;
+import org.aroundthecode.pathfinder.server.entity.exception.ArtifactMergeException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.neo4j.graphdb.Direction;
@@ -43,37 +44,37 @@ public class Artifact {
 	 * Relation for COMPILE scope
 	 */
 	@RelatedTo(type="COMPILE", direction=Direction.INCOMING)
-	@Fetch public Set<Artifact> dependenciesCompile= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesCompile= new HashSet<>();
 
 	/**
 	 * Relation for PROVIDED scope
 	 */
 	@RelatedTo(type="PROVIDED", direction=Direction.INCOMING)
-	@Fetch public Set<Artifact> dependenciesProvided= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesProvided= new HashSet<>();
 
 	/**
 	 * Relation for RUNTIME scope
 	 */
 	@RelatedTo(type="RUNTIME", direction=Direction.INCOMING)
-	@Fetch public Set<Artifact> dependenciesRuntime= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesRuntime= new HashSet<>();
 
 	/**
 	 * Relation for TEST scope
 	 */
 	@RelatedTo(type="TEST", direction=Direction.INCOMING)
-	@Fetch public Set<Artifact> dependenciesTest= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesTest= new HashSet<>();
 
 	/**
 	 * Relation for SYSTEM scope
 	 */
 	@RelatedTo(type="SYSTEM", direction=Direction.INCOMING)
-	@Fetch public  Set<Artifact> dependenciesSystem= new HashSet<Artifact>();
+	@Fetch public  Set<Artifact> dependenciesSystem= new HashSet<>();
 
 	/**
 	 * Relation for IMPORT scope
 	 */
 	@RelatedTo(type="IMPORT", direction=Direction.INCOMING)
-	@Fetch public Set<Artifact> dependenciesImport= new HashSet<Artifact>();
+	@Fetch public Set<Artifact> dependenciesImport= new HashSet<>();
 
 	/**
 	 * PARENT Relation
@@ -307,6 +308,7 @@ public class Artifact {
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON(){
 		JSONObject o = new JSONObject();
+		o.put("ID", id);
 		o.put(ArtifactUtils.U, getUniqueId());
 		o.put(ArtifactUtils.G, getGroupId());
 		o.put(ArtifactUtils.A, getArtifactId());
@@ -400,7 +402,7 @@ public class Artifact {
 		}
 		
 		String pn = "" + o.get(ArtifactUtils.PN);
-		if( pn != ""){
+		if( ! "null".equals(pn) ){
 			a.hasParent( new Artifact(pn));
 		}
 
@@ -420,4 +422,37 @@ public class Artifact {
 		return a;
 	}
 
+	/**
+	 * Merge data from <b>merge</b> Artifact into <b>master</b> one.
+	 * Will rise ArtifactMergeException upon any conflict
+	 * @param master base node which will receive any additional data
+	 * @param merge node which will provide any additional data
+	 * @return <b>master</b> node with  any additional data coming from <b>merge</b> node
+	 * @throws ArtifactMergeException raised upon any merge conflict
+	 */
+	public static Artifact merge(Artifact master, Artifact merge ) throws ArtifactMergeException{
+		
+		if( ! master.getUniqueId().equals(merge.getUniqueId()) ){
+			throw new ArtifactMergeException("master ["+master.getUniqueId()+"] and merge ["+merge.getUniqueId()+"] UniqueId mismatch");
+		}
+		
+		if( 
+			master.getParent()!=null &&
+			merge.getParent()!=null &&
+			! (master.getParent()).equals(merge.getParent()) 
+		){
+			throw new ArtifactMergeException("master ["+master.getParent()+"] and merge ["+merge.getParent()+"] Parent UniqueId mismatch");
+		}
+		
+		master.dependenciesCompile.addAll( merge.dependenciesCompile );
+		master.dependenciesImport.addAll( merge.dependenciesImport );
+		master.dependenciesProvided.addAll( merge.dependenciesProvided );
+		master.dependenciesRuntime.addAll( merge.dependenciesRuntime );
+		master.dependenciesSystem.addAll( merge.dependenciesSystem );
+		master.dependenciesTest.addAll( merge.dependenciesTest );
+		
+		return master;
+	}
+	
+	
 }

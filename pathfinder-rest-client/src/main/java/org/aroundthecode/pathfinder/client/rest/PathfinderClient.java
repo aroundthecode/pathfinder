@@ -392,6 +392,55 @@ public class PathfinderClient {
 		return out;
 
 	}
+	
+	/**
+	 * Invoke /node/upload to Pathfinder server to import a full project file
+	 * @param json a JSONArray with full data to be imported
+	 * @return a JSONObject containing summary of the operation
+	 */
+	public JSONObject uploadProject(JSONArray json) {
+
+		JSONObject resp = null;
+		JsonObjectResponseParser jparser = new JsonObjectResponseParser();
+		try {
+
+			um.getLog().debug("uploadProject: [{}]",json);
+			RequestEntity postData = getStringRequestEntity(json.toString());
+
+			int ret = um.doPost(PathfinderConnectionConfiguration.URL_NODE_UPLOAD, jparser,new NameValuePair[0],headers,  postData);
+			if(ret!=HttpStatus.SC_OK){
+				um.getLog().error("uploadProject - Request failed, return status [{}]", ret);
+			}
+			else{
+				resp = jparser.getResponse();
+				um.getLog().debug("uploadProject - response [{}]",resp);
+
+			}
+		} catch (IOException e) {
+			um.getLog().error("uploadProject", e);
+		}
+
+		return resp;
+
+	}
+	
+	/**
+	 * Invoke /node/truncate to Pathfinder server to delete all nodes
+	 */
+	public void truncateProject() {
+
+		EmptyResponseParser eparser = new EmptyResponseParser();
+		try {
+
+			int ret = um.doPost(PathfinderConnectionConfiguration.URL_NODE_TRUNCATE, eparser,new NameValuePair[0],headers,  null);
+			if(ret!=HttpStatus.SC_OK){
+				um.getLog().error("truncateProject - Request failed, return status [{}]", ret);
+			}
+		} catch (IOException e) {
+			um.getLog().error("uploadProject", e);
+		}
+
+	}
 
 	/**
 	 * Utility method which creates a JSONObject containing minimal Artifact data to be passed via REST API invocation

@@ -66,7 +66,7 @@ DependencyNodeVisitor {
 			prj =  node.toNodeString();
 			writer.write("Project is:[" + prj + "]\n");
 			//STORE PRJ TO DB		
-			out = saveNode(node);
+//			out = saveNode(node);
 
 			Artifact parent = project.getParentArtifact();
 			if(parent!=null){
@@ -92,8 +92,8 @@ DependencyNodeVisitor {
 
 
 			//store single nodes
-			out = saveNode(node);
-			out = saveNode(c);
+//			out = saveNode(node);
+//			out = saveNode(c);
 			//store node relation
 			try {
 				if(scope.indexOf(",")>0){
@@ -115,16 +115,16 @@ DependencyNodeVisitor {
 		return ArtifactUtils.getUniqueId(a.getGroupId(), a.getArtifactId(), a.getType(), a.getClassifier(), a.getBaseVersion());
 	}
 
-	private boolean saveNode(DependencyNode node) {
-		boolean out = true;
-		try {
-			client.saveArtifact(getUniqueId(node.getArtifact() ));
-		} catch (IOException e) {
-			log.error("error saving node "+prj);
-			out = false;
-		}
-		return out;
-	}
+//	private boolean saveNode(DependencyNode node) {
+//		boolean out = true;
+//		try {
+//			client.saveArtifact(getUniqueId(node.getArtifact() ));
+//		} catch (IOException e) {
+//			log.error("error saving node "+prj);
+//			out = false;
+//		}
+//		return out;
+//	}
 
 	/**
 	 * {@inheritDoc}

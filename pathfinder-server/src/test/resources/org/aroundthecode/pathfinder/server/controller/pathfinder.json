@@ -1,0 +1,3824 @@
+[
+  {
+    "groupId": "org.aroundthecode.pathfinder",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "pom",
+    "classifier": "",
+    "artifactId": "pathfinder",
+    "version": "0.1.0-SNAPSHOT",
+    "uniqueId": "org.aroundthecode.pathfinder:pathfinder:pom::0.1.0-SNAPSHOT"
+  },
+  {
+    "groupId": "org.aroundthecode.pathfinder",
+    "dependencies": {
+      "TEST": [
+        "junit:junit:jar::4.12"
+      ],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.googlecode.json-simple:json-simple:jar::1.1.1",
+        "org.apache.logging.log4j:log4j-api:jar::2.5",
+        "org.apache.logging.log4j:log4j-core:jar::2.5",
+        "org.apache.logging.log4j:log4j-api:jar::2.4.1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "parentNode": "org.aroundthecode.pathfinder:pathfinder:pom::0.1.0-SNAPSHOT",
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "pathfinder-rest-client",
+    "version": "0.1.0-SNAPSHOT",
+    "uniqueId": "org.aroundthecode.pathfinder:pathfinder-rest-client:jar::0.1.0-SNAPSHOT"
+  },
+  {
+    "groupId": "com.googlecode.json-simple",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "json-simple",
+    "version": "1.1.1",
+    "uniqueId": "com.googlecode.json-simple:json-simple:jar::1.1.1"
+  },
+  {
+    "groupId": "org.apache.logging.log4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "log4j-api",
+    "version": "2.5",
+    "uniqueId": "org.apache.logging.log4j:log4j-api:jar::2.5"
+  },
+  {
+    "groupId": "org.apache.logging.log4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "log4j-core",
+    "version": "2.5",
+    "uniqueId": "org.apache.logging.log4j:log4j-core:jar::2.5"
+  },
+  {
+    "groupId": "junit",
+    "dependencies": {
+      "TEST": [
+        "org.hamcrest:hamcrest-core:jar::1.3"
+      ],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "junit",
+    "version": "4.12",
+    "uniqueId": "junit:junit:jar::4.12"
+  },
+  {
+    "groupId": "org.hamcrest",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "hamcrest-core",
+    "version": "1.3",
+    "uniqueId": "org.hamcrest:hamcrest-core:jar::1.3"
+  },
+  {
+    "groupId": "org.aroundthecode.pathfinder",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "parentNode": "org.aroundthecode.pathfinder:pathfinder:pom::0.1.0-SNAPSHOT",
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "pathfinder-web",
+    "version": "0.1.0-SNAPSHOT",
+    "uniqueId": "org.aroundthecode.pathfinder:pathfinder-web:jar::0.1.0-SNAPSHOT"
+  },
+  {
+    "groupId": "org.aroundthecode.pathfinder",
+    "dependencies": {
+      "TEST": [
+        "org.springframework:spring-test:jar::4.2.4.RELEASE",
+        "junit:junit:jar::4.12"
+      ],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.aroundthecode.pathfinder:pathfinder-rest-client:jar::0.1.0-SNAPSHOT",
+        "org.springframework.boot:spring-boot-starter-web:jar::1.3.1.RELEASE",
+        "com.googlecode.json-simple:json-simple:jar::1.1.1",
+        "org.apache.maven.shared:maven-invoker:jar::2.2",
+        "org.aroundthecode.pathfinder:pathfinder-web:zip::0.1.0-SNAPSHOT",
+        "org.apache.logging.log4j:log4j-core:jar::2.4.1",
+        "org.springframework.boot:spring-boot-starter-data-rest:jar::1.3.1.RELEASE",
+        "org.springframework.data:spring-data-neo4j:jar::3.4.2.RELEASE",
+        "org.neo4j.app:neo4j-server:jar::2.2.7",
+        "org.neo4j.app:neo4j-server:jar:static-web:2.2.7"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [
+        "org.springframework.boot:spring-boot-starter-tomcat:jar::1.3.1.RELEASE"
+      ],
+      "RUNTIME": []
+    },
+    "parentNode": "org.aroundthecode.pathfinder:pathfinder:pom::0.1.0-SNAPSHOT",
+    "packaging": "war",
+    "classifier": "",
+    "artifactId": "pathfinder-server",
+    "version": "0.1.0-SNAPSHOT",
+    "uniqueId": "org.aroundthecode.pathfinder:pathfinder-server:war::0.1.0-SNAPSHOT"
+  },
+  {
+    "groupId": "org.apache.maven.shared",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.codehaus.plexus:plexus-utils:jar::3.0.20",
+        "org.codehaus.plexus:plexus-component-annotations:jar::1.6"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-invoker",
+    "version": "2.2",
+    "uniqueId": "org.apache.maven.shared:maven-invoker:jar::2.2"
+  },
+  {
+    "groupId": "org.aroundthecode.pathfinder",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "zip",
+    "classifier": "",
+    "artifactId": "pathfinder-web",
+    "version": "0.1.0-SNAPSHOT",
+    "uniqueId": "org.aroundthecode.pathfinder:pathfinder-web:zip::0.1.0-SNAPSHOT"
+  },
+  {
+    "groupId": "org.apache.logging.log4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "log4j-core",
+    "version": "2.4.1",
+    "uniqueId": "org.apache.logging.log4j:log4j-core:jar::2.4.1"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.fasterxml.jackson.core:jackson-annotations:jar::2.6.4",
+        "org.springframework.boot:spring-boot-starter:jar::1.3.1.RELEASE",
+        "org.springframework.data:spring-data-rest-webmvc:jar::2.4.2.RELEASE",
+        "com.fasterxml.jackson.core:jackson-databind:jar::2.6.4"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot-starter-data-rest",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot-starter-data-rest:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "org.springframework.data",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.neo4j:neo4j-cypher-dsl:jar::2.0.1",
+        "org.springframework.data:spring-data-commons:jar::1.11.2.RELEASE",
+        "org.aspectj:aspectjrt:jar::1.8.7",
+        "org.springframework:spring-expression:jar::4.2.4.RELEASE",
+        "org.slf4j:slf4j-api:jar::1.7.13",
+        "commons-io:commons-io:jar::2.4",
+        "javax.transaction:javax.transaction-api:jar::1.2",
+        "org.neo4j:neo4j:jar::2.2.5",
+        "org.springframework:spring-tx:jar::4.2.4.RELEASE",
+        "org.slf4j:jcl-over-slf4j:jar::1.7.13",
+        "org.springframework:spring-aspects:jar::4.2.4.RELEASE",
+        "org.springframework:spring-core:jar::4.2.4.RELEASE",
+        "org.springframework:spring-context:jar::4.2.4.RELEASE",
+        "org.springframework:spring-beans:jar::4.2.4.RELEASE"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-data-neo4j",
+    "version": "3.4.2.RELEASE",
+    "uniqueId": "org.springframework.data:spring-data-neo4j:jar::3.4.2.RELEASE"
+  },
+  {
+    "groupId": "org.neo4j.app",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.neo4j:neo4j-kernel:jar::2.2.7",
+        "org.neo4j:server-api:jar::2.2.7",
+        "org.neo4j:neo4j-cypher:jar::2.2.7",
+        "org.neo4j.app:neo4j-browser:jar::2.2.7",
+        "org.neo4j:neo4j:pom::2.2.7",
+        "org.eclipse.jetty:jetty-webapp:jar::9.2.14.v20151106",
+        "com.sun.jersey:jersey-server:jar::1.19",
+        "com.sun.jersey:jersey-servlet:jar::1.19",
+        "commons-configuration:commons-configuration:jar::1.10",
+        "ch.qos.logback:logback-classic:jar::1.1.3",
+        "ch.qos.logback:logback-access:jar::1.1.3",
+        "org.codehaus.janino:janino:jar::2.7.8",
+        "org.eclipse.jetty:jetty-server:jar::9.2.14.v20151106",
+        "com.sun.jersey.contribs:jersey-multipart:jar::1.19",
+        "bouncycastle:bcprov-jdk16:jar::140",
+        "org.neo4j:neo4j-shell:jar::2.2.7",
+        "org.codehaus.jackson:jackson-jaxrs:jar::1.9.13",
+        "commons-digester:commons-digester:jar::2.1",
+        "org.mozilla:rhino:jar::1.7R4",
+        "org.rrd4j:rrd4j:jar::2.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-server",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j.app:neo4j-server:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j.app",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "static-web",
+    "artifactId": "neo4j-server",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j.app:neo4j-server:jar:static-web:2.2.7"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.springframework:spring-webmvc:jar::4.2.4.RELEASE",
+        "org.springframework:spring-web:jar::4.2.4.RELEASE",
+        "org.springframework.boot:spring-boot-starter-validation:jar::1.3.1.RELEASE"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot-starter-web",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot-starter-web:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.tomcat.embed:tomcat-embed-el:jar::8.0.30"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [
+        "org.apache.tomcat.embed:tomcat-embed-core:jar::8.0.30",
+        "org.apache.tomcat.embed:tomcat-embed-logging-juli:jar::8.0.30",
+        "org.apache.tomcat.embed:tomcat-embed-websocket:jar::8.0.30"
+      ],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot-starter-tomcat",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot-starter-tomcat:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-test",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-test:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-utils",
+    "version": "3.0.20",
+    "uniqueId": "org.codehaus.plexus:plexus-utils:jar::3.0.20"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-component-annotations",
+    "version": "1.6",
+    "uniqueId": "org.codehaus.plexus:plexus-component-annotations:jar::1.6"
+  },
+  {
+    "groupId": "org.apache.logging.log4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "log4j-api",
+    "version": "2.4.1",
+    "uniqueId": "org.apache.logging.log4j:log4j-api:jar::2.4.1"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.springframework.boot:spring-boot-autoconfigure:jar::1.3.1.RELEASE",
+        "org.springframework.boot:spring-boot:jar::1.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-starter-logging:jar::1.3.1.RELEASE"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": [
+        "org.yaml:snakeyaml:jar::1.16"
+      ]
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot-starter",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot-starter:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "com.fasterxml.jackson.core",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackson-annotations",
+    "version": "2.6.4",
+    "uniqueId": "com.fasterxml.jackson.core:jackson-annotations:jar::2.6.4"
+  },
+  {
+    "groupId": "com.fasterxml.jackson.core",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.fasterxml.jackson.core:jackson-core:jar::2.6.4"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackson-databind",
+    "version": "2.6.4",
+    "uniqueId": "com.fasterxml.jackson.core:jackson-databind:jar::2.6.4"
+  },
+  {
+    "groupId": "org.springframework.data",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.github.fge:json-patch:jar::1.7",
+        "org.springframework.data:spring-data-rest-core:jar::2.4.2.RELEASE"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-data-rest-webmvc",
+    "version": "2.4.2.RELEASE",
+    "uniqueId": "org.springframework.data:spring-data-rest-webmvc:jar::2.4.2.RELEASE"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot-autoconfigure",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot-autoconfigure:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.slf4j:log4j-over-slf4j:jar::1.7.13",
+        "org.slf4j:jul-to-slf4j:jar::1.7.13"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot-starter-logging",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot-starter-logging:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "org.yaml",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "snakeyaml",
+    "version": "1.16",
+    "uniqueId": "org.yaml:snakeyaml:jar::1.16"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jul-to-slf4j",
+    "version": "1.7.13",
+    "uniqueId": "org.slf4j:jul-to-slf4j:jar::1.7.13"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "log4j-over-slf4j",
+    "version": "1.7.13",
+    "uniqueId": "org.slf4j:log4j-over-slf4j:jar::1.7.13"
+  },
+  {
+    "groupId": "com.fasterxml.jackson.core",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackson-core",
+    "version": "2.6.4",
+    "uniqueId": "com.fasterxml.jackson.core:jackson-core:jar::2.6.4"
+  },
+  {
+    "groupId": "org.springframework.data",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.springframework.hateoas:spring-hateoas:jar::0.19.0.RELEASE",
+        "org.springframework.plugin:spring-plugin-core:jar::1.2.0.RELEASE",
+        "org.atteo:evo-inflector:jar::1.2.1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-data-rest-core",
+    "version": "2.4.2.RELEASE",
+    "uniqueId": "org.springframework.data:spring-data-rest-core:jar::2.4.2.RELEASE"
+  },
+  {
+    "groupId": "com.github.fge",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.github.fge:jackson-coreutils:jar::1.6",
+        "com.google.code.findbugs:jsr305:jar::2.0.1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "json-patch",
+    "version": "1.7",
+    "uniqueId": "com.github.fge:json-patch:jar::1.7"
+  },
+  {
+    "groupId": "org.springframework.hateoas",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-hateoas",
+    "version": "0.19.0.RELEASE",
+    "uniqueId": "org.springframework.hateoas:spring-hateoas:jar::0.19.0.RELEASE"
+  },
+  {
+    "groupId": "org.springframework.plugin",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-plugin-core",
+    "version": "1.2.0.RELEASE",
+    "uniqueId": "org.springframework.plugin:spring-plugin-core:jar::1.2.0.RELEASE"
+  },
+  {
+    "groupId": "org.atteo",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "evo-inflector",
+    "version": "1.2.1",
+    "uniqueId": "org.atteo:evo-inflector:jar::1.2.1"
+  },
+  {
+    "groupId": "com.github.fge",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.github.fge:msg-simple:jar::1.1",
+        "com.google.guava:guava:jar::16.0.1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackson-coreutils",
+    "version": "1.6",
+    "uniqueId": "com.github.fge:jackson-coreutils:jar::1.6"
+  },
+  {
+    "groupId": "com.google.code.findbugs",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jsr305",
+    "version": "2.0.1",
+    "uniqueId": "com.google.code.findbugs:jsr305:jar::2.0.1"
+  },
+  {
+    "groupId": "com.github.fge",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.github.fge:btf:jar::1.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "msg-simple",
+    "version": "1.1",
+    "uniqueId": "com.github.fge:msg-simple:jar::1.1"
+  },
+  {
+    "groupId": "com.google.guava",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "guava",
+    "version": "16.0.1",
+    "uniqueId": "com.google.guava:guava:jar::16.0.1"
+  },
+  {
+    "groupId": "com.github.fge",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "btf",
+    "version": "1.2",
+    "uniqueId": "com.github.fge:btf:jar::1.2"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-tx",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-tx:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.springframework:spring-aop:jar::4.2.4.RELEASE"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-context",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-context:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-beans",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-beans:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.aspectj:aspectjweaver:jar::1.8.7"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-aspects",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-aspects:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-core",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-core:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-expression",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-expression:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.aspectj",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "aspectjrt",
+    "version": "1.8.7",
+    "uniqueId": "org.aspectj:aspectjrt:jar::1.8.7"
+  },
+  {
+    "groupId": "org.springframework.data",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-data-commons",
+    "version": "1.11.2.RELEASE",
+    "uniqueId": "org.springframework.data:spring-data-commons:jar::1.11.2.RELEASE"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-cypher-dsl",
+    "version": "2.0.1",
+    "uniqueId": "org.neo4j:neo4j-cypher-dsl:jar::2.0.1"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.neo4j:neo4j-jmx:jar::2.2.5",
+        "org.neo4j:neo4j-consistency-check:jar::2.2.5",
+        "org.neo4j:neo4j-graph-matching:jar::2.2.5",
+        "org.neo4j:neo4j-udc:jar::2.2.5",
+        "org.neo4j:neo4j-graph-algo:jar::2.2.5",
+        "org.neo4j:neo4j-lucene-index:jar::2.2.5"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j",
+    "version": "2.2.5",
+    "uniqueId": "org.neo4j:neo4j:jar::2.2.5"
+  },
+  {
+    "groupId": "javax.transaction",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "javax.transaction-api",
+    "version": "1.2",
+    "uniqueId": "javax.transaction:javax.transaction-api:jar::1.2"
+  },
+  {
+    "groupId": "commons-io",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-io",
+    "version": "2.4",
+    "uniqueId": "commons-io:commons-io:jar::2.4"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "slf4j-api",
+    "version": "1.7.13",
+    "uniqueId": "org.slf4j:slf4j-api:jar::1.7.13"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jcl-over-slf4j",
+    "version": "1.7.13",
+    "uniqueId": "org.slf4j:jcl-over-slf4j:jar::1.7.13"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "aopalliance:aopalliance:jar::1.0"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-aop",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-aop:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "aopalliance",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "aopalliance",
+    "version": "1.0",
+    "uniqueId": "aopalliance:aopalliance:jar::1.0"
+  },
+  {
+    "groupId": "org.aspectj",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "aspectjweaver",
+    "version": "1.8.7",
+    "uniqueId": "org.aspectj:aspectjweaver:jar::1.8.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.lucene:lucene-core:jar::3.6.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-lucene-index",
+    "version": "2.2.5",
+    "uniqueId": "org.neo4j:neo4j-lucene-index:jar::2.2.5"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-graph-algo",
+    "version": "2.2.5",
+    "uniqueId": "org.neo4j:neo4j-graph-algo:jar::2.2.5"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-udc",
+    "version": "2.2.5",
+    "uniqueId": "org.neo4j:neo4j-udc:jar::2.2.5"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-graph-matching",
+    "version": "2.2.5",
+    "uniqueId": "org.neo4j:neo4j-graph-matching:jar::2.2.5"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-jmx",
+    "version": "2.2.5",
+    "uniqueId": "org.neo4j:neo4j-jmx:jar::2.2.5"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-consistency-check",
+    "version": "2.2.5",
+    "uniqueId": "org.neo4j:neo4j-consistency-check:jar::2.2.5"
+  },
+  {
+    "groupId": "org.apache.lucene",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "lucene-core",
+    "version": "3.6.2",
+    "uniqueId": "org.apache.lucene:lucene-core:jar::3.6.2"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "pom",
+    "classifier": "",
+    "artifactId": "neo4j",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j:pom::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.neo4j:neo4j-primitive-collections:jar::2.2.7",
+        "org.neo4j:neo4j-csv:jar::2.2.7",
+        "org.neo4j:neo4j-io:jar::2.2.7"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-kernel",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-kernel:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.neo4j.3rdparty.javax.ws.rs:jsr311-api:jar::1.1.2.r612"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "server-api",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:server-api:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar::1.4",
+        "org.parboiled:parboiled-scala_2.10:jar::1.1.7",
+        "net.sf.opencsv:opencsv:jar::2.3",
+        "org.neo4j:neo4j-cypher-compiler-2.1:jar::2.1.8",
+        "org.neo4j:neo4j-cypher-compiler-2.2:jar::2.2.7",
+        "org.scala-lang:scala-reflect:jar::2.10.5",
+        "org.scala-lang:scala-library:jar::2.10.5",
+        "org.neo4j:neo4j-cypher-compiler-2.0:jar::2.0.4",
+        "org.neo4j:neo4j-cypher-compiler-1.9:jar::2.0.4"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-cypher",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-cypher:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j.app",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-browser",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j.app:neo4j-browser:jar::2.2.7"
+  },
+  {
+    "groupId": "ch.qos.logback",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "ch.qos.logback:logback-core:jar::1.1.3"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "logback-classic",
+    "version": "1.1.3",
+    "uniqueId": "ch.qos.logback:logback-classic:jar::1.1.3"
+  },
+  {
+    "groupId": "ch.qos.logback",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "logback-access",
+    "version": "1.1.3",
+    "uniqueId": "ch.qos.logback:logback-access:jar::1.1.3"
+  },
+  {
+    "groupId": "org.codehaus.janino",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.codehaus.janino:commons-compiler:jar::2.7.8"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "janino",
+    "version": "2.7.8",
+    "uniqueId": "org.codehaus.janino:janino:jar::2.7.8"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.eclipse.jetty:jetty-io:jar::9.2.14.v20151106",
+        "javax.servlet:javax.servlet-api:jar::3.1.0",
+        "org.eclipse.jetty:jetty-http:jar::9.2.14.v20151106"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-server",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-server:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.eclipse.jetty:jetty-xml:jar::9.2.14.v20151106",
+        "org.eclipse.jetty:jetty-servlet:jar::9.2.14.v20151106"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-webapp",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-webapp:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "com.sun.jersey",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.sun.jersey:jersey-core:jar::1.19"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jersey-server",
+    "version": "1.19",
+    "uniqueId": "com.sun.jersey:jersey-server:jar::1.19"
+  },
+  {
+    "groupId": "com.sun.jersey",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jersey-servlet",
+    "version": "1.19",
+    "uniqueId": "com.sun.jersey:jersey-servlet:jar::1.19"
+  },
+  {
+    "groupId": "commons-configuration",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "commons-logging:commons-logging:jar::1.1.1",
+        "commons-lang:commons-lang:jar::2.6"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-configuration",
+    "version": "1.10",
+    "uniqueId": "commons-configuration:commons-configuration:jar::1.10"
+  },
+  {
+    "groupId": "commons-digester",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "commons-beanutils:commons-beanutils:jar::1.9.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-digester",
+    "version": "2.1",
+    "uniqueId": "commons-digester:commons-digester:jar::2.1"
+  },
+  {
+    "groupId": "org.codehaus.jackson",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.codehaus.jackson:jackson-mapper-asl:jar::1.9.13",
+        "org.codehaus.jackson:jackson-core-asl:jar::1.9.13"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackson-jaxrs",
+    "version": "1.9.13",
+    "uniqueId": "org.codehaus.jackson:jackson-jaxrs:jar::1.9.13"
+  },
+  {
+    "groupId": "org.rrd4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "rrd4j",
+    "version": "2.2",
+    "uniqueId": "org.rrd4j:rrd4j:jar::2.2"
+  },
+  {
+    "groupId": "org.mozilla",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "rhino",
+    "version": "1.7R4",
+    "uniqueId": "org.mozilla:rhino:jar::1.7R4"
+  },
+  {
+    "groupId": "bouncycastle",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "bcprov-jdk16",
+    "version": "140",
+    "uniqueId": "bouncycastle:bcprov-jdk16:jar::140"
+  },
+  {
+    "groupId": "com.sun.jersey.contribs",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.jvnet.mimepull:mimepull:jar::1.9.3"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jersey-multipart",
+    "version": "1.19",
+    "uniqueId": "com.sun.jersey.contribs:jersey-multipart:jar::1.19"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.servicemix.bundles:org.apache.servicemix.bundles.jline:jar::0.9.94_1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-shell",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-shell:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.neo4j:neo4j-unsafe:jar::2.2.7"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-primitive-collections",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-primitive-collections:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-io",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-io:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-csv",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-csv:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-unsafe",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-unsafe:jar::2.2.7"
+  },
+  {
+    "groupId": "org.neo4j.3rdparty.javax.ws.rs",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jsr311-api",
+    "version": "1.1.2.r612",
+    "uniqueId": "org.neo4j.3rdparty.javax.ws.rs:jsr311-api:jar::1.1.2.r612"
+  },
+  {
+    "groupId": "org.scala-lang",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "scala-library",
+    "version": "2.10.5",
+    "uniqueId": "org.scala-lang:scala-library:jar::2.10.5"
+  },
+  {
+    "groupId": "org.scala-lang",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "scala-reflect",
+    "version": "2.10.5",
+    "uniqueId": "org.scala-lang:scala-reflect:jar::2.10.5"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-cypher-compiler-1.9",
+    "version": "2.0.4",
+    "uniqueId": "org.neo4j:neo4j-cypher-compiler-1.9:jar::2.0.4"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-cypher-compiler-2.0",
+    "version": "2.0.4",
+    "uniqueId": "org.neo4j:neo4j-cypher-compiler-2.0:jar::2.0.4"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-cypher-compiler-2.1",
+    "version": "2.1.8",
+    "uniqueId": "org.neo4j:neo4j-cypher-compiler-2.1:jar::2.1.8"
+  },
+  {
+    "groupId": "org.neo4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "neo4j-cypher-compiler-2.2",
+    "version": "2.2.7",
+    "uniqueId": "org.neo4j:neo4j-cypher-compiler-2.2:jar::2.2.7"
+  },
+  {
+    "groupId": "org.parboiled",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.parboiled:parboiled-core:jar::1.1.7"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "parboiled-scala_2.10",
+    "version": "1.1.7",
+    "uniqueId": "org.parboiled:parboiled-scala_2.10:jar::1.1.7"
+  },
+  {
+    "groupId": "net.sf.opencsv",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "opencsv",
+    "version": "2.3",
+    "uniqueId": "net.sf.opencsv:opencsv:jar::2.3"
+  },
+  {
+    "groupId": "com.googlecode.concurrentlinkedhashmap",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "concurrentlinkedhashmap-lru",
+    "version": "1.4",
+    "uniqueId": "com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:jar::1.4"
+  },
+  {
+    "groupId": "org.parboiled",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "parboiled-core",
+    "version": "1.1.7",
+    "uniqueId": "org.parboiled:parboiled-core:jar::1.1.7"
+  },
+  {
+    "groupId": "ch.qos.logback",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "logback-core",
+    "version": "1.1.3",
+    "uniqueId": "ch.qos.logback:logback-core:jar::1.1.3"
+  },
+  {
+    "groupId": "org.codehaus.janino",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-compiler",
+    "version": "2.7.8",
+    "uniqueId": "org.codehaus.janino:commons-compiler:jar::2.7.8"
+  },
+  {
+    "groupId": "javax.servlet",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "javax.servlet-api",
+    "version": "3.1.0",
+    "uniqueId": "javax.servlet:javax.servlet-api:jar::3.1.0"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.eclipse.jetty:jetty-util:jar::9.2.14.v20151106"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-http",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-http:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-io",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-io:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-util",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-util:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-xml",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-xml:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.eclipse.jetty:jetty-security:jar::9.2.14.v20151106"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-servlet",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-servlet:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "org.eclipse.jetty",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jetty-security",
+    "version": "9.2.14.v20151106",
+    "uniqueId": "org.eclipse.jetty:jetty-security:jar::9.2.14.v20151106"
+  },
+  {
+    "groupId": "com.sun.jersey",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jersey-core",
+    "version": "1.19",
+    "uniqueId": "com.sun.jersey:jersey-core:jar::1.19"
+  },
+  {
+    "groupId": "commons-lang",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-lang",
+    "version": "2.6",
+    "uniqueId": "commons-lang:commons-lang:jar::2.6"
+  },
+  {
+    "groupId": "commons-logging",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-logging",
+    "version": "1.1.1",
+    "uniqueId": "commons-logging:commons-logging:jar::1.1.1"
+  },
+  {
+    "groupId": "commons-beanutils",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "commons-collections:commons-collections:jar::3.2.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-beanutils",
+    "version": "1.9.2",
+    "uniqueId": "commons-beanutils:commons-beanutils:jar::1.9.2"
+  },
+  {
+    "groupId": "commons-collections",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-collections",
+    "version": "3.2.2",
+    "uniqueId": "commons-collections:commons-collections:jar::3.2.2"
+  },
+  {
+    "groupId": "org.codehaus.jackson",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackson-core-asl",
+    "version": "1.9.13",
+    "uniqueId": "org.codehaus.jackson:jackson-core-asl:jar::1.9.13"
+  },
+  {
+    "groupId": "org.codehaus.jackson",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackson-mapper-asl",
+    "version": "1.9.13",
+    "uniqueId": "org.codehaus.jackson:jackson-mapper-asl:jar::1.9.13"
+  },
+  {
+    "groupId": "org.jvnet.mimepull",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "mimepull",
+    "version": "1.9.3",
+    "uniqueId": "org.jvnet.mimepull:mimepull:jar::1.9.3"
+  },
+  {
+    "groupId": "org.apache.servicemix.bundles",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "org.apache.servicemix.bundles.jline",
+    "version": "0.9.94_1",
+    "uniqueId": "org.apache.servicemix.bundles:org.apache.servicemix.bundles.jline:jar::0.9.94_1"
+  },
+  {
+    "groupId": "org.springframework.boot",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.hibernate:hibernate-validator:jar::5.2.2.Final"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-boot-starter-validation",
+    "version": "1.3.1.RELEASE",
+    "uniqueId": "org.springframework.boot:spring-boot-starter-validation:jar::1.3.1.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-web",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-web:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.springframework",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "spring-webmvc",
+    "version": "4.2.4.RELEASE",
+    "uniqueId": "org.springframework:spring-webmvc:jar::4.2.4.RELEASE"
+  },
+  {
+    "groupId": "org.hibernate",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.fasterxml:classmate:jar::1.1.0",
+        "org.jboss.logging:jboss-logging:jar::3.3.0.Final",
+        "javax.validation:validation-api:jar::1.1.0.Final"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "hibernate-validator",
+    "version": "5.2.2.Final",
+    "uniqueId": "org.hibernate:hibernate-validator:jar::5.2.2.Final"
+  },
+  {
+    "groupId": "javax.validation",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "validation-api",
+    "version": "1.1.0.Final",
+    "uniqueId": "javax.validation:validation-api:jar::1.1.0.Final"
+  },
+  {
+    "groupId": "org.jboss.logging",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jboss-logging",
+    "version": "3.3.0.Final",
+    "uniqueId": "org.jboss.logging:jboss-logging:jar::3.3.0.Final"
+  },
+  {
+    "groupId": "com.fasterxml",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "classmate",
+    "version": "1.1.0",
+    "uniqueId": "com.fasterxml:classmate:jar::1.1.0"
+  },
+  {
+    "groupId": "org.apache.tomcat.embed",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "tomcat-embed-core",
+    "version": "8.0.30",
+    "uniqueId": "org.apache.tomcat.embed:tomcat-embed-core:jar::8.0.30"
+  },
+  {
+    "groupId": "org.apache.tomcat.embed",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "tomcat-embed-el",
+    "version": "8.0.30",
+    "uniqueId": "org.apache.tomcat.embed:tomcat-embed-el:jar::8.0.30"
+  },
+  {
+    "groupId": "org.apache.tomcat.embed",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "tomcat-embed-logging-juli",
+    "version": "8.0.30",
+    "uniqueId": "org.apache.tomcat.embed:tomcat-embed-logging-juli:jar::8.0.30"
+  },
+  {
+    "groupId": "org.apache.tomcat.embed",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "tomcat-embed-websocket",
+    "version": "8.0.30",
+    "uniqueId": "org.apache.tomcat.embed:tomcat-embed-websocket:jar::8.0.30"
+  },
+  {
+    "groupId": "org.aroundthecode.pathfinder",
+    "dependencies": {
+      "TEST": [
+        "junit:junit:jar::4.12"
+      ],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.aroundthecode.pathfinder:pathfinder-rest-client:jar::0.1.0-SNAPSHOT",
+        "org.apache.maven:maven-plugin-api:jar::2.0",
+        "org.apache.maven.plugins:maven-dependency-plugin:jar::2.10",
+        "org.codehaus.plexus:plexus-utils:jar::3.0.8"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [
+        "org.apache.maven.plugin-tools:maven-plugin-annotations:jar::3.2"
+      ],
+      "RUNTIME": []
+    },
+    "parentNode": "org.aroundthecode.pathfinder:pathfinder:pom::0.1.0-SNAPSHOT",
+    "packaging": "maven-plugin",
+    "classifier": "",
+    "artifactId": "pathfinder-maven-plugin",
+    "version": "0.1.0-SNAPSHOT",
+    "uniqueId": "org.aroundthecode.pathfinder:pathfinder-maven-plugin:maven-plugin::0.1.0-SNAPSHOT"
+  },
+  {
+    "groupId": "org.apache.maven.plugins",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.maven:maven-project:jar::2.2.1",
+        "org.apache.maven:maven-artifact:jar::2.2.1",
+        "org.apache.maven:maven-core:jar::2.2.1",
+        "org.apache.maven:maven-model:jar::2.2.1",
+        "org.apache.maven:maven-repository-metadata:jar::2.2.1",
+        "org.apache.maven:maven-artifact-manager:jar::2.2.1",
+        "org.apache.maven.reporting:maven-reporting-impl:jar::2.2",
+        "org.apache.maven.reporting:maven-reporting-api:jar::3.0",
+        "org.apache.maven.shared:maven-common-artifact-filters:jar::1.4",
+        "org.apache.maven.shared:maven-invoker:jar::2.1.1",
+        "commons-collections:commons-collections:jar::3.2.1",
+        "classworlds:classworlds:jar::1.1",
+        "commons-lang:commons-lang:jar::2.6",
+        "commons-io:commons-io:jar::1.4",
+        "org.apache.maven.doxia:doxia-sink-api:jar::1.4",
+        "org.apache.maven.doxia:doxia-site-renderer:jar::1.4",
+        "org.codehaus.plexus:plexus-archiver:jar::2.9",
+        "org.apache.maven.shared:file-management:jar::1.2.1",
+        "org.codehaus.plexus:plexus-io:jar::2.4",
+        "org.apache.maven.shared:maven-dependency-analyzer:jar::1.6",
+        "org.apache.maven.shared:maven-dependency-tree:jar::2.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-dependency-plugin",
+    "version": "2.10",
+    "uniqueId": "org.apache.maven.plugins:maven-dependency-plugin:jar::2.10"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-plugin-api",
+    "version": "2.0",
+    "uniqueId": "org.apache.maven:maven-plugin-api:jar::2.0"
+  },
+  {
+    "groupId": "org.apache.maven.plugin-tools",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-plugin-annotations",
+    "version": "3.2",
+    "uniqueId": "org.apache.maven.plugin-tools:maven-plugin-annotations:jar::3.2"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-utils",
+    "version": "3.0.8",
+    "uniqueId": "org.codehaus.plexus:plexus-utils:jar::3.0.8"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-artifact",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-artifact:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.maven:maven-settings:jar::2.2.1",
+        "org.apache.maven:maven-profile:jar::2.2.1",
+        "org.apache.maven:maven-plugin-registry:jar::2.2.1",
+        "org.codehaus.plexus:plexus-interpolation:jar::1.11",
+        "org.codehaus.plexus:plexus-container-default:jar::1.0-alpha-9-stable-1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-project",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-project:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-model",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-model:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "commons-cli:commons-cli:jar::1.2",
+        "org.apache.maven:maven-error-diagnostics:jar::2.2.1",
+        "org.apache.maven.wagon:wagon-provider-api:jar::1.0-beta-6",
+        "org.apache.maven.wagon:wagon-ssh:jar::1.0-beta-6",
+        "org.apache.maven:maven-monitor:jar::2.2.1",
+        "org.codehaus.plexus:plexus-interactivity-api:jar::1.0-alpha-4",
+        "org.apache.maven:maven-plugin-descriptor:jar::2.2.1",
+        "org.apache.maven.wagon:wagon-http-lightweight:jar::1.0-beta-6",
+        "org.apache.maven:maven-plugin-parameter-documenter:jar::2.2.1",
+        "org.sonatype.plexus:plexus-sec-dispatcher:jar::1.3",
+        "org.apache.maven.wagon:wagon-http:jar::1.0-beta-6"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": [
+        "org.apache.maven.wagon:wagon-ssh-external:jar::1.0-beta-6",
+        "org.apache.maven.wagon:wagon-file:jar::1.0-beta-6",
+        "org.slf4j:jcl-over-slf4j:jar::1.5.6",
+        "org.slf4j:slf4j-jdk14:jar::1.5.6",
+        "org.apache.maven.wagon:wagon-webdav-jackrabbit:jar::1.0-beta-6"
+      ]
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-core",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-core:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "backport-util-concurrent:backport-util-concurrent:jar::3.1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-artifact-manager",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-artifact-manager:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-repository-metadata",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-repository-metadata:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven.reporting",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-reporting-api",
+    "version": "3.0",
+    "uniqueId": "org.apache.maven.reporting:maven-reporting-api:jar::3.0"
+  },
+  {
+    "groupId": "org.apache.maven.reporting",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "commons-validator:commons-validator:jar::1.3.1",
+        "org.apache.maven.doxia:doxia-core:jar::1.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-reporting-impl",
+    "version": "2.2",
+    "uniqueId": "org.apache.maven.reporting:maven-reporting-impl:jar::2.2"
+  },
+  {
+    "groupId": "commons-io",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-io",
+    "version": "1.4",
+    "uniqueId": "commons-io:commons-io:jar::1.4"
+  },
+  {
+    "groupId": "org.apache.maven.doxia",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.maven.doxia:doxia-logging-api:jar::1.4"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "doxia-sink-api",
+    "version": "1.4",
+    "uniqueId": "org.apache.maven.doxia:doxia-sink-api:jar::1.4"
+  },
+  {
+    "groupId": "org.apache.maven.doxia",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.velocity:velocity:jar::1.5",
+        "org.codehaus.plexus:plexus-velocity:jar::1.1.7",
+        "org.codehaus.plexus:plexus-component-annotations:jar::1.5.5",
+        "org.apache.velocity:velocity-tools:jar::2.0",
+        "org.apache.maven.doxia:doxia-module-xhtml:jar::1.4",
+        "org.apache.maven.doxia:doxia-decoration-model:jar::1.4",
+        "org.codehaus.plexus:plexus-i18n:jar::1.0-beta-7",
+        "org.apache.maven.doxia:doxia-module-fml:jar::1.4"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "doxia-site-renderer",
+    "version": "1.4",
+    "uniqueId": "org.apache.maven.doxia:doxia-site-renderer:jar::1.4"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.commons:commons-compress:jar::1.9"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-archiver",
+    "version": "2.9",
+    "uniqueId": "org.codehaus.plexus:plexus-archiver:jar::2.9"
+  },
+  {
+    "groupId": "org.apache.maven.shared",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.maven.shared:maven-shared-io:jar::1.1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "file-management",
+    "version": "1.2.1",
+    "uniqueId": "org.apache.maven.shared:file-management:jar::1.2.1"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-io",
+    "version": "2.4",
+    "uniqueId": "org.codehaus.plexus:plexus-io:jar::2.4"
+  },
+  {
+    "groupId": "org.apache.maven.shared",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.ow2.asm:asm:jar::5.0.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-dependency-analyzer",
+    "version": "1.6",
+    "uniqueId": "org.apache.maven.shared:maven-dependency-analyzer:jar::1.6"
+  },
+  {
+    "groupId": "org.apache.maven.shared",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.eclipse.aether:aether-util:jar::0.9.0.M2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-dependency-tree",
+    "version": "2.2",
+    "uniqueId": "org.apache.maven.shared:maven-dependency-tree:jar::2.2"
+  },
+  {
+    "groupId": "org.apache.maven.shared",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-common-artifact-filters",
+    "version": "1.4",
+    "uniqueId": "org.apache.maven.shared:maven-common-artifact-filters:jar::1.4"
+  },
+  {
+    "groupId": "org.apache.maven.shared",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-invoker",
+    "version": "2.1.1",
+    "uniqueId": "org.apache.maven.shared:maven-invoker:jar::2.1.1"
+  },
+  {
+    "groupId": "commons-collections",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-collections",
+    "version": "3.2.1",
+    "uniqueId": "commons-collections:commons-collections:jar::3.2.1"
+  },
+  {
+    "groupId": "classworlds",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "classworlds",
+    "version": "1.1",
+    "uniqueId": "classworlds:classworlds:jar::1.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-settings",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-settings:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-profile",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-profile:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-plugin-registry",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-plugin-registry:jar::2.2.1"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-interpolation",
+    "version": "1.11",
+    "uniqueId": "org.codehaus.plexus:plexus-interpolation:jar::1.11"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-container-default",
+    "version": "1.0-alpha-9-stable-1",
+    "uniqueId": "org.codehaus.plexus:plexus-container-default:jar::1.0-alpha-9-stable-1"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-file",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-file:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-plugin-parameter-documenter",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-plugin-parameter-documenter:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.maven.wagon:wagon-http-shared:jar::1.0-beta-6"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-http-lightweight",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-http-lightweight:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-http",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-http:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": [
+        "org.apache.jackrabbit:jackrabbit-webdav:jar::1.5.0",
+        "org.slf4j:slf4j-nop:jar::1.5.3"
+      ]
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-webdav-jackrabbit",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-webdav-jackrabbit:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": [
+        "org.slf4j:slf4j-api:jar::1.5.6"
+      ]
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "slf4j-jdk14",
+    "version": "1.5.6",
+    "uniqueId": "org.slf4j:slf4j-jdk14:jar::1.5.6"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jcl-over-slf4j",
+    "version": "1.5.6",
+    "uniqueId": "org.slf4j:jcl-over-slf4j:jar::1.5.6"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-provider-api",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-provider-api:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-error-diagnostics",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-error-diagnostics:jar::2.2.1"
+  },
+  {
+    "groupId": "commons-cli",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-cli",
+    "version": "1.2",
+    "uniqueId": "commons-cli:commons-cli:jar::1.2"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.maven.wagon:wagon-ssh-common:jar::1.0-beta-6"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-ssh-external",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-ssh-external:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-plugin-descriptor",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-plugin-descriptor:jar::2.2.1"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-interactivity-api",
+    "version": "1.0-alpha-4",
+    "uniqueId": "org.codehaus.plexus:plexus-interactivity-api:jar::1.0-alpha-4"
+  },
+  {
+    "groupId": "org.apache.maven",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-monitor",
+    "version": "2.2.1",
+    "uniqueId": "org.apache.maven:maven-monitor:jar::2.2.1"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "com.jcraft:jsch:jar::0.1.38"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-ssh",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-ssh:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "org.sonatype.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.sonatype.plexus:plexus-cipher:jar::1.4"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-sec-dispatcher",
+    "version": "1.3",
+    "uniqueId": "org.sonatype.plexus:plexus-sec-dispatcher:jar::1.3"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "nekohtml:xercesMinimal:jar::1.9.6.2",
+        "nekohtml:nekohtml:jar::1.9.6.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-http-shared",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-http-shared:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "nekohtml",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "xercesMinimal",
+    "version": "1.9.6.2",
+    "uniqueId": "nekohtml:xercesMinimal:jar::1.9.6.2"
+  },
+  {
+    "groupId": "nekohtml",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "nekohtml",
+    "version": "1.9.6.2",
+    "uniqueId": "nekohtml:nekohtml:jar::1.9.6.2"
+  },
+  {
+    "groupId": "org.apache.jackrabbit",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": [
+        "org.apache.jackrabbit:jackrabbit-jcr-commons:jar::1.5.0",
+        "commons-httpclient:commons-httpclient:jar::3.0"
+      ]
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackrabbit-webdav",
+    "version": "1.5.0",
+    "uniqueId": "org.apache.jackrabbit:jackrabbit-webdav:jar::1.5.0"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "slf4j-nop",
+    "version": "1.5.3",
+    "uniqueId": "org.slf4j:slf4j-nop:jar::1.5.3"
+  },
+  {
+    "groupId": "org.apache.jackrabbit",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jackrabbit-jcr-commons",
+    "version": "1.5.0",
+    "uniqueId": "org.apache.jackrabbit:jackrabbit-jcr-commons:jar::1.5.0"
+  },
+  {
+    "groupId": "commons-httpclient",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-httpclient",
+    "version": "3.0",
+    "uniqueId": "commons-httpclient:commons-httpclient:jar::3.0"
+  },
+  {
+    "groupId": "org.slf4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "slf4j-api",
+    "version": "1.5.6",
+    "uniqueId": "org.slf4j:slf4j-api:jar::1.5.6"
+  },
+  {
+    "groupId": "org.apache.maven.wagon",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "wagon-ssh-common",
+    "version": "1.0-beta-6",
+    "uniqueId": "org.apache.maven.wagon:wagon-ssh-common:jar::1.0-beta-6"
+  },
+  {
+    "groupId": "com.jcraft",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "jsch",
+    "version": "0.1.38",
+    "uniqueId": "com.jcraft:jsch:jar::0.1.38"
+  },
+  {
+    "groupId": "org.sonatype.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-cipher",
+    "version": "1.4",
+    "uniqueId": "org.sonatype.plexus:plexus-cipher:jar::1.4"
+  },
+  {
+    "groupId": "backport-util-concurrent",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "backport-util-concurrent",
+    "version": "3.1",
+    "uniqueId": "backport-util-concurrent:backport-util-concurrent:jar::3.1"
+  },
+  {
+    "groupId": "org.apache.maven.doxia",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "xerces:xercesImpl:jar::2.9.1",
+        "org.apache.httpcomponents:httpclient:jar::4.0.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "doxia-core",
+    "version": "1.2",
+    "uniqueId": "org.apache.maven.doxia:doxia-core:jar::1.2"
+  },
+  {
+    "groupId": "commons-validator",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "commons-digester:commons-digester:jar::1.6",
+        "commons-beanutils:commons-beanutils:jar::1.7.0",
+        "commons-logging:commons-logging:jar::1.0.4"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-validator",
+    "version": "1.3.1",
+    "uniqueId": "commons-validator:commons-validator:jar::1.3.1"
+  },
+  {
+    "groupId": "xerces",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "xml-apis:xml-apis:jar::1.3.04"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "xercesImpl",
+    "version": "2.9.1",
+    "uniqueId": "xerces:xercesImpl:jar::2.9.1"
+  },
+  {
+    "groupId": "org.apache.httpcomponents",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "commons-codec:commons-codec:jar::1.3",
+        "org.apache.httpcomponents:httpcore:jar::4.0.1"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "httpclient",
+    "version": "4.0.2",
+    "uniqueId": "org.apache.httpcomponents:httpclient:jar::4.0.2"
+  },
+  {
+    "groupId": "xml-apis",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "xml-apis",
+    "version": "1.3.04",
+    "uniqueId": "xml-apis:xml-apis:jar::1.3.04"
+  },
+  {
+    "groupId": "org.apache.httpcomponents",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "httpcore",
+    "version": "4.0.1",
+    "uniqueId": "org.apache.httpcomponents:httpcore:jar::4.0.1"
+  },
+  {
+    "groupId": "commons-codec",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-codec",
+    "version": "1.3",
+    "uniqueId": "commons-codec:commons-codec:jar::1.3"
+  },
+  {
+    "groupId": "commons-beanutils",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-beanutils",
+    "version": "1.7.0",
+    "uniqueId": "commons-beanutils:commons-beanutils:jar::1.7.0"
+  },
+  {
+    "groupId": "commons-digester",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-digester",
+    "version": "1.6",
+    "uniqueId": "commons-digester:commons-digester:jar::1.6"
+  },
+  {
+    "groupId": "commons-logging",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-logging",
+    "version": "1.0.4",
+    "uniqueId": "commons-logging:commons-logging:jar::1.0.4"
+  },
+  {
+    "groupId": "org.apache.maven.doxia",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "doxia-logging-api",
+    "version": "1.4",
+    "uniqueId": "org.apache.maven.doxia:doxia-logging-api:jar::1.4"
+  },
+  {
+    "groupId": "org.apache.maven.doxia",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "doxia-decoration-model",
+    "version": "1.4",
+    "uniqueId": "org.apache.maven.doxia:doxia-decoration-model:jar::1.4"
+  },
+  {
+    "groupId": "org.apache.maven.doxia",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "doxia-module-xhtml",
+    "version": "1.4",
+    "uniqueId": "org.apache.maven.doxia:doxia-module-xhtml:jar::1.4"
+  },
+  {
+    "groupId": "org.apache.maven.doxia",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "doxia-module-fml",
+    "version": "1.4",
+    "uniqueId": "org.apache.maven.doxia:doxia-module-fml:jar::1.4"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-i18n",
+    "version": "1.0-beta-7",
+    "uniqueId": "org.codehaus.plexus:plexus-i18n:jar::1.0-beta-7"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-velocity",
+    "version": "1.1.7",
+    "uniqueId": "org.codehaus.plexus:plexus-velocity:jar::1.1.7"
+  },
+  {
+    "groupId": "org.apache.velocity",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "oro:oro:jar::2.0.8"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "velocity",
+    "version": "1.5",
+    "uniqueId": "org.apache.velocity:velocity:jar::1.5"
+  },
+  {
+    "groupId": "org.apache.velocity",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "org.apache.struts:struts-core:jar::1.3.8",
+        "org.apache.struts:struts-taglib:jar::1.3.8",
+        "org.apache.struts:struts-tiles:jar::1.3.8",
+        "commons-chain:commons-chain:jar::1.1",
+        "dom4j:dom4j:jar::1.1",
+        "sslext:sslext:jar::1.2-0"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "velocity-tools",
+    "version": "2.0",
+    "uniqueId": "org.apache.velocity:velocity-tools:jar::2.0"
+  },
+  {
+    "groupId": "org.codehaus.plexus",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "plexus-component-annotations",
+    "version": "1.5.5",
+    "uniqueId": "org.codehaus.plexus:plexus-component-annotations:jar::1.5.5"
+  },
+  {
+    "groupId": "oro",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "oro",
+    "version": "2.0.8",
+    "uniqueId": "oro:oro:jar::2.0.8"
+  },
+  {
+    "groupId": "commons-chain",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-chain",
+    "version": "1.1",
+    "uniqueId": "commons-chain:commons-chain:jar::1.1"
+  },
+  {
+    "groupId": "dom4j",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "dom4j",
+    "version": "1.1",
+    "uniqueId": "dom4j:dom4j:jar::1.1"
+  },
+  {
+    "groupId": "sslext",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "sslext",
+    "version": "1.2-0",
+    "uniqueId": "sslext:sslext:jar::1.2-0"
+  },
+  {
+    "groupId": "org.apache.struts",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [
+        "antlr:antlr:jar::2.7.2"
+      ],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "struts-core",
+    "version": "1.3.8",
+    "uniqueId": "org.apache.struts:struts-core:jar::1.3.8"
+  },
+  {
+    "groupId": "org.apache.struts",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "struts-taglib",
+    "version": "1.3.8",
+    "uniqueId": "org.apache.struts:struts-taglib:jar::1.3.8"
+  },
+  {
+    "groupId": "org.apache.struts",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "struts-tiles",
+    "version": "1.3.8",
+    "uniqueId": "org.apache.struts:struts-tiles:jar::1.3.8"
+  },
+  {
+    "groupId": "antlr",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "antlr",
+    "version": "2.7.2",
+    "uniqueId": "antlr:antlr:jar::2.7.2"
+  },
+  {
+    "groupId": "org.apache.commons",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "commons-compress",
+    "version": "1.9",
+    "uniqueId": "org.apache.commons:commons-compress:jar::1.9"
+  },
+  {
+    "groupId": "org.apache.maven.shared",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "maven-shared-io",
+    "version": "1.1",
+    "uniqueId": "org.apache.maven.shared:maven-shared-io:jar::1.1"
+  },
+  {
+    "groupId": "org.ow2.asm",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "asm",
+    "version": "5.0.2",
+    "uniqueId": "org.ow2.asm:asm:jar::5.0.2"
+  },
+  {
+    "groupId": "org.eclipse.aether",
+    "dependencies": {
+      "TEST": [],
+      "IMPORT": [],
+      "COMPILE": [],
+      "SYSTEM": [],
+      "PROVIDED": [],
+      "RUNTIME": []
+    },
+    "packaging": "jar",
+    "classifier": "",
+    "artifactId": "aether-util",
+    "version": "0.9.0.M2",
+    "uniqueId": "org.eclipse.aether:aether-util:jar::0.9.0.M2"
+  }
+]
