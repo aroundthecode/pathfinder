@@ -20,7 +20,6 @@ package org.aroundthecode.pathfinder.maven.plugin.treeserializers;
  * under the License.
  */
 
-import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +32,7 @@ import org.apache.maven.shared.dependency.graph.DependencyNode;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.client.rest.utils.ArtifactUtils;
+import org.json.simple.JSONArray;
 
 
 public class PathfinderNodeVisitor extends AbstractSerializingVisitor implements
@@ -40,20 +40,40 @@ DependencyNodeVisitor {
 
 	private Log log;
 	private String prj = null;
-	private PathfinderClient client = null;
 	private MavenProject project = null;
 
-	public PathfinderNodeVisitor(Writer writer, Log log,PathfinderClient client, MavenProject mavenProject) {
+
+	private JSONArray bulkArray = new JSONArray();
+	private Long analysisTimestamp = null;
+
+	public PathfinderNodeVisitor(Writer writer, Log log, MavenProject mavenProject) {
 		super(writer);
 		this.log = log;
-		this.client = client;
 		this.project = mavenProject;
+		this.analysisTimestamp = System.currentTimeMillis();
+	}
+
+	/**
+	 * @return the bulkArray
+	 */
+	public JSONArray getBulkArray() {
+		return bulkArray;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
 	public boolean visit(DependencyNode node) {
+
+		JSONArray dependenciesUniqueIdCompile = new JSONArray();
+		JSONArray dependenciesUniqueIdImport = new JSONArray();
+		JSONArray dependenciesUniqueIdProvided = new JSONArray();
+		JSONArray dependenciesUniqueIdRuntime = new JSONArray();
+		JSONArray dependenciesUniqueIdSystem = new JSONArray();
+		JSONArray dependenciesUniqueIdTest = new JSONArray();
+
 
 		boolean out = true;
 
@@ -65,48 +85,66 @@ DependencyNodeVisitor {
 		if (node.getParent() == null || node.getParent() == node) {
 			prj =  node.toNodeString();
 			writer.write("Project is:[" + prj + "]\n");
-			//STORE PRJ TO DB		
-//			out = saveNode(node);
 
 			Artifact parent = project.getParentArtifact();
 			if(parent!=null){
 				String parentId = getUniqueId(parent);
 				writer.write("Parent project is:[" + parentId + "]\n");
-				try {
-					client.addParent(getUniqueId(node.getArtifact()), parentId);
-				} catch (IOException e) {
-					log.error("error creating parent dependency:"+e.getMessage());
-				}
+				bulkArray.add( ArtifactUtils.artifactJSON(getUniqueId(node.getArtifact()), analysisTimestamp, parentId) );
 			}
 
 		}
 
 		// Generate "currentNode -> Child" lines
 		List<DependencyNode> children = node.getChildren();
+		String szFrom = getUniqueId(node.getArtifact());
 		for (Iterator<DependencyNode> child = children.iterator(); child.hasNext();) {
 			DependencyNode c = child.next();
 
-			String szFrom = getUniqueId(node.getArtifact());
 			String szTo = getUniqueId(c.getArtifact());
 			String scope = c.getArtifact().getScope();
 
-
-			//store single nodes
-//			out = saveNode(node);
-//			out = saveNode(c);
 			//store node relation
-			try {
-				if(scope.indexOf(",")>0){
-					writer.println("WARNING:multiple scopes detected into ["+scope+"], considering just first one");
-					scope = scope.substring(0, scope.indexOf(","));
-				}
-				writer.println(szFrom+" --("+scope+")--> "+szTo);
-				client.createDependency(szFrom, szTo, ArtifactUtils.Dependency.valueOf(scope.toUpperCase()).toString());
-			} catch (IOException e) {
-				log.error("error creating dependency:"+e.getMessage());
+			if(scope.contains(",")){
+				writer.println("WARNING:multiple scopes detected into ["+scope+"], considering just first one");
+				scope = scope.substring(0, scope.indexOf(','));
+			}
+			writer.println(szFrom+" --("+scope+")--> "+szTo);
+
+
+
+			switch (ArtifactUtils.Dependency.valueOf(scope.toUpperCase())  ) {
+			case COMPILE:
+				dependenciesUniqueIdCompile.add(szTo);
+				break;
+			case PROVIDED:
+				dependenciesUniqueIdProvided.add(szTo);
+				break;
+			case RUNTIME:
+				dependenciesUniqueIdRuntime.add(szTo);
+				break;
+			case TEST:
+				dependenciesUniqueIdTest.add(szTo);
+				break;
+			case SYSTEM:
+				dependenciesUniqueIdSystem.add(szTo);
+				break;
+			case IMPORT:
+				dependenciesUniqueIdImport.add(szTo);
+				break;
+			default:
+				break;
 			}
 
+
 		}
+		bulkArray.add(
+				ArtifactUtils.artifactJSON(szFrom, analysisTimestamp, null, 
+						dependenciesUniqueIdCompile, dependenciesUniqueIdImport, 
+						dependenciesUniqueIdProvided, dependenciesUniqueIdRuntime, 
+						dependenciesUniqueIdSystem, dependenciesUniqueIdTest)
+				);
+
 
 		return out;
 	}
@@ -115,20 +153,10 @@ DependencyNodeVisitor {
 		return ArtifactUtils.getUniqueId(a.getGroupId(), a.getArtifactId(), a.getType(), a.getClassifier(), a.getBaseVersion());
 	}
 
-//	private boolean saveNode(DependencyNode node) {
-//		boolean out = true;
-//		try {
-//			client.saveArtifact(getUniqueId(node.getArtifact() ));
-//		} catch (IOException e) {
-//			log.error("error saving node "+prj);
-//			out = false;
-//		}
-//		return out;
-//	}
-
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean endVisit(DependencyNode node) {
 		return true;
 	}

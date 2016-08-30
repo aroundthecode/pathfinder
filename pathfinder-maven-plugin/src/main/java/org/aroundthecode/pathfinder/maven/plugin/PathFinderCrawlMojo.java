@@ -39,6 +39,7 @@ import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.shared.dependency.graph.traversal.DependencyNodeVisitor;
 import org.aroundthecode.pathfinder.client.rest.PathfinderClient;
 import org.aroundthecode.pathfinder.maven.plugin.treeserializers.PathfinderNodeVisitor;
+import org.json.simple.JSONArray;
 
 @Mojo( name = "crawler", defaultPhase = LifecyclePhase.NONE )
 public class PathFinderCrawlMojo extends TreeMojo
@@ -134,6 +135,9 @@ public class PathFinderCrawlMojo extends TreeMojo
 	private String crawlerScope;
 
 	private MavenProject project = null;
+	
+	private DependencyNodeVisitor visitor=null;
+	
 	/**
 	 * Override standard TreeMojo to retrieve project from parameters
 	 */
@@ -162,18 +166,7 @@ public class PathFinderCrawlMojo extends TreeMojo
 	@Override
 	public DependencyNodeVisitor getSerializingDependencyNodeVisitor( Writer writer )
 	{
-
-		DependencyNodeVisitor visitor=null;
-		try {
-
-			PathfinderClient client = new PathfinderClient(neo4jProtocol, neo4jHost, neo4jPort, neo4jPath);
-			//visitor = new LogNodeVisitor(writer, getLog());
-			visitor = new PathfinderNodeVisitor(writer, getLog(),client,project);
-
-		} catch (IOException e) {
-			getLog().error(e);
-		}
-
+		visitor = new PathfinderNodeVisitor(writer, getLog(),project);
 		return visitor;
 	}
 
@@ -190,6 +183,16 @@ public class PathFinderCrawlMojo extends TreeMojo
 		else{
 			getLog().info("Project under analysis:"+project.getName());
 			super.execute();
+			JSONArray data = ((PathfinderNodeVisitor)visitor).getBulkArray();
+			
+			getLog().info("DATA:"+data);
+			PathfinderClient client = null;
+			try {
+				client = new PathfinderClient(neo4jProtocol, neo4jHost, neo4jPort, neo4jPath);
+			} catch (IOException e) {
+				getLog().error(e);
+			}
+			client.uploadProject(data);
 		}
 	}
 }

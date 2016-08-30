@@ -38,7 +38,7 @@ public class Artifact {
 	private String version = "";
 	@Fetch
 	private Long timestamp = 1l;
-	
+
 
 	/**
 	 * Relation for COMPILE scope
@@ -307,61 +307,50 @@ public class Artifact {
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject toJSON(){
-		JSONObject o = new JSONObject();
-		o.put("ID", id);
-		o.put(ArtifactUtils.U, getUniqueId());
-		o.put(ArtifactUtils.G, getGroupId());
-		o.put(ArtifactUtils.A, getArtifactId());
-		o.put(ArtifactUtils.V, getVersion());
-		o.put(ArtifactUtils.P, getPackaging());
-		o.put(ArtifactUtils.C, getClassifier());
-		
-		o.put(ArtifactUtils.T, getTimestamp().toString());
 
+		String parentUniqueId = null;
 		if(parentArtifact!=null && parentArtifact.getUniqueId()!=null){
-			o.put(ArtifactUtils.PN, parentArtifact.getUniqueId());
+			parentUniqueId =  parentArtifact.getUniqueId();
 		}
 
-		JSONObject od =  new JSONObject();
-		JSONArray d = new JSONArray();
+		JSONArray dependenciesUniqueIdCompile = new JSONArray();
 		for (Artifact a : dependenciesCompile) {
-			d.add( a.getUniqueId());
+			dependenciesUniqueIdCompile.add( a.getUniqueId());
 		}
-		od.put(Dependency.COMPILE.toString(), d.clone());
 
-		d.clear();
+		JSONArray dependenciesUniqueIdImport = new JSONArray();
 		for (Artifact a : dependenciesImport) {
-			d.add( a.getUniqueId());
+			dependenciesUniqueIdImport.add( a.getUniqueId());
 		}
-		od.put(Dependency.IMPORT.toString(), d.clone());
 
-		d.clear();
+		JSONArray dependenciesUniqueIdProvided = new JSONArray();
 		for (Artifact a : dependenciesProvided) {
-			d.add( a.getUniqueId());
+			dependenciesUniqueIdProvided.add( a.getUniqueId());
 		}
-		od.put(Dependency.PROVIDED.toString(), d.clone());
-
-		d.clear();
+		JSONArray dependenciesUniqueIdRuntime = new JSONArray();
 		for (Artifact a : dependenciesRuntime) {
-			d.add( a.getUniqueId());
+			dependenciesUniqueIdRuntime.add( a.getUniqueId());
 		}
-		od.put(Dependency.RUNTIME.toString(), d.clone());
-
-		d.clear();
+		JSONArray dependenciesUniqueIdSystem = new JSONArray();
 		for (Artifact a : dependenciesSystem) {
-			d.add( a.getUniqueId());
+			dependenciesUniqueIdSystem.add( a.getUniqueId());
 		}
-		od.put(Dependency.SYSTEM.toString(), d.clone());
-
-		d.clear();
+		JSONArray dependenciesUniqueIdTest = new JSONArray();
 		for (Artifact a : dependenciesTest) {
-			d.add( a.getUniqueId());
+			dependenciesUniqueIdTest.add( a.getUniqueId());
 		}
-		od.put(Dependency.TEST.toString(), d.clone());
 
-		o.put(ArtifactUtils.D, od);
+		return ArtifactUtils.artifactJSON(
+				getUniqueId(), 
+				getTimestamp(), 
+				parentUniqueId, 
+				dependenciesUniqueIdCompile, 
+				dependenciesUniqueIdImport, 
+				dependenciesUniqueIdProvided, 
+				dependenciesUniqueIdRuntime, 
+				dependenciesUniqueIdSystem, 
+				dependenciesUniqueIdTest);
 
-		return o;
 	}
 
 	@Override
@@ -393,14 +382,14 @@ public class Artifact {
 				o.get(ArtifactUtils.P).toString(),
 				o.get(ArtifactUtils.C).toString()
 				);
-		
+
 		if( o.get(ArtifactUtils.T) != null ){
 			a.setTimestamp( Long.valueOf( o.get(ArtifactUtils.T).toString() ));
 		}
 		else{
 			a.setTimestamp( Long.valueOf( Long.toString(System.currentTimeMillis()) ));
 		}
-		
+
 		String pn = "" + o.get(ArtifactUtils.PN);
 		if( ! "null".equals(pn) ){
 			a.hasParent( new Artifact(pn));
@@ -431,28 +420,28 @@ public class Artifact {
 	 * @throws ArtifactMergeException raised upon any merge conflict
 	 */
 	public static Artifact merge(Artifact master, Artifact merge ) throws ArtifactMergeException{
-		
+
 		if( ! master.getUniqueId().equals(merge.getUniqueId()) ){
 			throw new ArtifactMergeException("master ["+master.getUniqueId()+"] and merge ["+merge.getUniqueId()+"] UniqueId mismatch");
 		}
-		
+
 		if( 
-			master.getParent()!=null &&
-			merge.getParent()!=null &&
-			! (master.getParent()).equals(merge.getParent()) 
-		){
+				master.getParent()!=null &&
+				merge.getParent()!=null &&
+				! (master.getParent()).equals(merge.getParent()) 
+				){
 			throw new ArtifactMergeException("master ["+master.getParent()+"] and merge ["+merge.getParent()+"] Parent UniqueId mismatch");
 		}
-		
+
 		master.dependenciesCompile.addAll( merge.dependenciesCompile );
 		master.dependenciesImport.addAll( merge.dependenciesImport );
 		master.dependenciesProvided.addAll( merge.dependenciesProvided );
 		master.dependenciesRuntime.addAll( merge.dependenciesRuntime );
 		master.dependenciesSystem.addAll( merge.dependenciesSystem );
 		master.dependenciesTest.addAll( merge.dependenciesTest );
-		
+
 		return master;
 	}
-	
-	
+
+
 }

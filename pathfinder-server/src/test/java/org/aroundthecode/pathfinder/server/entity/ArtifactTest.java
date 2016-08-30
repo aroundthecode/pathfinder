@@ -143,7 +143,7 @@ public class ArtifactTest {
 		for (Dependency dd : Dependency.values()) {
 			for (int i = 0; i < count; i++) {
 				Artifact d2 = new Artifact(ID);
-				d2.setArtifactId(dd.name()+"-"+count);
+				d2.setArtifactId(dd.name()+"-"+i);
 				a.dependsOn(d2, dd.name());
 			}
 			count++;
