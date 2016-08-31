@@ -53,7 +53,7 @@ public class PathfinderClient {
 	 * Base constructor, provide connection parameters. 
 	 * Upon creation the client will try to connect to check server availability.
 	 * Upon connection failure it will attempt RETRY_TIMES times, with RETRY_SLEEP sleeping time.
-	 * @param protocol http or https values allowed
+	 * @param protocol http, https values allowed
 	 * @param domain FQDN or IP to connect to
 	 * @param port socket port Pathfinder server listen to
 	 * @param path additional context path ("/" if not present)
@@ -61,8 +61,12 @@ public class PathfinderClient {
 	 */
 	public PathfinderClient(String protocol,String domain, int port, String path) throws IOException {
 
+		AllowedProtocol ap = AllowedProtocol.parse(AllowedProtocol.CUSTOM_NAME);
+		ap.setProtocol(protocol);
+		ap.setPort(port);
+		
 		PathfinderConnectionConfiguration conf= new PathfinderConnectionConfiguration(
-				AllowedProtocol.parse("app"),
+				ap,
 				domain
 				);
 		Auth auth = new NoAuth();

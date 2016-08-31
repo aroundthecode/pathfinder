@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public abstract class AbstractConnectionConfiguration {
-	
+
 	/**
 	 * Simple Logger
 	 */
@@ -33,14 +33,14 @@ public abstract class AbstractConnectionConfiguration {
 	 * default charset to be used everywhere
 	 */
 	public static final String CHARSET_NAME = "UTF-8";
-	
+
 	/**
 	 * commodity string for "application/json";
 	 */
 	public static final String APPLICATION_JSON = "application/json";
-	
+
 	private static ProtocolSocketFactory psf;
-	
+
 	static{
 		try {
 			psf = new EasySSLProtocolSocketFactory();
@@ -48,20 +48,21 @@ public abstract class AbstractConnectionConfiguration {
 			log.error(e.getMessage(),e);
 		}
 	}
-	
+
 	/**
 	 * Public enum to store available protocols (actually HTTP and HTTPS) and their connections port
 	 * @author michele.sacchetti
 	 */
 	public enum AllowedProtocol {
 		HTTP("http","http",80,null),
-		APP("app","http",8080,null),
-		HTTPS("https","https",443, psf );
+		HTTPS("https","https",443, psf ),
+		CUSTOM("custom","http",8080,null);
 
-		private String name;
+		public static final String CUSTOM_NAME = "custom";
+		private final String name;
 		private String protocol;
 		private int port;
-		private ProtocolSocketFactory socketFactory;
+		private final ProtocolSocketFactory socketFactory;
 
 		private AllowedProtocol(String n,String p,int c,ProtocolSocketFactory sf) {
 			name = n;
@@ -78,11 +79,21 @@ public abstract class AbstractConnectionConfiguration {
 			return port;
 		}
 
+		/**
+		 * Set protocol default port number, will apply value only if CUSTOM AllowedProtocol is used
+		 * @param p port value
+		 */
+		public void setPort( int p ) {
+			if(CUSTOM_NAME.equals(name)){
+				port=p;
+			}
+		}
+
 		public String getName() {
 			return name;
 		}
-		
-		
+
+
 		private ProtocolSocketFactory getSocketFactory() {
 			return socketFactory;
 		}
@@ -91,23 +102,33 @@ public abstract class AbstractConnectionConfiguration {
 			return protocol;
 		}
 
+		/**
+		 * Setter for protocol, will apply value only if CUSTOM AllowedProtocol is used
+		 * @param p protocol
+		 */
+		public void setProtocol(String p) {
+			if(CUSTOM_NAME.equals(name)){
+				protocol = p;
+			}
+		}
+
 		public static AllowedProtocol parse(String name){
-			
+
 			for(final AllowedProtocol ap : AllowedProtocol.values()) {
 				if(name.equals(ap.getName())){
-	            	return ap;
+					return ap;
 				}
-	        }
+			}
 			//fallback to default
 			return AllowedProtocol.HTTP;
 		}
-		
+
 	}
 
-	
+
 	private String domain = null;
 	private AllowedProtocol protocol = AllowedProtocol.HTTP;
-	
+
 	/**
 	 * Get domain to be used for all requests
 	 * @return
@@ -131,7 +152,7 @@ public abstract class AbstractConnectionConfiguration {
 	public final void setProtocol(AllowedProtocol protocol) {
 		this.protocol = protocol;
 	}
-	
+
 	/**
 	 * Get {@link AllowedProtocol} to be used for all requests
 	 * @return
@@ -139,7 +160,7 @@ public abstract class AbstractConnectionConfiguration {
 	public String getProtocol() {
 		return protocol.getProtocol().toLowerCase(Locale.getDefault());
 	}	
-	
+
 	/**
 	 * Get port to be used for all requests
 	 * @return
@@ -147,7 +168,7 @@ public abstract class AbstractConnectionConfiguration {
 	public int getPort() {
 		return protocol.getPort();
 	}
-	
+
 	/**
 	 * Get {@link AllowedProtocol}
 	 * @return
@@ -155,23 +176,23 @@ public abstract class AbstractConnectionConfiguration {
 	protected AllowedProtocol getAllowedProtocol() {
 		return protocol;
 	}
-	
-	
+
+
 	/**
 	 * This method add configuration to {@link HttpClient} to manage protocols with customized ProtocolSocketFactory
 	 * @param client {@link HttpClient} to be configured
 	 */
 	public void doSetAllowedProtocol(HttpClient client){
-		
+
 		if(getAllowedProtocol().getSocketFactory()!=null){
 			getLog().info("Setting ProtocolSocketFactory for AllowedProtocol "+getProtocol() );
 			Protocol myhttps = new Protocol(getProtocol(), getAllowedProtocol().getSocketFactory() , getPort());
 			client.getHostConfiguration().setHost( getDomain(),getPort(), myhttps);
 			Protocol.registerProtocol(getProtocol(), myhttps);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Retrieve base url as protocol + domain
 	 * @return base url
@@ -187,5 +208,5 @@ public abstract class AbstractConnectionConfiguration {
 	private Logger getLog() {
 		return log;
 	}
-	
+
 }
