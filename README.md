@@ -7,8 +7,7 @@
 
 **Version** : 0.1.0-SNAPSHOT (Yes, still work in progress!)
 
-**License** : <http://www.apache.org/licenses/LICENSE-2.0>
-
+Please check [project wiki](https://github.com/aroundthecode/pathfinder/wiki) for latest documentation
 
 ## Intro
 

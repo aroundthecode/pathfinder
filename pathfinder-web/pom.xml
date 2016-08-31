@@ -14,6 +14,14 @@
 	<name>Maven Pathfinder Web Interface  - ${project.groupId}:${project.artifactId}:${project.packaging}</name>
 	<description>Web Ui for Pathfinder</description>
 
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 3.0</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+			<comments>Please check https://github.com/aroundthecode/pathfinder/wiki/Licensing for more details</comments>
+		</license>
+	</licenses>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -81,4 +89,5 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>
