@@ -81,7 +81,7 @@ $(function() {
     $("#crawler_modal").dialog({modal: true,'minWidth':600, 'minHeight':100,'maxHeight':400,'autoOpen': false,buttons: { Ok: function() {refreshGraph();$( this ).dialog( "close" ); } }  }); ;
     $("#crawler_modal_err").hide();
 
-    $("#loadingScreen").dialog({
+    dialogLoading = $("#loadingScreen").dialog({
         autoOpen: false,    // set this to false so we can manually open it
         dialogClass: "loadingScreenWindow",
         closeOnEscape: false,
@@ -101,7 +101,68 @@ $(function() {
         }
     });
 
-    
+    dialogUpload = $( "#dialog-upload" ).dialog({
+      autoOpen: false,
+      closeOnEscape: true,
+      height: 200,
+      width: 300,
+      modal: true,
+      resizable: false,
+      buttons: {
+        "Upload": function() { 
+            $("#dataupload").submit();
+         },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      },
+    });
+
+    $("#dataupload").submit(function(event){
+          //disable the default form submission
+          event.preventDefault();
+         
+          //grab all form data  
+          var formData = new FormData($(this)[0]);
+            
+          $.ajax({
+            url: '/node/uploadmp',
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function(){ dialogUpload.dialog( "close" ); waitingDialog({}); },
+            error: function (jqXHR, textStatus, errorThrown) {alert("Error invoking upload:"+errorThrown);},
+            success: function(){  refreshGraph(); },
+            complete: function(){ closeWaitingDialog(); }
+          });
+         
+          return false;
+        });
+
+    dialogTruncate = $( "#dialog-confirm" ).dialog({
+      autoOpen: false,
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+      buttons: {
+        "Delete all items": function() {
+            $.ajax(pfurl + "/node/truncate",{
+              type: "POST",
+              beforeSend: function(){ waitingDialog({}); },
+              error: function (jqXHR, textStatus, errorThrown) {alert("Error invoking truncate:"+errorThrown);},
+              success: function(){ $( "#dialog-confirm" ).dialog( "close" );refreshGraph(); },
+              complete: function(){ closeWaitingDialog(); }
+            });     
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
 
     // search dept spinner
     $( "#searchDepth" ).spinner({
@@ -131,12 +192,12 @@ s.addCamera('cam1'),
     });
 
 function waitingDialog(waiting) { 
-        $("#loadingScreen").html(waiting.message && '' != waiting.message ? waiting.message : 'Please wait...');
-        $("#loadingScreen").dialog('option', 'title', waiting.title && '' != waiting.title ? waiting.title : 'Invoking Pathfinder Maven Crawler.');
-        $("#loadingScreen").dialog('open');
+        dialogLoading.html(waiting.message && '' != waiting.message ? waiting.message : 'Please wait...');
+        dialogLoading.dialog('option', 'title', waiting.title && '' != waiting.title ? waiting.title : 'Invoking Pathfinder Maven Crawler.');
+        dialogLoading.dialog('open');
     }
 function closeWaitingDialog() {
-    $("#loadingScreen").dialog('close');
+    dialogLoading.dialog('close');
 }
 
 
@@ -511,5 +572,15 @@ function refreshDepMngMaven(){
 
 }
 
-function jsonOpen(){alert("File upload - Work in progress");}
-function jsonDown(){document.location= document.location.protocol + "//"+ document.location.hostname  + "/node/download";}
+function jsonOpen(){
+   dialogUpload.dialog("open");
+}
+
+function jsonDown(){
+    document.location = pfurl + "/node/download";
+}
+
+function jsonTruncate(){
+    dialogTruncate.dialog("open");
+}
+

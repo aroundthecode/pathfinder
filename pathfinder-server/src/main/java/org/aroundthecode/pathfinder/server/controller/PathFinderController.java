@@ -1,6 +1,8 @@
 package org.aroundthecode.pathfinder.server.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Collections;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * PathFinderController wraps Neo4J and Spring data to expose end user REST api
@@ -345,15 +348,54 @@ public class PathFinderController {
 	 * Note: previously data is not truncated nor backup, please refer to <b>/node/truncate</b> and <b>/node/download</b> for this
 	 * @param body JSONArray data of artifact to be imported
 	 * @return a JSONObject with total nodes available for import, amount of successful and failed import
-	 * @throws ParseException raised if input is not parsable as JSONArray
+	 * @throws ArtifactSaveException raised if input is not parsable as JSONArray
+	 */
+	@RequestMapping(value="/node/upload", method=RequestMethod.POST)
+	public JSONObject uploadNodes(@RequestBody String body) throws ArtifactSaveException 
+	{
+		JSONArray in = new JSONArray();
+		try {
+			in = RestUtils.string2JSONArray(body);
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			throw new ArtifactSaveException(e);
+		}
+		return internalUpload(in);
+	}
+
+	/**
+	 * Import an array of JSONObject (typically produced by <b>/node/download</b> method) into the database
+	 * This method is tha same as uploadNodes but manage multipart file submission
+	 * Note: previously data is not truncated nor backup, please refer to <b>/node/truncate</b> and <b>/node/download</b> for this 
+	 * 
+	 * @param file file containing jsonarry data, multipart management
+	 * @return a JSONObject with total nodes available for import, amount of successful and failed import
+	 * @throws ArtifactSaveException raised if input file is not readable nor parsable as JSONArray
+	 */
+	@RequestMapping(value="/node/uploadmp", method=RequestMethod.POST)
+	public JSONObject uploadNodesMultiPart(@RequestParam("fileUpload") MultipartFile file) throws ArtifactSaveException{
+		
+		BufferedReader br;
+		JSONArray array = new JSONArray();
+		try {
+			br = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"));
+			array = RestUtils.string2JSONArray(br);
+		} catch (IOException | ParseException e) {
+			log.error(e.getMessage());
+			throw new ArtifactSaveException(e);
+		}
+		return internalUpload(array);
+	}
+	
+	/**
+	 * Internal method to upload files, both from rest and multi-part
+	 * @param in
+	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/node/upload", method=RequestMethod.POST)
-	public JSONObject uploadNodes(@RequestBody String body) throws ParseException 
-	{
+	private JSONObject internalUpload(JSONArray in) {
 		int nodesSuccess = 0;
 		int nodesFail = 0;
-		JSONArray in = RestUtils.string2JSONArray(body);
 		for (int i = 0; i < in.size(); i++) {
 			JSONObject item = (JSONObject) in.get(i);
 			log.info("Saving [{}]", item.get(ArtifactUtils.U).toString());
@@ -374,6 +416,7 @@ public class PathFinderController {
 		o.put("fail", nodesFail);
 		return o;
 	}
+	
 
 	/**
 	 * Deletes all nodes, HANDLE WITH CARE!

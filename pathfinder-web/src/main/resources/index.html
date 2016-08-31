@@ -257,13 +257,37 @@
 <div id="toolbar">
 	<table>
 		<tr>
-			<td><img class="tbutton" onclick="jsonOpen()" src="imgs/open.png" alt="Upload pathfinder analysis file" title="Upload pathfinder analysis file"/></td>
-			<td><img class="tbutton" onclick="jsonDown()" src="imgs/download.png" alt="Download pathfinder analysis as file" title="Download pathfinder analysis as file"/></td>
+      <td><img class="tbutton" width="48px" onclick="refreshGraph()" src="imgs/refresh.png" alt="Reload graph from server" title="Reload graph from server"/></td>
+			<td><img class="tbutton" width="48px" onclick="jsonOpen()" src="imgs/open.png" alt="Upload pathfinder analysis file" title="Upload pathfinder analysis file"/></td>
+			<td><img class="tbutton" width="48px" onclick="jsonDown()" src="imgs/download.png" alt="Download pathfinder analysis as file" title="Download pathfinder analysis as file"/></td>
+      <td><img class="tbutton" width="48px" onclick="jsonTruncate()" src="imgs/trash.png" alt="Drop full database" title="Drop full database"/></td>
 		</tr>
 	</table>
 </div>
-<div id="loadingScreen"></div>
-
+<!-- hide dialog divs -->
+<div style="display:none">
+  <!-- loading screen div -->
+  <div id="loadingScreen"></div>
+  <!-- truncate confirmation screen div -->
+  <div id="dialog-confirm" title="Delete all database data?">
+    <p>
+      <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+      This action will delete all nodes from the database, are you sure?</br>
+      <i><b>HINT</b>: You can use download buttton to export your data locally.</i>
+    </p>
+  </div>
+  <!-- upload form screen div -->
+  <div id="dialog-upload" title="Upload new Pathfinder Json">
+    <p>Upload a json file to add new data to the current database.</p>
+    <!--form id="form-upload" action="/node/uploadmp" enctype="multipart/form-data" method="POST"-->
+    <form id="dataupload" >
+      <input type="file" name="fileUpload" class="text ui-widget-content ui-corner-all">     
+        <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </form>
+    <p><b>WARNING</b>: Any node already available in the database will be merged with uploaded data.</p>
+</div>
+</div>
 <!-- JQuery -->
 <script src="./lib/jquery-1.11.3.min.js"></script>
 <script src="./lib/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
