@@ -11,26 +11,24 @@ var nrnd = function NRNDraw(data){
     	if (!s.graph.nodes(n1.uniqueId)) {
             s.graph.addNode({
                 id: n1.uniqueId,
-                label: n1.uniqueId,
+                label: n1.artifactId+" "+n1.version,
                 x: Math.random(),
                 y: Math.random(),
-                size: 1,
                 color: getColor(n1.version),
                 border_color: '#00f',
-                border_size: 1
+                border_size: 1,
             });
         }
 
         if (!s.graph.nodes(n2.uniqueId)) {
             s.graph.addNode({
                 id: n2.uniqueId,
-                label: n2.uniqueId,
+                label: n2.artifactId,
                 x: Math.random(),
                 y: Math.random(),
-                size: 1,
                 color: getColor(n2.version),
                 border_color: '#00f',
-                border_size: 1
+                border_size: 1,
             });
         }
 
@@ -52,6 +50,7 @@ var nrnd = function NRNDraw(data){
     updateLabel("[" + s.graph.nodes().length + "] Nodes</br>[" + s.graph.edges().length + "] Edges");
     s.refresh();
     $("#autoarrangebutton").click();
+    s.middlewares.rescale;
 }
 
 function filterAll(gn1,an1,pn1,cn1,vn1,gn2,an2,pn2,cn2,vn2){

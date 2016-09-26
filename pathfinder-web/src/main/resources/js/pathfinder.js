@@ -1,6 +1,20 @@
 var types = ["COMPILE", "PROVIDED", "RUNTIME", "TEST", "SYSTEM", "IMPORT"];
-
 var s = new sigma();
+
+s.settings({
+        labelAlignment: 'center',
+        defaultLabelSize: 8,
+        labelSizeRatio: 0.5,
+        edgeColor: 'default',
+        defaultEdgeColor: '#ff0000',
+        minNodeSize:8,
+        maxNodeSize:15,
+        maxNodeLabelLineLength:12,
+        labelThreshold: 15
+    });
+    
+s.refresh();
+
 var depmngGrid;
 
 // UI init
@@ -15,7 +29,7 @@ $(function() {
         iterations: 500,
         easing: 'quadraticInOut',
         duration: 800
-    });
+        });
     //frListener.bind('start stop interpolate', function(e) {
     //  console.log(e.type);
     //});
@@ -279,6 +293,56 @@ function fillCrawlForm(e){
 
 s.bind('doubleClickNode',crawlNode);
 s.bind('clickNode',fillCrawlForm);
+
+
+
+
+
+
+// Instanciate the ActiveState plugin:
+var activeState = sigma.plugins.activeState(s);
+var keyboard = sigma.plugins.keyboard(s, s.renderers[0]);
+
+// Initialize the Select plugin:
+var select = sigma.plugins.select(s, activeState);
+select.bindKeyboard(keyboard);
+
+// Initialize the dragNodes plugin:
+var dragListener = sigma.plugins.dragNodes(s, s.renderers[0], activeState);
+
+// Initialize the lasso plugin:
+var lasso = new sigma.plugins.lasso(s, s.renderers[0], {
+  'strokeStyle': 'rgb(236, 81, 72)',
+  'lineWidth': 2,
+  'fillWhileDrawing': true,
+  'fillStyle': 'rgba(236, 81, 72, 0.2)',
+  'cursor': 'crosshair'
+});
+select.bindLasso(lasso);
+//lasso.activate();
+
+//"spacebar" + "s" keys pressed binding for the lasso tool
+keyboard.bind('32+83', function() {
+  if (lasso.isActive) {
+    lasso.deactivate();
+  } else {
+    lasso.activate();
+  }
+});
+
+// Listen for selectedNodes event
+lasso.bind('selectedNodes', function (event) {
+  setTimeout(function() {
+    lasso.deactivate();
+    s.refresh({ skipIdexation: true });
+  }, 0);
+});
+
+
+
+
+
+
 
 //populate with full data first
 refreshGraph()

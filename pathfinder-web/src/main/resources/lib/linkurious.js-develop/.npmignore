@@ -1,9 +1,0 @@
-build/*
-test/*
-node_modules/*
-examples/*
-Gruntfile.js
-.travis.yml
-.gitignore
-*.tgz
-*.log
