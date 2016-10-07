@@ -189,10 +189,10 @@ public class PathFinderCrawlMojo extends TreeMojo
 			PathfinderClient client = null;
 			try {
 				client = new PathfinderClient(neo4jProtocol, neo4jHost, neo4jPort, neo4jPath);
+				client.uploadProject(data);
 			} catch (IOException e) {
 				getLog().error(e);
 			}
-			client.uploadProject(data);
 		}
 	}
 }
