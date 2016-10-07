@@ -37,6 +37,7 @@ public class ConfigurationManager {
 			p.load(is);
 			log.info("Loaded [{}]",CONFIG);
 		} catch (IOException e) {
+			log.error(e.getMessage());
 			log.error("Error loading [{}]",CONFIG);
 		}
 	}

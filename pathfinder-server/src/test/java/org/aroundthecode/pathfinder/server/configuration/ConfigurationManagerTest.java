@@ -20,8 +20,6 @@ public class ConfigurationManagerTest {
 		assertTrue(ConfigurationManager.getPathfinderPort()>0);
 		assertNotNull(ConfigurationManager.getPathfinderProtocol());
 		
-		
-		
 	}
 
 }
