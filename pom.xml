@@ -18,7 +18,7 @@
 		<name>AroundTheCode</name>
 		<url>http://aroundthecode.org</url>
 	</organization>
-	
+
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -54,6 +54,9 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.boot.version>1.3.1.RELEASE</spring.boot.version>
+		<neo4j.version>2.2.7</neo4j.version>
+		<neo4j.ogm.version>1.1.2</neo4j.ogm.version>
 
 		<!-- Jacoco version to use -->
 		<jacoco.version>0.7.6.201602180812</jacoco.version>
@@ -100,33 +103,62 @@
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>3.0.1</version>
 				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.version}</version>
+					<configuration>
+						<destFile>${sonar.jacoco.itReportPath}</destFile>
+						<propertyName>jacoco.agent.it.arg</propertyName>
+						<append>true</append>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.12.1</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.8</version>
+				</plugin>
+
+
 			</plugins>
 		</pluginManagement>
 
 		<plugins>
 
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<configuration>
-					<destFile>${sonar.jacoco.itReportPath}</destFile>
-					<propertyName>jacoco.agent.it.arg</propertyName>
-					<append>true</append>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.1</version>
 				<configuration>
-					<argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC
+					<argLine>-Xmx1G -XX:+UseConcMarkSweepGC
 						-XX:+CMSClassUnloadingEnabled ${jacoco.agent.ut.arg}
 						${surefire.extraargs}</argLine>
 					<excludes>
@@ -140,7 +172,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<configuration>
-					<argLine>-Xmx1G -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC
+					<argLine>-Xmx1G -XX:+UseConcMarkSweepGC
 						-XX:+CMSClassUnloadingEnabled ${jacoco.agent.it.arg}
 						${failsafe.extraargs}</argLine>
 					<includes>
@@ -161,7 +193,6 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
 				<executions>
 					<!-- Prepares a variable, jacoco.agent.ut.arg, that contains the info 
 						to be passed to the JVM hosting the code being tested. -->

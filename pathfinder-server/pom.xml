@@ -16,11 +16,7 @@
 	<name>Pathfinder Server  - ${project.groupId}:${project.artifactId}:${project.packaging}</name>
 	<description>Neo4j server instance to manage pathfinder artifacts data</description>
 
-
 	<properties>
-		<neo4j.version>2.2.7</neo4j.version>
-		<neo4j.ogm.version>1.1.2</neo4j.ogm.version>
-		<spring.boot.version>1.3.1.RELEASE</spring.boot.version>
 		<run.jvmArguments>-Dserver.port=${server.port}</run.jvmArguments>
 	</properties>
 
@@ -134,7 +130,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${spring.boot.version}</version>
 			</plugin>
 
 			<plugin>
@@ -175,7 +170,6 @@
 				<plugins>
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.8</version>
 						<executions>
 							<execution>
 								<phase>package</phase>
@@ -204,17 +198,6 @@
 			</build>
 		</profile>
 	</profiles>
-	<repositories>
-		<repository>
-			<id>spring-releases</id>
-			<name>Spring Releases</name>
-			<url>https://repo.spring.io/libs-release</url>
-		</repository>
-		<repository>
-			<id>neo4j</id>
-			<name>Neo4j</name>
-			<url>http://m2.neo4j.org/</url>
-		</repository>
-	</repositories>
+	
 
 </project>
