@@ -1,6 +1,7 @@
 var types = ["COMPILE", "PROVIDED", "RUNTIME", "TEST", "SYSTEM", "IMPORT"];
 var s = new sigma();
 
+/*
 s.settings({
         labelAlignment: 'center',
         defaultLabelSize: 8,
@@ -11,6 +12,18 @@ s.settings({
         maxNodeSize:15,
         maxNodeLabelLineLength:12,
         labelThreshold: 15
+    });
+ */   
+s.settings({
+        labelAlignment: 'right',
+        defaultLabelSize: 10,
+        //labelSizeRatio: 0.5,
+        edgeColor: 'default',
+        defaultEdgeColor: '#ff0000',
+        minNodeSize:6,
+        maxNodeSize:6,
+        maxNodeLabelLineLength:100,
+        labelThreshold: 1
     });
     
 s.refresh();
@@ -33,10 +46,28 @@ $(function() {
     //frListener.bind('start stop interpolate', function(e) {
     //  console.log(e.type);
     //});
+    
+    var dagreListener = sigma.layouts.dagre.configure(s, {
+      directed: true, // take edge direction into account
+      multigraph: true,
+      rankdir: 'RL',  // Direction for rank nodes. Can be TB, BT, LR, or RL,
+      compound: true,           // where T = top, B = bottom, L = left, and R = right.
+      easing: 'quadraticInOut', // animation transition function
+      duration: 1000,   // animation duration
+      // nodes : s.graph.nodes().slice(0,30), // subset of nodes
+      boundingBox: {minX: 10, maxX: 90, minY: 10, maxY:90} // constrain layout bounds ; object or true (all current positions of the given nodes)
+    });
+    // Bind the events:
+    //dagreListener.bind('start stop interpolate', function(e) {
+    //  console.log(e.type);
+    //});
 
     //Auto-aggange button setup
     $("#autoarrangebutton").click(function() {
-        sigma.layouts.fruchtermanReingold.start(s);
+    	sigma.layouts.fruchtermanReingold.start(s);
+    });
+    $("#autoarrangebutton2").click(function() {
+        sigma.layouts.dagre.start(s);
     });
 
     depmngGrid = $("#depmng_grid").jqGrid({
@@ -340,10 +371,6 @@ lasso.bind('selectedNodes', function (event) {
 
 
 
-
-
-
-
 //populate with full data first
 refreshGraph()
 
@@ -353,183 +380,32 @@ function getColor(v) {
 
     if (v.search(/SNAPSHOT/i) != -1) {
         out = '#FF4E03';
-
     } else if (v.replace(/[0-9]*(\.[0-9]*)*/g, '').length > 0) {
         out = '#FFD103';
+    }
+    return out;
+}
+//Change edge color depending on type
 
+function getEdgeColor(type) {
+    out = '#000000';
+    if (type == "provided"	) {
+        out = '#ffc107'; //yellow
+    } else if (type == "runtime") {
+        out = '#f44336'; //red
+    } else if (type == "test") {
+        out = '#2196f3'; //blue
+    } else if (type == "system") {
+        out = '#607d8b'; //gray
+    } else if (type == "import") {
+        out = '#9c27b0'; //purple
+    } else if (type == "parent") {
+        out = '#009688'; //green
     }
     return out;
 }
 
-function doCypher(query) {
 
-    sigma.neo4j.send({
-            url: n4jurl,
-            user: n4juser,
-            password: n4jpassword
-        },
-        n4jendopint,
-        "POST",
-        '{"query" : ' + JSON.stringify(query) + '}',
-        function(res) {
-            s.graph.clear();
-            //console.log(res);
-            
-            $.each(res.data, function(i, node) {
-
-                for (k = 0; k < node.length; k++) {
-                    n = node[k].root.data;
-                    //console.log(n);
-
-                    //if source not exist, create
-                    if (!s.graph.nodes(n.uniqueId)) {
-                        s.graph.addNode({
-                            id: n.uniqueId,
-                            label: n.uniqueId,
-                            x: Math.random(),
-                            y: Math.random(),
-                            size: 1,
-                            color: getColor(n.version),
-                            border_color: '#00f',
-                            border_size: 1
-                        });
-                    }
-
-                    $.each(node[k].relatives, function(i, rel) {
-                        //console.log(rel);
-                        //console.log(n.uniqueId + "->" + rel[1].data.uniqueId);
-
-                        //if target not exist, create
-                        if (!s.graph.nodes(rel[1].data.uniqueId)) {
-                            s.graph.addNode({
-                                id: rel[1].data.uniqueId,
-                                label: rel[1].data.uniqueId,
-                                x: Math.random(),
-                                y: Math.random(),
-                                size: 1,
-                                color: getColor(rel[1].data.version),
-                                border_color: '#00f',
-                                border_size: 1
-                            });
-                        }
-
-                        var relUniqueId = n.uniqueId + "-" + rel[0].toLowerCase() + "-" + rel[1].data.uniqueId;
-                        if (!s.graph.edges(relUniqueId)) {
-                            s.graph.addEdge({
-                                id: relUniqueId,
-                                // Reference extremities:
-                                source: n.uniqueId,
-                                target: rel[1].data.uniqueId,
-                                color: '000',
-                                type: 'arrow',
-                                label: rel[0].toLowerCase()
-                            });
-                        }
-
-                    });
-                } //for-k
-            });
-            //console.log("refreshing...")
-            s.refresh();
-            updateLabel("[" + s.graph.nodes().length + "] Nodes</br>[" + s.graph.edges().length + "] Edges");
-            $("#autoarrangebutton").click();
-
-        }
-    );
-}
-
-function getFilterValue(id) {
-    var o = $(id).val();
-    if (o == undefined || o == "") {
-        o = ".*";
-        $(id).val(o);
-    }
-    return o;
-}
-
-function getSearchValue(field, id) {
-    var o = $(id).val();
-    if (o == undefined || o == "") {
-        return "";
-    }
-    return field + ":'" + o + "' ,";
-}
-
-function getSearchWhereClause(idx){
-
-    var whereclause = "";
-
-    whereclause += " WHERE n"+idx+".groupId =~ \"" + getFilterValue("#filterG") + "\"";
-    whereclause += " AND n"+idx+".artifactId =~ \"" + getFilterValue("#filterA") + "\"";
-    whereclause += " AND n"+idx+".packaging =~ \"" + getFilterValue("#filterP") + "\"";
-    whereclause += " AND n"+idx+".classifier =~ \"" + getFilterValue("#filterC") + "\"";
-    whereclause += " AND n"+idx+".version =~ \"" + getFilterValue("#filterV") + "\"";
-    idx++;
-    whereclause += " AND n"+idx+".groupId =~ \"" + getFilterValue("#filterG2") + "\"";
-    whereclause += " AND n"+idx+".artifactId =~ \"" + getFilterValue("#filterA2") + "\"";
-    whereclause += " AND n"+idx+".packaging =~ \"" + getFilterValue("#filterP2") + "\"";
-    whereclause += " AND n"+idx+".classifier =~ \"" + getFilterValue("#filterC2") + "\"";
-    whereclause += " AND n"+idx+".version =~ \"" + getFilterValue("#filterV2") + "\"";
-    return whereclause;
-}
-
-function doCypherSearch() {
-
-    var depth = parseInt($('#searchDepth').val());
-    var chain = "-[r1]->(n2)"
-    //fist section stays the same
-    var fixedQuery = ""
-    fixedQuery += "MATCH (n1:Artifact { ";
-    fixedQuery += getSearchValue('groupId', '#searchG');
-    fixedQuery += getSearchValue('artifactId', '#searchA');
-    fixedQuery += getSearchValue('packaging', '#searchP');
-    fixedQuery += getSearchValue('version', '#searchV');
-    fixedQuery += "classifier: '" + $('#searchC').val() + "'";
-
-    
-    var query = "";
-    query += fixedQuery;
-    query += " })"+chain+" with n1 as node, [type(r1), n2] as relative";
-    query += getSearchWhereClause(1);
-    query += " RETURN { root: node, relatives: collect(relative) }"
-
-    for(var i = 2 ; i <= depth; i++){
-        chain += "-[r"+i+"]->(n"+(i+1)+")"
-
-        query += " UNION "
-        query += fixedQuery
-        query += " })"+chain+" with n"+i+" as node, [type(r"+i+"), n"+(i+1)+"] as relative";
-        query += getSearchWhereClause(2);
-        query += " RETURN { root: node, relatives: collect(relative) }"
-    }
-    
-
-    $("#cypher_search").val(query);
-    doCypher(query);
-
-}
-
-function doCypherAll() {
-
-    var query = "MATCH n-[r]->n2 with n, [type(r), n2] as relative";
-
-    query += " WHERE n2.groupId =~ \"" + getFilterValue("#filterG") + "\""
-    query += " AND n2.artifactId =~ \"" + getFilterValue("#filterA") + "\""
-    query += " AND n2.packaging =~ \"" + getFilterValue("#filterP") + "\""
-    query += " AND n2.classifier =~ \"" + getFilterValue("#filterC") + "\""
-    query += " AND n2.version =~ \"" + getFilterValue("#filterV") + "\""
-
-    query += " AND n.groupId =~ \"" + getFilterValue("#filterG2") + "\""
-    query += " AND n.artifactId =~ \"" + getFilterValue("#filterA2") + "\""
-    query += " AND n.packaging =~ \"" + getFilterValue("#filterP2") + "\""
-    query += " AND n.classifier =~ \"" + getFilterValue("#filterC2") + "\""
-    query += " AND n.version =~ \"" + getFilterValue("#filterV2") + "\""
-
-    query += " return { root: n, relatives: collect(relative) }";
-
-    $("#cypher_all").val(query);
-    doCypher(query);
-}
 
 function updateLabel(txt){
     $("#graph-label").html(txt);

@@ -39,9 +39,9 @@ var nrnd = function NRNDraw(data){
                 // Reference extremities:
                 source: n1.uniqueId,
                 target: n2.uniqueId,
-                color: '000',
                 type: 'arrow',
-                label: rel.toLowerCase()
+                color: getEdgeColor( rel.toLowerCase() )
+                //label: rel.toLowerCase()
             });
         }
 

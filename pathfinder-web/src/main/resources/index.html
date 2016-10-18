@@ -22,79 +22,73 @@
           <h3>Filtering</h3>
             <div>
               <p>
-              Filter main graph nodes (RegExp)
+              <b>Main graph nodes</b>
               </p>
               <table>
                 <tr>
                   <td>GroupId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterG2" value=".*"></td>
                 </tr>
                 <tr>
                   <td>ArtifactId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterA2" value=".*"></td>
                 </tr>
                 <tr>
                   <td>Packaging</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterP2" value=".*"></td>
                 </tr>
                 <tr>
                   <td>Classifier</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterC2" value=".*"></td>
                 </tr>
                 <tr>
                   <td>Version</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterV2" value=".*"></td>
                 </tr>
               </table>
 
               <p>
-              Filter dependency nodes (RegExp)
+              <b>Dependency nodes</b>
               </p>
               <table>
                 <tr>
                   <td>GroupId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterG1" value=".*"></td>
                 </tr>
                 <tr>
                   <td>ArtifactId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterA1" value=".*"></td>
                 </tr>
                 <tr>
                   <td>Packaging</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterP1" value=".*"></td>
                 </tr>
                 <tr>
                   <td>Classifier</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterC1" value=".*"></td>
                 </tr>
                 <tr>
                   <td>Version</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="filterV1" value=".*"></td>
                 </tr>
               </table>
 
               <button onclick="refreshGraph()">Refresh</button>
-              <button id="autoarrangebutton">Auto-Arrange</button>
+              <button id="autoarrangebutton">Fit</button>
+              <button id="autoarrangebutton2">Dag</button>
+              <hr/>
+              <b>Nodes</b><br/>
+              <span style="color:#00BDFC;font-size:xx-small"><u>Stable</u></span>
+	          <span style="color:#FFD103;font-size:xx-small"><u>Branch</u></span>
+	          <span style="color:#FF4E03;font-size:xx-small"><u>Snapshot</u></span>
+              <hr/><b>Edges</b><br/>
+              <span style="color:#009688;font-size:xx-small"><u>Parent</u></span>
+	          <span style="color:#000000;font-size:xx-small"><u>Compile</u></span>
+	          <span style="color:#ffc107;font-size:xx-small"><u>Provided</u></span>
+	          <span style="color:#f44336;font-size:xx-small"><u>Runtime</u></span>
+	          <span style="color:#2196f3;font-size:xx-small"><u>Test</u></span>
+	          <span style="color:#607d8b;font-size:xx-small"><u>System</u></span>
+	          <span style="color:#9c27b0;font-size:xx-small"><u>Import</u></span>
 
             </div>
             <h3>Impact Path</h3>
@@ -106,38 +100,26 @@
               <table>
                 <tr>
                   <td>GroupId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="searchG" value="org.aroundthecode.pathfinder"></td>
                 </tr>
                 <tr>
                   <td>ArtifactId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="searchA" value="pathfinder-rest-client"></td>
                 </tr>
                 <tr>
                   <td>Packaging</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="searchP" value="jar"></td>
                 </tr>
                 <tr>
                   <td>Classifier</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="searchC" value=""></td>
                 </tr>
                 <tr>
                   <td>Version</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="searchV" value="0.1.0-SNAPSHOT"></td>
                 </tr>
                 <tr>
                   <td>Search depth</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="searchDepth" value="2" size="5"></td>
                 </tr>
               </table>
@@ -166,32 +148,22 @@
               <table>
                 <tr>
                   <td>GroupId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="crawlG" value=""></td>
                 </tr>
                 <tr>
                   <td>ArtifactId</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="crawlA" value=""></td>
                 </tr>
                 <tr>
                   <td>Packaging</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="crawlP" value="jar"></td>
                 </tr>
                 <tr>
                   <td>Classifier</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="crawlC" value=""></td>
                 </tr>
                 <tr>
                   <td>Version</td>
-                </tr>
-                <tr>
                   <td><input type="text" id="crawlV" value=""></td>
                 </tr>
               </table>
@@ -296,8 +268,11 @@
 <link rel="stylesheet" type="text/css" href="./css/pathfinder.css">
 <link rel="stylesheet" type="text/css" href="./lib/jquery-ui-1.11.4.custom/jquery-ui.min.css">
 <link rel="stylesheet" type="text/css" href="./lib/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
-<!-- Linkourious Sigma -->
 
+<!-- Dagre Core -->
+<script src="./lib/dagre-0.7.3/dagre.min.js"></script>
+
+<!-- Linkourious Sigma -->
 <script src="./lib/linkurious-v1.5.1/sigma.min.js"></script>
 
 <script src="./lib/linkurious-v1.5.1/plugins/sigma.exporters.gexf.min.js"></script>
@@ -312,6 +287,9 @@
 <script src="./lib/linkurious-v1.5.1/plugins/sigma.layouts.forceAtlas2/worker.js"></script>
 <script src="./lib/linkurious-v1.5.1/plugins/sigma.layouts.forceAtlas2.min.js"></script>
 -->
+<script src="./lib/linkurious-v1.5.1/plugins/sigma.layouts.dagre.min.js"></script>
+
+
 <script src="./lib/linkurious-v1.5.1/plugins/sigma.layouts.forceLink.min.js"></script>
 <script src="./lib/linkurious-v1.5.1/plugins/sigma.layouts.forceLink/supervisor.js"></script>
 <script src="./lib/linkurious-v1.5.1/plugins/sigma.layouts.forceLink/worker.js"></script>
