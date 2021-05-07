@@ -230,16 +230,36 @@
 	</build>
 
 	<repositories>
+<!--
 		<repository>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
 			<url>https://repo.spring.io/libs-release</url>
 		</repository>
 		<repository>
-			<id>neo4j</id>
-			<name>Neo4j</name>
-			<url>http://m2.neo4j.org/content/repositories/releases/</url>
+			<id>spring-plugins-releases</id>
+			<name>Spring Plugins Releases</name>
+			<url>https://repo.spring.io/plugins-release/</url>
 		</repository>
+-->
+		<repository>
+			<id>maven-0</id>
+			<name>Maven0</name>
+			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
+		<repository>
+        <id>xebialabs-releases</id>          
+      <url>https://plugins.xebialabs.com/nexus/content/groups/public/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+		<repository>
+			<id>maven</id>
+			<name>Maven</name>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+		 
 	</repositories>
 
 
