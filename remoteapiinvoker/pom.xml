@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>ca.juliusdavies</groupId>
 			<artifactId>not-yet-commons-ssl</artifactId>
-			<version>0.3.11</version>
+			<version>0.3.17</version>
 		</dependency>
 
 		<dependency>
